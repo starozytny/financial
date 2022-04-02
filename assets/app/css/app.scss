@@ -11,6 +11,7 @@
 
 @import "vars/fonts";
 @import "vars/vars";
+@import "vars/icon";
 
 @import "components/menu";
 @import "components/footer";
@@ -71,6 +72,10 @@ main{
 
 .matomo-iframe-display.remove{
     display: none;
+}
+
+.txt-color0{
+    color: var(--color0)
 }
 
 //                      __   _ ____  ___   ___    __
