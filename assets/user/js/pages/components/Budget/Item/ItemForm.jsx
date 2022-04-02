@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
@@ -17,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_budget_items_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, year, month, typeItem = 0, categories })
+export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, year, month, typeItem = 0, categories, total = 0 })
 {
     let title = "Ajouter un élément";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -43,6 +43,7 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         messageSuccess={msg}
 
         categories={categories}
+        total={total}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -59,6 +60,7 @@ class Form extends Component {
             type: props.type,
             price: props.price,
             category: props.category,
+            total: props.total,
             errors: [],
             success: false
         }

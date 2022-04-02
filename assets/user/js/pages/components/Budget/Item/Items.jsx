@@ -133,14 +133,14 @@ export class Items extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { year, month, categories } = this.props;
-        return <ItemFormulaire type="create" year={year} month={month} categories={categories} typeItem={this.state.typeItem}
+        const { year, month, categories, total } = this.props;
+        return <ItemFormulaire type="create" year={year} month={month} categories={categories} total={total} typeItem={this.state.typeItem}
                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList} key={i++}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { year, month, categories } = this.props;
-        return <ItemFormulaire type="update" year={year} month={month} categories={categories} typeItem={this.state.typeItem}
+        const { year, month, categories, total } = this.props;
+        return <ItemFormulaire type="update" year={year} month={month} categories={categories} total={total} typeItem={this.state.typeItem}
                                element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList} key={i++}/>
     }
 

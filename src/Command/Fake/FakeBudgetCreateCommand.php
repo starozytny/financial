@@ -53,8 +53,7 @@ class FakeBudgetCreateCommand extends Command
 
             $data = json_decode(json_encode($data));
 
-            $new = $this->dataEntity->setData(new BuItem(), $data);
-            $new->setUser($user);
+            [$new, $total] = $this->dataEntity->setData(new BuItem(), $data, $user);
 
             $this->em->persist($new);
         }

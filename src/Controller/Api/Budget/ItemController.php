@@ -4,6 +4,7 @@ namespace App\Controller\Api\Budget;
 
 use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
+use App\Entity\Budget\BuTotal;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Budget\BudgetService;
@@ -81,8 +82,12 @@ class ItemController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setData($obj, $data);
-        $obj->setUser($user);
+        $total = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => (int) $data->year]);
+        if(!$total){
+            $total = new BuTotal();
+        }
+
+        [$obj, $total] = $dataEntity->setData($obj, $data, $user, $total);
 
         if($data->category != ""){
             if($category = $em->getRepository(BuCategory::class)->find($data->category)){
@@ -95,6 +100,7 @@ class ItemController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
+        $em->persist($total);
         $em->persist($obj);
         $em->flush();
 
@@ -172,11 +178,25 @@ class ItemController extends AbstractController
      * @OA\Tag(name="BudgetItem")
      *
      * @param BuItem $obj
-     * @param DataService $dataService
+     * @param ApiResponse $apiResponse
+     * @param DataItem $dataEntity
      * @return JsonResponse
      */
-    public function delete(BuItem $obj, DataService $dataService): JsonResponse
+    public function delete(BuItem $obj, ApiResponse $apiResponse, DataItem $dataEntity): JsonResponse
     {
-        return $dataService->delete($obj);
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $total = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => $obj->getYear()]);
+        if(!$total){
+            $total = new BuTotal();
+        }
+        $total = $dataEntity->setTotal($total, $user, $obj->getType() == BuItem::TYPE_INCOME ? BuItem::TYPE_EXPENSE : BuItem::TYPE_INCOME, $obj->getYear(), $obj->getPrice());
+
+        $em->persist($total);
+        $em->remove($obj);
+        $em->flush();
+        return $apiResponse->apiJsonResponseSuccessful("Supression réussie !");
     }
 }
