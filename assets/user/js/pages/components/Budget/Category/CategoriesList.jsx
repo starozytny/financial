@@ -23,7 +23,7 @@ export class CategoriesList extends Component {
 
     render () {
         const { taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onPerPage,
-            onPaginationClick, currentPage, sorters, onSorter } = this.props;
+            onPaginationClick, currentPage, sorters, onSorter, isSaving } = this.props;
 
         let filtersLabel = ["Dépenses", "Revenus", "Economies"];
         let filtersId    = ["f-expenses", "f-revenus", "f-economies"];
@@ -38,7 +38,7 @@ export class CategoriesList extends Component {
             <div>
                 <div className="toolbar">
                     <div className="item create">
-                        <Button onClick={() => onChangeContext("create")}>Ajouter une catégorie</Button>
+                        <Button onClick={() => onChangeContext("create")}>Ajouter une {isSaving  ? "économie" : "catégorie"}</Button>
                     </div>
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />

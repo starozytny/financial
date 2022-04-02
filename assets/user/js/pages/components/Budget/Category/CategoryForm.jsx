@@ -19,9 +19,9 @@ const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, element, isSaving })
 {
-    let title = "Ajouter une catégorie";
+    let title = "Ajouter une " + (isSaving ? "économie" : "catégorie");
     let url = Routing.generate(URL_CREATE_ELEMENT);
-    let msg = "Félicitations ! Vous avez ajouté un nouveau changelog !"
+    let msg = "Félicitations ! Vous avez ajouté une nouvelle " + (isSaving ? "économie" : "catégorie") + " !"
 
     if(type === "update"){
         title = "Modifier " + element.name;

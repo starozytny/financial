@@ -62,7 +62,7 @@ export class Categories extends Component {
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage } = this.state;
+        const { perPage, currentPage, isSaving } = this.state;
 
         return <CategoriesList onChangeContext={changeContext}
                                onDelete={this.layout.current.handleDelete}
@@ -82,6 +82,7 @@ export class Categories extends Component {
                                sorters={sorters}
                                onSorter={this.handleSorter}
                          //data
+                               isSaving={isSaving}
                                data={currentData} />
     }
 
