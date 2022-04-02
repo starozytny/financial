@@ -65,6 +65,11 @@ class BuCategory extends DataEntity
      */
     private $isNatif = false;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $icon = "stop";
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -184,5 +189,17 @@ class BuCategory extends DataEntity
     public function getTypeString(): string
     {
         return $this->getBudgetTypeString($this->type);
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
     }
 }
