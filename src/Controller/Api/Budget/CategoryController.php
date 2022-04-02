@@ -57,7 +57,7 @@ class CategoryController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, BuItem::ITEM_READ);
+        return $apiResponse->apiJsonResponse($obj, BuCategory::CATEGORY_READ);
     }
 
     /**
