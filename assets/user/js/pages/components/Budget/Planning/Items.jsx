@@ -51,7 +51,7 @@ export class Items extends Component {
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "changelog", true, Filter.filterType); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "budget-item", true, Filter.filterType); }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
