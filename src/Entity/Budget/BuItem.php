@@ -161,6 +161,13 @@ class BuItem extends DataEntity
         return $this;
     }
 
+    public function getTypeString()
+    {
+        $values = ["Dépense", "Revenu", "Economie"];
+
+        return $values[$this->type];
+    }
+
     /**
      * @return string|null
      * @Groups({"item:read"})

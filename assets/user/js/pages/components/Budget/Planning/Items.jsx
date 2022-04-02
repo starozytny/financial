@@ -7,7 +7,7 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { ItemsList }       from "./ItemsList";
 
-const URL_DELETE_ELEMENT    = 'api_changelogs_delete';
+const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
 let SORTER = Sort.compareCreatedAtInverse;
 

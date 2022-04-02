@@ -28,6 +28,7 @@ export class Planning extends Component {
 
         this.handleSelectYear = this.handleSelectYear.bind(this);
         this.handleSelectMonth = this.handleSelectMonth.bind(this);
+        this.handleUpdateData = this.handleUpdateData.bind(this);
     }
 
     handleSelectYear = (year) => {
@@ -48,6 +49,8 @@ export class Planning extends Component {
     }
 
     handleSelectMonth = (monthActive) => { this.setState({ monthActive }) }
+
+    handleUpdateData = (data) => { this.setState({ data: data }) }
 
     render () {
         const { data, yearMin, yearActive, monthActive } = this.state;
@@ -74,9 +77,9 @@ export class Planning extends Component {
         })
 
         let cards = [
-            { icon: "book", name: "Dépenses",  total: totalExpenses },
-            { icon: "book", name: "Revenus",   total: totalIncomes },
-            { icon: "book", name: "Economies", total: totalSavings },
+            { name: "Dépenses",  total: totalExpenses, icon: "minus" },
+            { name: "Revenus",   total: totalIncomes,  icon: "add" },
+            { name: "Economies", total: totalSavings,  icon: "time" },
         ]
 
         return <div className="main-content">

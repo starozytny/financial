@@ -51,7 +51,7 @@ export class ItemsList extends Component {
                                      currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
-                    <div className="items items-default">
+                    <div className="items items-default items-budget">
                         <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">

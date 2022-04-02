@@ -1,5 +1,11 @@
 @import "../../../vars/vars";
 
+.items-budget{
+  .total-0{ color: var(--danger); }
+  .total-1{ color: var(--primary); }
+  .total-2{ color: var(--warning); }
+}
+
 .card{
   background-color: var(--alpha);
   box-shadow: 0 4px 12px var(--greyShadow);
