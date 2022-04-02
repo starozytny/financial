@@ -60,6 +60,18 @@ class ItemController extends AbstractController
         $user = $this->getUser();
 
         $objs = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'year' => $year]);
+        $totalP = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => ($year - 1)]);
+        $totalN = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => $year]);
+        if($totalP && !$totalN){
+            $total = (new BuTotal())
+                ->setUser($user)
+                ->setYear($year)
+                ->setTotal($totalP->getTotal())
+            ;
+
+            $em->persist($total);
+            $em->flush();
+        }
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => BuItem::ITEM_READ]);
 
