@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Budget\BuItem;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -119,6 +120,11 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $notifications;
 
     /**
+     * @ORM\OneToMany(targetEntity=BuItem::class, mappedBy="user")
+     */
+    private $buItems;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -126,6 +132,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->createdAt = $this->initNewDate();
         $this->token = $this->initToken();
         $this->notifications = new ArrayCollection();
+        $this->buItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -445,5 +452,35 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function getAvatarFile(): string
     {
         return $this->getFileOrDefault($this->avatar, self::FOLDER_AVATARS, "https://robohash.org/" . $this->username . "?size=64x64");
+    }
+
+    /**
+     * @return Collection<int, BuItem>
+     */
+    public function getBuItems(): Collection
+    {
+        return $this->buItems;
+    }
+
+    public function addBuItem(BuItem $buItem): self
+    {
+        if (!$this->buItems->contains($buItem)) {
+            $this->buItems[] = $buItem;
+            $buItem->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuItem(BuItem $buItem): self
+    {
+        if ($this->buItems->removeElement($buItem)) {
+            // set the owning side to null (unless already changed)
+            if ($buItem->getUser() === $this) {
+                $buItem->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
