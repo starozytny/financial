@@ -23,7 +23,7 @@ export class ItemsItem extends Component {
                             <div className="sub">{elem.createdAtString}</div>
                         </div>
                         <div className="col-2">
-                            <div className="sub">{elem.name}</div>
+                            <div className="name">{elem.name}</div>
                         </div>
                         <div className="col-2">
                             <div className={"name total-" + elem.type}>
