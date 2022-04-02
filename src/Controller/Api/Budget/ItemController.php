@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/budget/items", name="api_budget_items_")
@@ -25,6 +26,40 @@ class ItemController extends AbstractController
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * @Route("/data/{year}", name="get_data", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a new object"
+     * )
+     *
+     * @OA\Response(
+     *     response=400,
+     *     description="JSON empty or missing data or validation failed",
+     * )
+     *
+     * @OA\Tag(name="BudgetItem")
+     *
+     * @param $year
+     * @param SerializerInterface $serializer
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function data($year, SerializerInterface $serializer, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $objs = $em->getRepository(BuItem::class)->findBy(['year' => $year, 'user' => $user]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => BuItem::ITEM_READ]);
+
+        return $apiResponse->apiJsonResponse($objs);
     }
 
     public function submitForm($type, BuItem $obj, Request $request, ApiResponse $apiResponse,

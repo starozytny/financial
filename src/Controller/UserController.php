@@ -38,7 +38,8 @@ class UserController extends AbstractController
         $items = $serializer->serialize($items, 'json', ['groups' => BuItem::ITEM_READ]);
 
         return $this->render('user/pages/index.html.twig', [
-            'donnees' => $items
+            'donnees' => $items,
+            'year' => $year
         ]);
     }
 

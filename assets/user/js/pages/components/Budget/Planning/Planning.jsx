@@ -14,16 +14,22 @@ export class Planning extends Component {
 
         this.state = {
             data: JSON.parse(props.donnees),
+            yearActive: props.year,
             monthActive: 1
         }
 
+        this.handleSelectYear = this.handleSelectYear.bind(this);
         this.handleSelectMonth = this.handleSelectMonth.bind(this);
+    }
+
+    handleSelectYear = (year) => {
+        this.setState({ yearActive: year })
     }
 
     handleSelectMonth = (monthActive) => { this.setState({ monthActive }) }
 
     render () {
-        const { data, monthActive } = this.state;
+        const { data, yearActive, monthActive } = this.state;
 
         let totalExpenses = 0;
         let totalIncomes = 0;
@@ -54,7 +60,7 @@ export class Planning extends Component {
 
         return <div className="main-content">
             <div className="plannings-items">
-                <Years year={2022} />
+                <Years year={yearActive} onSelect={this.handleSelectYear} />
                 <Months active={monthActive} onSelect={this.handleSelectMonth}/>
             </div>
 
@@ -86,16 +92,16 @@ export class Planning extends Component {
 
 class Years extends Component {
     render () {
-        const { year } = this.props
+        const { year, onSelect } = this.props
 
         return <>
             <div className="days">
-                <div className="day">
+                <div className="day" onClick={(e) => onSelect(parseInt(year) - 1)}>
                     <span className="icon-left-arrow" />
                 </div>
                 <div className="day active">{year}</div>
 
-                <div className="day">
+                <div className="day" onClick={(e) => onSelect(parseInt(year) + 1)}>
                     <span className="icon-right-arrow" />
                 </div>
             </div>
