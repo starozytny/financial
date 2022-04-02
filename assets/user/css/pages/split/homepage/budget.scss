@@ -1,0 +1,82 @@
+@import "../../../vars/vars";
+
+.card{
+  background-color: var(--alpha);
+  box-shadow: 0 4px 12px var(--greyShadow);
+  border: 1px solid var(--grey);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+
+  &:nth-child(1){ .card-header .icon{ color: var(--danger); background-color: var(--dangerShadow2); } }
+  &:nth-child(2){ .card-header .icon{ color: var(--primary); background-color: var(--primaryShadow2); } }
+  &:nth-child(3){ .card-header .icon{ color: var(--warning); background-color: var(--warningShadow2); } }
+
+  .card-header{
+    @include flex(row, flex-start, flex-start);
+
+    .icon{
+      @include flex(row, center, center);
+      width: 32px;
+      height: 32px;
+      background-color: var(--fond);
+      border-radius: 4px;
+      padding: 12px;
+
+      [class^="icon-"]{
+        font-size: 26px;
+      }
+    }
+
+    .title{
+      width: calc(100% - 32px - 24px);
+      margin-left: 24px;
+    }
+
+    .name{
+      text-transform: uppercase;
+      color: var(--grey);
+      @include fontSemibold();
+    }
+
+    .total{
+      @include fontBold();
+      font-size: 22px;
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .cards{
+    @include flex(row, flex-start, flex-start);
+    width: calc(100% + 12px);
+
+    & > .card{
+      width: 33%;
+      margin-bottom: 0;
+      margin-right: 12px;
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .cards{
+    width: calc(100% + 24px);
+
+    & > .card{
+      margin-right: 24px;
+    }
+  }
+}

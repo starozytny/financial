@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import Sanitaze from "@commonComponents/functions/sanitaze";
+
 import { Months } from "@dashboardComponents/Tools/Days";
 
 export class Planning extends Component {
@@ -18,13 +20,38 @@ export class Planning extends Component {
     render () {
         const { monthActive } = this.state;
 
+        let cards = [
+            { icon: "book", name: "Dépenses",  total: 100000 },
+            { icon: "book", name: "Revenus",   total: 100000 },
+            { icon: "book", name: "Economies", total: 100000 },
+        ]
+
         return <div className="main-content">
             <div className="plannings-items">
-
                 <Years year={2022} />
-
                 <Months active={monthActive} onSelect={this.handleSelectMonth}/>
+            </div>
 
+            <div className="budget">
+                <div className="cards">
+                    {cards.map((card, index) => {
+                        return <div className="card" key={index}>
+                            <div className="card-header">
+                                <div className="icon">
+                                    <span className={"icon-" + card.icon} />
+                                </div>
+                                <div className="title">
+                                    <div className="name">{card.name}</div>
+                                    <div className="total">{Sanitaze.toFormatCurrency(card.total)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    })}
+                </div>
+
+                <div className="items">
+
+                </div>
             </div>
         </div>
     }
