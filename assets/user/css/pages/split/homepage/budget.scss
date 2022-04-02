@@ -13,6 +13,12 @@
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover{
+    border-color: var(--grey3);
+  }
 
   &:nth-child(1){ .card-header .icon{ color: var(--danger); background-color: var(--dangerShadow2); } }
   &:nth-child(2){ .card-header .icon{ color: var(--primary); background-color: var(--primaryShadow2); } }
@@ -31,6 +37,7 @@
 
       [class^="icon-"]{
         font-size: 26px;
+        transition: al 0.2s ease-in-out;
       }
     }
 

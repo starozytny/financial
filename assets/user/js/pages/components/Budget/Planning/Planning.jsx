@@ -26,9 +26,12 @@ export class Planning extends Component {
             yearMin: (new Date()).getFullYear()
         }
 
+        this.items = React.createRef();
+
         this.handleSelectYear = this.handleSelectYear.bind(this);
         this.handleSelectMonth = this.handleSelectMonth.bind(this);
         this.handleUpdateData = this.handleUpdateData.bind(this);
+        this.handleChangeContext = this.handleChangeContext.bind(this);
     }
 
     handleSelectYear = (year) => {
@@ -51,6 +54,10 @@ export class Planning extends Component {
     handleSelectMonth = (monthActive) => { this.setState({ monthActive }) }
 
     handleUpdateData = (data) => { this.setState({ data: data }) }
+
+    handleChangeContext = (context, typeItem) => {
+        this.items.current.handleChangeContext(context, null, typeItem);
+    }
 
     render () {
         const { data, yearMin, yearActive, monthActive } = this.state;
@@ -77,9 +84,9 @@ export class Planning extends Component {
         })
 
         let cards = [
-            { name: "Dépenses",  total: totalExpenses, icon: "minus" },
-            { name: "Revenus",   total: totalIncomes,  icon: "add" },
-            { name: "Economies", total: totalSavings,  icon: "time" },
+            { value: 0, name: "Dépenses",  total: totalExpenses, icon: "minus" },
+            { value: 1, name: "Revenus",   total: totalIncomes,  icon: "add" },
+            { value: 2, name: "Economies", total: totalSavings,  icon: "time" },
         ]
 
         return <div className="main-content">
@@ -91,7 +98,7 @@ export class Planning extends Component {
             <div className="budget">
                 <div className="cards">
                     {cards.map((card, index) => {
-                        return <div className="card" key={index}>
+                        return <div className="card" key={index} onClick={() => this.handleChangeContext("create", card.value)}>
                             <div className="card-header">
                                 <div className="icon">
                                     <span className={"icon-" + card.icon} />
@@ -106,7 +113,7 @@ export class Planning extends Component {
                 </div>
 
                 <div className="items">
-                    <Items donnees={JSON.stringify(data)} />
+                    <Items ref={this.items} donnees={JSON.stringify(data)} year={yearActive} month={monthActive} />
                 </div>
             </div>
         </div>

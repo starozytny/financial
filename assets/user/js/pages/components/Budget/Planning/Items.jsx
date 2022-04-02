@@ -6,6 +6,7 @@ import Filter            from "@commonComponents/functions/filter";
 import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { ItemsList }       from "./ItemsList";
+import { ItemFormulaire }  from "@userPages/components/Budget/Planning/ItemForm";
 
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
@@ -18,6 +19,8 @@ let sorters = [
 
 let sortersFunction = [Sort.compareCreatedAtInverse, Sort.compareName];
 
+let i = 0;
+
 export class Items extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +32,8 @@ export class Items extends Component {
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "budget.items.pagination",
-            classes: ""
+            classes: "",
+            typeItem: props.type ? props.type : 0,
         }
 
         this.layout = React.createRef();
@@ -41,8 +45,11 @@ export class Items extends Component {
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
+        this.handleChangeContext = this.handleChangeContext.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
+        this.handleContentCreate = this.handleContentCreate.bind(this);
+        this.handleContentUpdate = this.handleContentUpdate.bind(this);
     }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
@@ -59,6 +66,11 @@ export class Items extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
+    handleChangeContext = (context, elem = null, typeItem) => {
+        this.setState({ typeItem })
+        this.layout.current.handleChangeContext(context, elem);
+    }
+
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
 
@@ -71,7 +83,7 @@ export class Items extends Component {
                                onGetFilters={this.handleGetFilters}
                          //changeNumberPerPage
                                perPage={perPage}
-                               onPerPage={this.handlePerPage}
+
                          //twice pagination
                                currentPage={currentPage}
                                onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
@@ -83,10 +95,21 @@ export class Items extends Component {
                                data={currentData} />
     }
 
+    handleContentCreate = (changeContext) => {
+        const { year, month } = this.props;
+        return <ItemFormulaire type="create" year={year} month={month} typeItem={this.state.typeItem} onChangeContext={changeContext} onUpdateList={this.handleUpdateList} key={i++}/>
+    }
+
+    handleContentUpdate = (changeContext, element) => {
+        const { year, month } = this.props;
+        return <ItemFormulaire type="update" year={year} month={month} typeItem={this.state.typeItem} element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList} key={i++}/>
+    }
+
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
                     onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
     }
