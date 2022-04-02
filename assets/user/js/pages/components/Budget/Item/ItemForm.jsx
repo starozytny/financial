@@ -121,9 +121,9 @@ class Form extends Component {
         const { errors, success, name, type, price } = this.state;
 
         let typeItems = [
-            { value: 0,  label: 'Dépense',  identifiant: 'depense' },
-            { value: 1,  label: 'Revenu',   identifiant: 'revenu' },
-            { value: 2,  label: 'Economie',  identifiant: 'economie' },
+            { value: 0,  label: 'Dépense',   identifiant: 'it-depense' },
+            { value: 1,  label: 'Revenu',    identifiant: 'it-revenu' },
+            { value: 2,  label: 'Economie',  identifiant: 'it-economie' },
         ]
 
         return <>

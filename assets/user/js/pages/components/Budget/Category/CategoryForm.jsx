@@ -4,7 +4,6 @@ import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
-import { Trumb }               from "@dashboardComponents/Tools/Trumb";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
@@ -13,14 +12,14 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_changelogs_create";
-const URL_UPDATE_GROUP       = "api_changelogs_update";
+const URL_CREATE_ELEMENT     = "api_budget_categories_create";
+const URL_UPDATE_GROUP       = "api_budget_categories_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, element })
 {
-    let title = "Ajouter un changelog";
+    let title = "Ajouter une catégorie";
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau changelog !"
 
@@ -33,9 +32,9 @@ export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, eleme
     let form = <Form
         context={type}
         url={url}
-        name={element ? element.name : ""}
-        type={element ? element.type : 0}
-        content={element ? element.content : ""}
+        name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
+        type={element ? Formulaire.setValueEmptyIfNull(element.type, 0) : 0}
+        goal={element ? Formulaire.setValueEmptyIfNull(element.goal, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -51,35 +50,28 @@ class Form extends Component {
         this.state = {
             name: props.name,
             type: props.type,
-            content: { value: props.content ? props.content : "", html: props.content ? props.content : "" },
+            goal: props.goal,
             errors: [],
             success: false
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeCleave = this.handleChangeCleave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         Helper.toTop();
-        let username = document.getElementById("name");
-        if(username){ username.focus(); }
     }
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
-
-    handleChangeTrumb = (e) => {
-        let name = e.currentTarget.id;
-        let text = e.currentTarget.innerHTML;
-
-        this.setState({[name]: {value: [name].value, html: text}})
-    }
+    handleChangeCleave = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.rawValue}) }
 
     handleSubmit = (e) => {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { name, type } = this.state;
+        const { name, type, goal } = this.state;
 
         this.setState({ errors: [], success: false })
 
@@ -89,6 +81,12 @@ class Form extends Component {
             {type: "text", id: 'name',  value: name},
             {type: "text", id: 'type',  value: type}
         ];
+
+        if(parseInt(type) === 2){
+            paramsToValidate = [...paramsToValidate,
+                ...[{type: "text", id: 'goal', value: goal}]
+            ];
+        }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
@@ -110,7 +108,7 @@ class Form extends Component {
                         self.setState( {
                             name: '',
                             type: 0,
-                            content: '',
+                            goal: '',
                         })
                     }
                 })
@@ -126,12 +124,12 @@ class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { errors, success, name, type, content } = this.state;
+        const { errors, success, name, type, goal } = this.state;
 
         let typeItems = [
-            { value: 0,  label: 'Information',  identifiant: 'informe' },
-            { value: 1,  label: 'Attention',    identifiant: 'attention' },
-            { value: 2,  label: 'Danger',       identifiant: 'danger' },
+            { value: 0,  label: 'Dépense',   identifiant: 'cat-depense' },
+            { value: 1,  label: 'Revenu',    identifiant: 'cat-revenu' },
+            { value: 2,  label: 'Economie',  identifiant: 'cat-economie' },
         ]
 
         return <>
@@ -145,7 +143,7 @@ class Form extends Component {
                 </div>
 
                 <div className="line line-2">
-                    <Trumb identifiant="content" valeur={content.value} errors={errors} onChange={this.handleChangeTrumb}>Contenu</Trumb>
+                    <Input type="cleave" valeur={goal} identifiant="goal" errors={errors} onChange={this.handleChangeCleave}>Objectif</Input>
                     <div className="form-group" />
                 </div>
 

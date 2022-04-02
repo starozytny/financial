@@ -8,10 +8,8 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 import { CategoriesList }       from "@userPages/components/Budget/Category/CategoriesList";
 import { CategoryFormulaire }   from "@userPages/components/Budget/Category/CategoryForm";
 
-const URL_DELETE_ELEMENT    = 'api_changelogs_delete';
-const URL_DELETE_GROUP      = 'api_changelogs_delete_group';
+const URL_DELETE_ELEMENT    = 'api_budget_categories_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cette catégorie ?';
-const MSG_DELETE_GROUP      = 'Aucune catégorie sélectionnée.';
 let SORTER = Sort.compareName;
 
 let sorters = [
@@ -30,8 +28,6 @@ export class Categories extends Component {
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
-            pathDeleteGroup: URL_DELETE_GROUP,
-            msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "categories.pagination"
         }
 
