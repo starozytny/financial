@@ -55,10 +55,11 @@ export class CategoriesList extends Component {
                         <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">
-                                    <div className="infos infos-col-3">
+                                    <div className="infos infos-col-4">
                                         <div className="col-1">Catégorie</div>
                                         <div className="col-2">Type</div>
-                                        <div className="col-3 actions">Actions</div>
+                                        <div className="col-3">Objectif</div>
+                                        <div className="col-4 actions">Actions</div>
                                     </div>
                                 </div>
                             </div>

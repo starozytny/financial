@@ -23,7 +23,7 @@ export class Categories extends Component {
         super(props);
 
         this.state = {
-            perPage: 10,
+            perPage: 20,
             currentPage: 0,
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
