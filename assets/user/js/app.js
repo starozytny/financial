@@ -9,6 +9,7 @@ import { render } from 'react-dom';
 import { Menu }  from "@dashboardComponents/Layout/Menu";
 import { Theme } from "@dashboardComponents/Theme";
 import { Notifications } from "@dashboardComponents/Notifications";
+import { Planning } from "@userPages/components/Budget/Planning/Planning";
 
 Routing.setRoutingData(routes);
 
@@ -25,4 +26,9 @@ if(theme){
 const notifications = document.getElementById("notifications");
 if(notifications){
     render(<Notifications {...notifications.dataset} />, notifications)
+}
+
+const planning = document.getElementById("planning");
+if(planning){
+    render(<Planning {...planning.dataset} />, planning)
 }

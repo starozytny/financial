@@ -38,3 +38,38 @@ export class Days extends Component {
         </>
     }
 }
+
+export class Months extends Component {
+    render () {
+        const { active, onSelect, useShortName = false } = this.props
+
+        let days = [
+            { id: 1, name: 'Janvier',        shortName: 'Jan' },
+            { id: 2, name: 'Février',        shortName: 'Fev' },
+            { id: 3, name: 'Mars',           shortName: 'Mar' },
+            { id: 4, name: 'Avril',          shortName: 'Avr' },
+            { id: 5, name: 'Mai',            shortName: 'Mai' },
+            { id: 6, name: 'Juin',           shortName: 'Jui' },
+            { id: 7, name: 'Juillet',        shortName: 'Jui' },
+            { id: 8, name: 'Août',           shortName: 'Aoû' },
+            { id: 9, name: 'Septembre',      shortName: 'Sep' },
+            { id: 10, name: 'Octobre',       shortName: 'Oct' },
+            { id: 11, name: 'Novembre',      shortName: 'Nov' },
+            { id: 12, name: 'Décembre',      shortName: 'Dèc' },
+        ];
+
+        let items = days.map(elem => {
+            return <div className={"day" + (elem.id === active ? " active" : "")}
+                        onClick={() => onSelect(elem.id)}
+                        key={elem.id}>
+                {useShortName ? elem.shortName : elem.name}
+            </div>
+        })
+
+        return <>
+            <div className="days">
+                {items}
+            </div>
+        </>
+    }
+}
