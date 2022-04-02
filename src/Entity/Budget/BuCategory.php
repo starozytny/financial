@@ -27,7 +27,7 @@ class BuCategory extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"category:read"})
+     * @Groups({"category:read", "item:read"})
      */
     private $name;
 
@@ -39,13 +39,13 @@ class BuCategory extends DataEntity
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"category:read"})
+     * @Groups({"category:read", "item:read"})
      */
     private $goal;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"category:read"})
+     * @Groups({"category:read", "item:read"})
      */
     private $total;
 

@@ -24,6 +24,8 @@ export class ItemsItem extends Component {
                         </div>
                         <div className="col-2">
                             <div className="name">{elem.name}</div>
+                            {elem.category ? <div className="sub">{elem.category.name}</div> : null}
+
                         </div>
                         <div className="col-3">
                             <div className={"name total-" + elem.type}>

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Budget;
 
+use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -77,6 +78,12 @@ class ItemController extends AbstractController
 
         $obj = $dataEntity->setData($obj, $data);
         $obj->setUser($user);
+
+        if($data->category != ""){
+            if($category = $em->getRepository(BuCategory::class)->find($data->category)){
+                $obj->setCategory($category);
+            }
+        }
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {

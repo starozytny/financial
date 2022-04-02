@@ -47,7 +47,8 @@ class FakeBudgetCreateCommand extends Command
                 "month" => $fake->numberBetween(1, 12),
                 "type" => $fake->numberBetween(0, 2),
                 "price" => $fake->randomFloat(1),
-                "name" => $fake->name
+                "name" => $fake->name,
+                "category" => null
             ];
 
             $data = json_decode(json_encode($data));
