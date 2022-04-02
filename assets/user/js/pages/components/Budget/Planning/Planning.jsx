@@ -21,10 +21,31 @@ export class Planning extends Component {
         return <div className="main-content">
             <div className="plannings-items">
 
+                <Years year={2022} />
+
                 <Months active={monthActive} onSelect={this.handleSelectMonth}/>
 
             </div>
         </div>
     }
 
+}
+
+class Years extends Component {
+    render () {
+        const { year } = this.props
+
+        return <>
+            <div className="days">
+                <div className="day">
+                    <span className="icon-left-arrow" />
+                </div>
+                <div className="day active">{year}</div>
+
+                <div className="day">
+                    <span className="icon-right-arrow" />
+                </div>
+            </div>
+        </>
+    }
 }
