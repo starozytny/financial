@@ -103,11 +103,17 @@ export class Planning extends Component {
             { value: 2, name: "Economies", total: totalSavings,  icon: "time" },
         ]
 
+        let lastTotal = localStorage.getItem("total."+(yearActive - 1)+".budget.shanbo");
+
         for(let j = 1; j <= 12 ; j++){
             if(j > 1){
                 totaux[j] = totaux[j - 1] + totaux[j];
+            }else{
+                totaux[j] = (lastTotal ? parseFloat(lastTotal) : 0) + totaux[j]
             }
         }
+
+        localStorage.setItem("total."+yearActive+".budget.shanbo", ""+totaux[12]);
 
         return <div className="main-content">
             <div className="plannings-items">
@@ -128,9 +134,7 @@ export class Planning extends Component {
                                     <span>{Sanitaze.toFormatCurrency(totaux[monthActive])}</span>
                                 </div>
                                 <div>
-                                    <span>
-                                        {monthActive === 1 ? "Réinitialisation du budget initial à 0 €" : "Initial : " + Sanitaze.toFormatCurrency(totaux[monthActive - 1])}
-                                    </span>
+                                    <span>Initital : {Sanitaze.toFormatCurrency(totaux[monthActive - 1])}</span>
                                 </div>
                             </div>
                         </div>
