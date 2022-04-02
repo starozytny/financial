@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 
-import Sanitaze from "@commonComponents/functions/sanitaze";
+import axios    from "axios";
+import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
+import Helper       from "@commonComponents/functions/helper";
+import Sanitaze     from "@commonComponents/functions/sanitaze";
+import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 import { Months } from "@dashboardComponents/Tools/Days";
 
 const TYPE_EXPENSE = 0;
 const TYPE_INCOME = 1;
 const TYPE_SAVING = 2;
+
+const URL_GET_DATA = "api_budget_items_get_data"
 
 export class Planning extends Component {
     constructor(props) {
@@ -15,7 +22,8 @@ export class Planning extends Component {
         this.state = {
             data: JSON.parse(props.donnees),
             yearActive: props.year,
-            monthActive: 1
+            monthActive: 1,
+            yearMin: (new Date()).getFullYear()
         }
 
         this.handleSelectYear = this.handleSelectYear.bind(this);
@@ -23,13 +31,26 @@ export class Planning extends Component {
     }
 
     handleSelectYear = (year) => {
-        this.setState({ yearActive: year })
+        let self = this;
+        Formulaire.loader(true);
+        axios({ method: "GET", url: Routing.generate(URL_GET_DATA, {'year': year}), data: {} })
+            .then(function (response) {
+                let data = response.data;
+                self.setState({ yearActive: year, data: JSON.parse(data) })
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error);
+            })
+            .then(() => {
+                Formulaire.loader(false);
+            })
+        ;
     }
 
     handleSelectMonth = (monthActive) => { this.setState({ monthActive }) }
 
     render () {
-        const { data, yearActive, monthActive } = this.state;
+        const { data, yearMin, yearActive, monthActive } = this.state;
 
         let totalExpenses = 0;
         let totalIncomes = 0;

@@ -5,7 +5,6 @@ namespace App\Service\Data\Budget;
 
 
 use App\Entity\Budget\BuItem;
-use App\Entity\User;
 use App\Service\SanitizeData;
 
 class DataItem
