@@ -6,6 +6,7 @@ use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
 use App\Entity\User;
 use App\Service\ApiResponse;
+use App\Service\Budget\BudgetService;
 use App\Service\Data\Budget\DataItem;
 use App\Service\Data\DataService;
 use App\Service\ValidatorService;
@@ -47,20 +48,24 @@ class ItemController extends AbstractController
      * @param $year
      * @param SerializerInterface $serializer
      * @param ApiResponse $apiResponse
+     * @param BudgetService $budgetService
      * @return JsonResponse
      */
-    public function data($year, SerializerInterface $serializer, ApiResponse $apiResponse): JsonResponse
+    public function data($year, SerializerInterface $serializer, ApiResponse $apiResponse, BudgetService $budgetService): JsonResponse
     {
         $em = $this->doctrine->getManager();
 
         /** @var User $user */
         $user = $this->getUser();
 
-        $objs = $em->getRepository(BuItem::class)->findBy(['year' => $year, 'user' => $user]);
+        $objs = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'year' => $year]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => BuItem::ITEM_READ]);
 
-        return $apiResponse->apiJsonResponse($objs);
+        return $apiResponse->apiJsonResponseCustom([
+            'items' => $objs,
+            'totalInit' => $budgetService->getTotalInit($user, $year)
+        ]);
     }
 
     public function submitForm($type, BuItem $obj, Request $request, ApiResponse $apiResponse,

@@ -23,6 +23,7 @@ export class Planning extends Component {
             data: JSON.parse(props.donnees),
             yearActive: props.year,
             monthActive: 1,
+            totalInit: parseFloat(props.totalInit),
             yearMin: (new Date()).getFullYear()
         }
 
@@ -40,7 +41,7 @@ export class Planning extends Component {
         axios({ method: "GET", url: Routing.generate(URL_GET_DATA, {'year': year}), data: {} })
             .then(function (response) {
                 let data = response.data;
-                self.setState({ yearActive: year, data: JSON.parse(data) })
+                self.setState({ yearActive: year, data: JSON.parse(data.items), totalInit: parseFloat(data.totalInit) })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error);
@@ -61,13 +62,13 @@ export class Planning extends Component {
 
     render () {
         const { categories } = this.props;
-        const { data, yearMin, yearActive, monthActive } = this.state;
+        const { data, totalInit, yearMin, yearActive, monthActive } = this.state;
 
         let totalExpenses = 0;
         let totalIncomes = 0;
         let totalSavings = 0;
 
-        let totaux = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+        let totaux = [totalInit,0,0,0,0,0,0,0,0,0,0,0,0];
 
         let items = [];
         data.forEach(el => {
@@ -106,6 +107,8 @@ export class Planning extends Component {
         for(let j = 1; j <= 12 ; j++){
             if(j > 1){
                 totaux[j] = totaux[j - 1] + totaux[j];
+            }else{
+                totaux[j] = totalInit + totaux[j];
             }
         }
 

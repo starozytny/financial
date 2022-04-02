@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
 use App\Entity\User;
+use App\Service\Budget\BudgetService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class UserController extends AbstractController
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
-    public function index(SerializerInterface $serializer): Response
+    public function index(SerializerInterface $serializer, BudgetService $budgetService): Response
     {
         $em = $this->doctrine->getManager();
         /** @var User $user */
@@ -42,7 +43,8 @@ class UserController extends AbstractController
         return $this->render('user/pages/index.html.twig', [
             'donnees' => $items,
             'categories' => $categories,
-            'year' => $year
+            'year' => $year,
+            'totalInit' => $budgetService->getTotalInit($user, $year)
         ]);
     }
 

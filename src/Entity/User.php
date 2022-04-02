@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
+use App\Entity\Budget\BuTotal;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -131,6 +132,11 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $buCategories;
 
     /**
+     * @ORM\OneToMany(targetEntity=BuTotal::class, mappedBy="user")
+     */
+    private $buTotals;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -140,6 +146,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->notifications = new ArrayCollection();
         $this->buItems = new ArrayCollection();
         $this->buCategories = new ArrayCollection();
+        $this->buTotals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -515,6 +522,36 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
             // set the owning side to null (unless already changed)
             if ($buCategory->getUser() === $this) {
                 $buCategory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BuTotal>
+     */
+    public function getBuTotals(): Collection
+    {
+        return $this->buTotals;
+    }
+
+    public function addBuTotal(BuTotal $buTotal): self
+    {
+        if (!$this->buTotals->contains($buTotal)) {
+            $this->buTotals[] = $buTotal;
+            $buTotal->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuTotal(BuTotal $buTotal): self
+    {
+        if ($this->buTotals->removeElement($buTotal)) {
+            // set the owning side to null (unless already changed)
+            if ($buTotal->getUser() === $this) {
+                $buTotal->setUser(null);
             }
         }
 
