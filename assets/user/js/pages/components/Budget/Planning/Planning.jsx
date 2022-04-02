@@ -67,7 +67,8 @@ export class Planning extends Component {
         let totalIncomes = 0;
         let totalSavings = 0;
 
-        let totaux = [0,0,0,0,0,0,0,0,0,0,0,0];
+        let totaux = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+        let totauxMonths = [0,0,0,0,0,0,0,0,0,0,0,0,0];
 
         let items = [];
         data.forEach(el => {
@@ -91,9 +92,13 @@ export class Planning extends Component {
             }
 
             if(el.type === TYPE_INCOME){
-                totaux[el.month] = totaux[el.month] + el.price;
+                let val = totaux[el.month] + el.price;
+                totaux[el.month] = val;
+                totauxMonths[el.month] = val;
             }else{
-                totaux[el.month] = totaux[el.month] - el.price;
+                let val = totaux[el.month] - el.price;
+                totaux[el.month] = val;
+                totauxMonths[el.month] = val;
             }
         })
 
@@ -103,12 +108,18 @@ export class Planning extends Component {
             { value: 2, name: "Economies", total: totalSavings,  icon: "time" },
         ]
 
+        for(let j = 1; j <= 12 ; j++){
+            if(j > 1){
+                totauxMonths[j] = totauxMonths[j - 1] + totauxMonths[j];
+            }
+        }
+
         let totalBudget = totalIncomes - (totalExpenses + totalSavings);
 
         return <div className="main-content">
             <div className="plannings-items">
                 <Years year={yearActive} onSelect={this.handleSelectYear} />
-                <Months totaux={totaux} active={monthActive} onSelect={this.handleSelectMonth}/>
+                <Months totaux={totauxMonths} active={monthActive} onSelect={this.handleSelectMonth}/>
             </div>
 
             <div className="budget">
@@ -122,6 +133,11 @@ export class Planning extends Component {
                                 <div className="name">Budget</div>
                                 <div className="total">
                                     <span>{Sanitaze.toFormatCurrency(totalBudget)}</span>
+                                </div>
+                                <div>
+                                    <span>
+                                        {monthActive === 1 ? "Réinitialisation du budget initial à 0 €" : "Initial : " + Sanitaze.toFormatCurrency(totaux[monthActive - 1])}
+                                    </span>
                                 </div>
                             </div>
                         </div>
