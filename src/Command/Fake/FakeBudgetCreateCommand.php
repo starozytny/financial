@@ -44,7 +44,7 @@ class FakeBudgetCreateCommand extends Command
         for($i=0; $i<500 ; $i++) {
 
             $data = [
-                "year" => $now->format("Y"),
+                "year" => $fake->numberBetween(2022, 2024),
                 "month" => $fake->numberBetween(1, 12),
                 "type" => $fake->numberBetween(0, 2),
                 "price" => $fake->randomFloat(1),
