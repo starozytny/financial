@@ -29,7 +29,8 @@ export class Categories extends Component {
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "categories.pagination",
-            isSaving: props.isSaving === "true"
+            isSaving: props.isSaving === "true",
+            items: props.items ? JSON.parse(props.items) : []
         }
 
         this.layout = React.createRef();
@@ -62,7 +63,7 @@ export class Categories extends Component {
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage, isSaving } = this.state;
+        const { perPage, currentPage, isSaving, items } = this.state;
 
         return <CategoriesList onChangeContext={changeContext}
                                onDelete={this.layout.current.handleDelete}
@@ -83,6 +84,7 @@ export class Categories extends Component {
                                onSorter={this.handleSorter}
                          //data
                                isSaving={isSaving}
+                               items={items}
                                data={currentData} />
     }
 

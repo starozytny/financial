@@ -6,7 +6,16 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class CategoriesItem extends Component {
     render () {
-        const { elem, onChangeContext, onDelete } = this.props
+        const { elem, items, onChangeContext, onDelete } = this.props
+
+        let nItems = [];
+        if(items){
+            items.forEach(el => {
+                if(el.category && el.category.id === elem.id){
+                    nItems.push(el);
+                }
+            })
+        }
 
         return <div className="item">
             <div className="item-content">
@@ -31,6 +40,24 @@ export class CategoriesItem extends Component {
                         </div>
                     </div>
                 </div>
+
+                {nItems.map(el => {
+                    console.log(el)
+                    return <div className="item-body" key={el.id}>
+                        <div className="infos infos-col-4">
+                            <div className="col-1">
+                                <div className="sub"><span>{el.createdAtString}</span></div>
+                            </div>
+                            <div className="col-2">
+                                <div className="sub"><span>{el.name}</span></div>
+                            </div>
+                            <div className="col-3">
+                                <div className="sub">{Sanitaze.toFormatCurrency(el.price)}</div>
+                            </div>
+                            <div className="col-4 actions" />
+                        </div>
+                    </div>
+                })}
             </div>
         </div>
     }

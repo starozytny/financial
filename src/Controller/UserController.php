@@ -99,12 +99,15 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $data = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user], "type" => BuItem::TYPE_SAVING]);
+        $data  = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user], "type" => BuItem::TYPE_SAVING]);
+        $items = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'category' => $data]);
 
-        $data = $serializer->serialize($data, 'json', ['groups' => BuCategory::CATEGORY_READ]);
+        $data  = $serializer->serialize($data, 'json', ['groups' => BuCategory::CATEGORY_READ]);
+        $items = $serializer->serialize($items, 'json', ['groups' => BuItem::ITEM_READ]);
 
         return $this->render('user/pages/category/saving.html.twig', [
-            'donnees' => $data
+            'donnees' => $data,
+            'items' => $items,
         ]);
     }
 }
