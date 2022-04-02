@@ -65,6 +65,7 @@ class BuItem extends DataEntity
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"item:read"})
      */
     private $createdAt;
 
