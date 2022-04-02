@@ -3,7 +3,7 @@
         <div class="footer-menu">
             <div class="footer-logo">
                 <a href="{{ path('app_homepage') }}" title="Chanbora Chhun">
-                    <span class="txt-color0">S</span>hanbo
+                    <span class="txt-color0">S</span>hanbo Budget
                 </a>
                 <span> - Chanbora Chhun développeur web fullstack à Marseille</span>
             </div>
@@ -11,7 +11,6 @@
                 <a rel="nofollow" href="{{ path('app_mentions') }}">Mentions légales</a>
                 <a rel="nofollow" href="{{ path('app_politique') }}">Politique de confidentialité</a>
                 <a rel="nofollow" href="{{ path('app_cookies') }}">Gestion des cookies</a>
-                <a rel="nofollow" href="{{ path('app_contact') }}">Restons en contact</a>
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <a rel="nofollow" href="{{ path('app_login') }}">Mon espace</a>
                     <a rel="nofollow" href="{{ path('app_logout') }}">Me déconnecter</a>

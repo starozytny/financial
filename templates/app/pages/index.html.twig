@@ -1,17 +1,51 @@
 {% extends 'app/layout/layout.html.twig' %}
 
-{% block title %}Hello !{% endblock %}
+{% block meta_description %}
+    Salut ! Je suis Chanbora Chhun, je suis un développeur web fullstack sur Marseille et ses alentours.
+    Développeur Symfony, ReactJS, Javascript, Sass et bien d'autres technologies.
+    A mes heures perdues je suis aussi photographe pour des mariages et cérénomies !
+{% endblock %}
+{% block meta_keywords %}developepur web, developpeur, web, photographe, marseille, developpeur marseille, developpeur fullstack, fullstack{% endblock %}
+
+{% block title %}Shanbo Budget, gestionnaire de budget pour plannifier sa vie | Chanbora Chhun{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('homepage') }}
+{% endblock %}
 
 {% block main_content %}
-<div class="custom-shape-divider">
-    <div class="title-page">
-        <h1>Hello ! ✅</h1>
+    <div class="home-header">
+        <div class="home-header-container">
+            <div class="col-1">
+                <div class="present">
+                    <div class="subtitle">Gestionnaire de budget 🧐</div>
+                    <h1>Shanbo Budget <br> Planificateur de vie financier !</h1>
+                    <p>
+                        Gère ton budget facilement. Prévois tes dépenses, tes économies et tes
+                        rentrées d'argents ! <br>
+                        Maîtrise ton budget pour avoir l'esprit libre et serein.
+                        Estime ce que tu pourras dépenser pour tes loisirs,
+                        tes cadeaux, tes fêtes et tes autres projets.
+                    </p>
+
+                    <div class="actions">
+                        <a href="#restons-en-contact" class="btn btn-danger">🤝 M'inscrire</a>
+                        <a href="#mon-travail" class="btn btn-outline-danger">🔑 Me connecter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="image">
+                    <img src="{{ asset('build/app/images/budget.jpg') }}" alt="illustration chanbora chhun">
+                </div>
+            </div>
+        </div>
     </div>
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path class="shape-fill" d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"></path>
-    </svg>
-</div>
-<div class="main-content">
-    Hello world
-</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('homepage') }}
 {% endblock %}

@@ -1,0 +1,209 @@
+@import "../vars/vars";
+
+.btn-danger{
+  background-color: var(--color0);
+}
+
+.home-header{
+  background-color: var(--fondContent);
+  min-height: 90vh;
+
+  .home-header-container{
+    padding: 24px 12px;
+
+    & > .col-1{
+      &:hover{
+        & + .col-2{
+          .image{
+            img{
+              transform: scale(1.03);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .image{
+    overflow: hidden;
+
+    img{
+      transition: all 0.5s ease-in-out;
+
+      &:hover{
+        transform: scale(1.03);
+      }
+    }
+  }
+
+  .present{
+    margin-bottom: 24px;
+
+    h1{
+      color: var(--txt);
+    }
+
+    .subtitle{
+      @include flex(row, center, flex-start);
+      @include fontSemibold();
+      color: var(--color0);
+      margin-bottom: 8px;
+
+      &:before{
+        content: "";
+        background-color: var(--color0);
+        display: inline-block;
+        width: 48px;
+        height: 4px;
+        margin-right: 8px;
+      }
+    }
+
+    p{
+      color: var(--grey2);
+    }
+
+    .actions{
+      margin-top: 24px;
+
+      a{
+        width: calc(100% - 48px);
+
+        &:not(:last-child){
+          margin-bottom: 8px;
+        }
+      }
+
+      .btn-danger{
+        background-color: var(--color0);
+      }
+
+      .btn-outline-danger{
+        background-color: transparent;
+        color: var(--color0);
+        border-color: var(--color0);
+      }
+    }
+  }
+}
+
+.form-contact,
+.home-contact {
+  .form-contact-container,
+  .home-contact-container {
+    padding: 48px 12px;
+  }
+
+  .home-contact-title {
+    @include flex(column, center, center);
+
+    &:after {
+      content: "";
+      background-color: var(--color0);
+      display: block;
+      width: 48px;
+      height: 4px;
+      margin: 24px 0;
+    }
+  }
+}
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
+  .home-header{
+    .home-header-container{
+      @include flex(row, flex-start, flex-start);
+      padding: 0;
+
+      & > .col-1{
+        width: 60%;
+      }
+
+      & > .col-2{
+        width: 40%;
+      }
+
+      .present{
+        padding: 128px 48px 128px 12px;
+        margin-bottom: 0;
+
+        h1{
+          font-size: 46px;
+        }
+
+        .subtitle{
+          font-size: 18px;
+        }
+
+        p{
+          font-size: 20px;
+          max-width: 525px;
+        }
+
+        .actions{
+          @include flex(row, flex-start, flex-start);
+          margin-top: 32px;
+
+          a{
+            &:not(:last-child){
+              margin-bottom: 0;
+              margin-right: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .home-header{
+    .home-header-container{
+      .present{
+        padding-left: 32px;
+        max-width: 768px;
+
+        h1{
+          font-size: 56px;
+        }
+
+        .actions{
+          a{
+            width: auto;
+            padding: 16px 32px 15px 32px;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  .home-header{
+    .home-header-container{
+      @include maxscreen();
+
+      .present{
+        padding-left: 0;
+      }
+    }
+  }
+}
