@@ -103,17 +103,11 @@ export class Planning extends Component {
             { value: 2, name: "Economies", total: totalSavings,  icon: "time" },
         ]
 
-        let lastTotal = localStorage.getItem("total."+(yearActive - 1)+".budget.shanbo");
-
         for(let j = 1; j <= 12 ; j++){
             if(j > 1){
                 totaux[j] = totaux[j - 1] + totaux[j];
-            }else{
-                totaux[j] = (lastTotal ? parseFloat(lastTotal) : 0) + totaux[j]
             }
         }
-
-        localStorage.setItem("total."+yearActive+".budget.shanbo", ""+totaux[12]);
 
         return <div className="main-content">
             <div className="plannings-items">
