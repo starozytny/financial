@@ -113,7 +113,7 @@ export class Planning extends Component {
                 </div>
 
                 <div className="items">
-                    <Items ref={this.items} donnees={JSON.stringify(data)} year={yearActive} month={monthActive} />
+                    <Items ref={this.items} donnees={JSON.stringify(data)} year={parseInt(yearActive)} month={parseInt(monthActive)} />
                 </div>
             </div>
         </div>

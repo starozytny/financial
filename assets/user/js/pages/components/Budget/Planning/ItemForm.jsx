@@ -32,11 +32,11 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
     let form = <Form
         context={type}
         url={url}
-        year={element ? Formulaire.setValueEmptyIfNull(element.year, year) : month}
-        month={element ? Formulaire.setValueEmptyIfNull(element.month, year) : month}
+        year={element ? Formulaire.setValueEmptyIfNull(element.year, year) : year}
+        month={element ? Formulaire.setValueEmptyIfNull(element.month, month) : month}
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, typeItem) : typeItem}
-        price={element ? Formulaire.setValueEmptyIfNull(element.price, "") : ""}
+        price={element ? Formulaire.setToFloat(element.price, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -49,6 +49,8 @@ class Form extends Component {
     constructor(props) {
         super(props);
 
+        console.log(props)
+
         this.state = {
             year: props.year,
             month: props.month,
@@ -60,6 +62,7 @@ class Form extends Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeCleave = this.handleChangeCleave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -68,6 +71,8 @@ class Form extends Component {
     }
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
+
+    handleChangeCleave = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.rawValue}) }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -140,7 +145,7 @@ class Form extends Component {
                 </div>
 
                 <div className="line line-2">
-                    <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChange}>Total</Input>
+                    <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChangeCleave}>Total</Input>
                     <div className="form-group" />
                 </div>
 

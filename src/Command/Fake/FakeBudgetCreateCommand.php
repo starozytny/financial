@@ -37,7 +37,6 @@ class FakeBudgetCreateCommand extends Command
         $this->databaseService->resetTable($io, [BuItem::class]);
 
         $user = $this->em->getRepository(User::class)->findOneBy(['username' => "shanbo"]);
-        $now = new \DateTime();
 
         $io->title('Création de 500 budgets fake');
         $fake = Factory::create();
