@@ -1,0 +1,11 @@
+{% extends 'user/layout/layout.html.twig' %}
+
+{% set submenu = [
+    { 'label': "Planning", 'path': path('user_homepage') },
+    { 'label': "Catégories", 'path': path('user_categories') }
+] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_homepage') }}
+{% endblock %}

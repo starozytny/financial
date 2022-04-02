@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
-use App\Entity\Changelog;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,5 +65,23 @@ class UserController extends AbstractController
         $data = $this->getUser();
         $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
         return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
+    }
+
+    /**
+     * @Route("/categories", name="categories")
+     */
+    public function categories(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user]]);
+
+        $data = $serializer->serialize($data, 'json', ['groups' => BuCategory::CATEGORY_READ]);
+
+        return $this->render('user/pages/category/index.html.twig', [
+            'donnees' => $data
+        ]);
     }
 }

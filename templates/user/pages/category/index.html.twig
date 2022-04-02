@@ -1,12 +1,11 @@
 {% extends 'user/pages/template.html.twig' %}
 
-{% set page_title %}Dashboard{% endset %}
-{% set submenuActive = "Planning" %}
+{% set page_title %}Catégories{% endset %}
+{% set submenuActive = "Catégories" %}
 
 {% block main_content %}
-    <div id="planning"
+    <div id="categories"
          data-donnees="{{ donnees }}"
-         data-year="{{ year }}"
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
