@@ -6,12 +6,15 @@ use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Budget\BuItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BuItemRepository::class)
  */
 class BuItem extends DataEntity
 {
+    const ITEM_READ = ["item:read"];
+
     const TYPE_EXPENSE = 0;
     const TYPE_INCOME = 1;
     const TYPE_SAVING = 2;
@@ -20,6 +23,7 @@ class BuItem extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"item:read"})
      */
     private $id;
 
@@ -30,21 +34,25 @@ class BuItem extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"item:read"})
      */
     private $month;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"item:read"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"item:read"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"item:read"})
      */
     private $name;
 

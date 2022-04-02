@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Budget\BuItem;
 use App\Entity\Changelog;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -25,9 +26,20 @@ class UserController extends AbstractController
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
-    public function index(): Response
+    public function index(SerializerInterface $serializer): Response
     {
-        return $this->render('user/pages/index.html.twig');
+        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $year = (new \DateTime())->format("Y");
+        $items = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'year' => $year]);
+
+        $items = $serializer->serialize($items, 'json', ['groups' => BuItem::ITEM_READ]);
+
+        return $this->render('user/pages/index.html.twig', [
+            'donnees' => $items
+        ]);
     }
 
     /**

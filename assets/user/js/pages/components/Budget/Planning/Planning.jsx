@@ -4,11 +4,16 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Months } from "@dashboardComponents/Tools/Days";
 
+const TYPE_EXPENSE = 0;
+const TYPE_INCOME = 1;
+const TYPE_SAVING = 2;
+
 export class Planning extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            data: JSON.parse(props.donnees),
             monthActive: 1
         }
 
@@ -18,12 +23,33 @@ export class Planning extends Component {
     handleSelectMonth = (monthActive) => { this.setState({ monthActive }) }
 
     render () {
-        const { monthActive } = this.state;
+        const { data, monthActive } = this.state;
+
+        let totalExpenses = 0;
+        let totalIncomes = 0;
+        let totalSavings = 0;
+        data.forEach(el => {
+            if(el.month === monthActive){
+                switch (el.type){
+                    case TYPE_EXPENSE:
+                        totalExpenses += el.price;
+                        break;
+                    case TYPE_INCOME:
+                        totalIncomes += el.price;
+                        break;
+                    case TYPE_SAVING:
+                        totalSavings += el.price;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
 
         let cards = [
-            { icon: "book", name: "Dépenses",  total: 100000 },
-            { icon: "book", name: "Revenus",   total: 100000 },
-            { icon: "book", name: "Economies", total: 100000 },
+            { icon: "book", name: "Dépenses",  total: totalExpenses },
+            { icon: "book", name: "Revenus",   total: totalIncomes },
+            { icon: "book", name: "Economies", total: totalSavings },
         ]
 
         return <div className="main-content">
