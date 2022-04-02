@@ -67,6 +67,8 @@ export class Planning extends Component {
         let totalIncomes = 0;
         let totalSavings = 0;
 
+        let totaux = [0,0,0,0,0,0,0,0,0,0,0,0];
+
         let items = [];
         data.forEach(el => {
             if(el.month === monthActive){
@@ -87,6 +89,12 @@ export class Planning extends Component {
                         break;
                 }
             }
+
+            if(el.type === TYPE_INCOME){
+                totaux[el.month] = totaux[el.month] + el.price;
+            }else{
+                totaux[el.month] = totaux[el.month] - el.price;
+            }
         })
 
         let cards = [
@@ -100,7 +108,7 @@ export class Planning extends Component {
         return <div className="main-content">
             <div className="plannings-items">
                 <Years year={yearActive} onSelect={this.handleSelectYear} />
-                <Months active={monthActive} onSelect={this.handleSelectMonth}/>
+                <Months totaux={totaux} active={monthActive} onSelect={this.handleSelectMonth}/>
             </div>
 
             <div className="budget">

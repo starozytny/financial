@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import Sanitaze from "@commonComponents/functions/sanitaze";
+
 export class Days extends Component {
     render () {
         const { data, dayActive, onSelectDay, useShortName = false } = this.props
@@ -41,9 +43,9 @@ export class Days extends Component {
 
 export class Months extends Component {
     render () {
-        const { active, onSelect, useShortName = false } = this.props
+        const { totaux, active, onSelect, useShortName = false } = this.props
 
-        let days = [
+        let data = [
             { id: 1, name: 'Janvier',        shortName: 'Jan' },
             { id: 2, name: 'Février',        shortName: 'Fev' },
             { id: 3, name: 'Mars',           shortName: 'Mar' },
@@ -58,11 +60,12 @@ export class Months extends Component {
             { id: 12, name: 'Décembre',      shortName: 'Dèc' },
         ];
 
-        let items = days.map(elem => {
+        let items = data.map(elem => {
             return <div className={"day" + (elem.id === active ? " active" : "")}
                         onClick={() => onSelect(elem.id)}
                         key={elem.id}>
-                {useShortName ? elem.shortName : elem.name}
+                <div>{useShortName ? elem.shortName : elem.name}</div>
+                <div>{Sanitaze.toFormatCurrency(totaux[elem.id])}</div>
             </div>
         })
 
