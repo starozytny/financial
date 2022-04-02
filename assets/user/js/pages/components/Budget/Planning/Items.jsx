@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 
-import { Layout }        from "@dashboardComponents/Layout/Page";
+import axios from "axios";
+import Swal  from "sweetalert2";
+import SwalOptions from "@commonComponents/functions/swalOptions";
+import Routing     from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
 import TopToolbar        from "@commonComponents/functions/topToolbar";
+import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
-import { ItemsList }       from "./ItemsList";
+import { Layout }        from "@dashboardComponents/Layout/Page";
+
+import { ItemsList }       from "@userPages/components/Budget/Planning/ItemsList";
 import { ItemFormulaire }  from "@userPages/components/Budget/Planning/ItemForm";
-import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
@@ -47,6 +53,7 @@ export class Items extends Component {
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
         this.handleChangeContext = this.handleChangeContext.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
@@ -75,12 +82,33 @@ export class Items extends Component {
         this.layout.current.handleChangeContext(context, elem);
     }
 
+    handleDelete = (element, text='Cette action est irréversible.') => {
+        const self = this;
+        Swal.fire(SwalOptions.options(MSG_DELETE_ELEMENT, text))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true);
+                    axios.delete(Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), {})
+                        .then(function (response) {
+                            self.handleUpdateList(element, "delete");
+                        })
+                        .catch(function (error) {
+                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+                        })
+                        .then(() => {
+                            Formulaire.loader(false);
+                        })
+                    ;
+                }
+            })
+        ;
+    }
+
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
 
         return <ItemsList onChangeContext={changeContext}
-                               onDelete={this.layout.current.handleDelete}
-                               onDeleteAll={this.layout.current.handleDeleteGroup}
+                               onDelete={this.handleDelete}
                          //filter-search
                                onSearch={this.handleSearch}
                                filters={filters}
