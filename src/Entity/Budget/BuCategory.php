@@ -72,6 +72,7 @@ class BuCategory extends DataEntity
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"category:read"})
      */
     private $isArchived = false;
 

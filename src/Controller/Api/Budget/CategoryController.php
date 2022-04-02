@@ -7,7 +7,6 @@ use App\Entity\Budget\BuItem;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\Budget\DataCategory;
-use App\Service\Data\Budget\DataItem;
 use App\Service\Data\DataService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -114,6 +113,29 @@ class CategoryController extends AbstractController
     public function update(Request $request, ValidatorService $validator,  ApiResponse $apiResponse, BuCategory $obj, DataCategory $dataEntity): JsonResponse
     {
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
+    }
+
+    /**
+     * @Route("/{id}/archived", name="switch_archived", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns object",
+     * )
+     *
+     * @OA\Tag(name="Contact")
+     *
+     * @param BuCategory $obj
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function switchIsPublished(BuCategory $obj, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $obj->setIsArchived(!$obj->getIsArchived());
+
+        $em->flush();
+        return $apiResponse->apiJsonResponse($obj, BuCategory::CATEGORY_READ);
     }
 
     /**

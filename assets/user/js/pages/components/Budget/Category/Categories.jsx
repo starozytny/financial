@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 
-import { Layout }        from "@dashboardComponents/Layout/Page";
+import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
 import TopToolbar        from "@commonComponents/functions/topToolbar";
 
+import { Layout }        from "@dashboardComponents/Layout/Page";
+
 import { CategoriesList }       from "@userPages/components/Budget/Category/CategoriesList";
 import { CategoryFormulaire }   from "@userPages/components/Budget/Category/CategoryForm";
 
+const URL_SWITCH_PUBLISHED  = 'api_budget_categories_switch_archived';
 const URL_DELETE_ELEMENT    = 'api_budget_categories_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cette catégorie ?';
 let SORTER = Sort.compareName;
@@ -62,6 +66,8 @@ export class Categories extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
+    handleSwitchArchived = (elem) => { this.layout.current.handleSwitchData(this, elem.isArchived, Routing.generate(URL_SWITCH_PUBLISHED, {'id': elem.id}), "Catégorie") }
+
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage, isSaving, items } = this.state;
 
@@ -85,6 +91,7 @@ export class Categories extends Component {
                          //data
                                isSaving={isSaving}
                                items={items}
+                               onSwitchArchived={this.handleSwitchArchived}
                                data={currentData} />
     }
 

@@ -6,7 +6,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class CategoriesItem extends Component {
     render () {
-        const { elem, items, onChangeContext, onDelete } = this.props
+        const { elem, items, onChangeContext, onDelete, onSwitchArchived } = this.props
 
         let nItems = [];
         if(items){
@@ -34,6 +34,7 @@ export class CategoriesItem extends Component {
                         </div>
                         <div className="col-4 actions">
                             {elem.isNatif ? <div className="badge badge-default">Natif</div> : <>
+                                <ButtonIcon icon={elem.isArchived ? "upload" : "briefcase"} onClick={() => onSwitchArchived(elem)}>{elem.isArchived ? "Désarchiver" : "Archiver"}</ButtonIcon>
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                             </>}
