@@ -69,7 +69,8 @@ class BuItem extends DataEntity
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=BuCategory::class, inversedBy="items")
+     * @ORM\ManyToOne(targetEntity=BuCategory::class, fetch="EAGER", inversedBy="items")
+     * @Groups({"item:read"})
      */
     private $category;
 
@@ -165,15 +166,6 @@ class BuItem extends DataEntity
         $this->type = $type;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     * @Groups({"item:read"})
-     */
-    public function getTypeString(): string
-    {
-        return $this->getBudgetTypeString($this->type);
     }
 
     /**

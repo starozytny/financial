@@ -60,6 +60,7 @@ export class Planning extends Component {
     }
 
     render () {
+        const { categories } = this.props;
         const { data, yearMin, yearActive, monthActive } = this.state;
 
         let totalExpenses = 0;
@@ -113,7 +114,7 @@ export class Planning extends Component {
                 </div>
 
                 <div className="items">
-                    <Items ref={this.items} onUpdateData={this.handleUpdateData}
+                    <Items ref={this.items} onUpdateData={this.handleUpdateData} categories={JSON.parse(categories)}
                            donnees={JSON.stringify(data)} year={parseInt(yearActive)} month={parseInt(monthActive)} />
                 </div>
             </div>

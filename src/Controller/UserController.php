@@ -33,12 +33,15 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         $year = (new \DateTime())->format("Y");
-        $items = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'year' => $year]);
+        $items      = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'year' => $year]);
+        $categories = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user]]);
 
-        $items = $serializer->serialize($items, 'json', ['groups' => BuItem::ITEM_READ]);
+        $items       = $serializer->serialize($items, 'json', ['groups' => BuItem::ITEM_READ]);
+        $categories  = $serializer->serialize($categories, 'json', ['groups' => BuCategory::CATEGORY_READ]);
 
         return $this->render('user/pages/index.html.twig', [
             'donnees' => $items,
+            'categories' => $categories,
             'year' => $year
         ]);
     }

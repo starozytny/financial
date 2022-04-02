@@ -25,7 +25,7 @@ export class ItemsItem extends Component {
                         <div className="col-2">
                             <div className="name">{elem.name}</div>
                         </div>
-                        <div className="col-2">
+                        <div className="col-3">
                             <div className={"name total-" + elem.type}>
                                 <span className={"icon-" + icon} />
                                 <span>{Sanitaze.toFormatCurrency(elem.price)}</span>

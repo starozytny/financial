@@ -21,7 +21,7 @@ class BuCategory extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"category:read"})
+     * @Groups({"category:read", "item:read"})
      */
     private $id;
 

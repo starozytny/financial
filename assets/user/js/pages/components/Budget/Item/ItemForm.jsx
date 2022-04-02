@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
+import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
@@ -17,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_budget_items_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, year, month, typeItem = 0 })
+export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, year, month, typeItem = 0, categories })
 {
     let title = "Ajouter un élément";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -37,9 +37,12 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, typeItem) : typeItem}
         price={element ? Formulaire.setToFloat(element.price, "") : ""}
+        category={element && element.category ? Formulaire.setValueEmptyIfNull(element.category.id, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
+
+        categories={categories}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -49,20 +52,20 @@ class Form extends Component {
     constructor(props) {
         super(props);
 
-        console.log(props)
-
         this.state = {
             year: props.year,
             month: props.month,
             name: props.name,
             type: props.type,
             price: props.price,
+            category: props.category,
             errors: [],
             success: false
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeCleave = this.handleChangeCleave.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -71,8 +74,8 @@ class Form extends Component {
     }
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
-
     handleChangeCleave = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.rawValue}) }
+    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -117,14 +120,21 @@ class Form extends Component {
     }
 
     render () {
-        const { context } = this.props;
-        const { errors, success, name, type, price } = this.state;
+        const { context, categories } = this.props;
+        const { errors, success, name, type, price, category } = this.state;
 
         let typeItems = [
             { value: 0,  label: 'Dépense',   identifiant: 'it-depense' },
             { value: 1,  label: 'Revenu',    identifiant: 'it-revenu' },
             { value: 2,  label: 'Economie',  identifiant: 'it-economie' },
         ]
+
+        let categoryItems = [];
+        categories.forEach(el => {
+            if(el.type === parseInt(type)){
+                categoryItems.push({ value: el.id, label: el.name, identifiant: "cat-f-" + el.id })
+            }
+        })
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -138,7 +148,10 @@ class Form extends Component {
 
                 <div className="line line-2">
                     <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChangeCleave}>Total</Input>
-                    <div className="form-group" />
+                    <SelectReactSelectize items={categoryItems} identifiant="category" placeholder={"Sélectionner une catégorie"}
+                                          valeur={category} errors={errors} onChange={(e) => this.handleChangeSelect('category', e)}>
+                        Catégorie
+                    </SelectReactSelectize>
                 </div>
 
                 <div className="line">
