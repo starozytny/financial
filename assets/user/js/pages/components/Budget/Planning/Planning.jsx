@@ -7,7 +7,7 @@ import Sanitaze     from "@commonComponents/functions/sanitaze";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 import { Months } from "@dashboardComponents/Tools/Days";
-import { Items }  from "@userPages/components/Budget/Planning/Items";
+import { Items }  from "@userPages/components/Budget/Item/Items";
 
 const TYPE_EXPENSE = 0;
 const TYPE_INCOME = 1;

@@ -12,8 +12,8 @@ import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
 
-import { ItemsList }       from "@userPages/components/Budget/Planning/ItemsList";
-import { ItemFormulaire }  from "@userPages/components/Budget/Planning/ItemForm";
+import { ItemsList }       from "@userPages/components/Budget/Item/ItemsList";
+import { ItemFormulaire }  from "@userPages/components/Budget/Item/ItemForm";
 
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
