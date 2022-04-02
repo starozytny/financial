@@ -172,4 +172,11 @@ class DataEntity
 
         return $value;
     }
+
+    public function getBudgetTypeString($value): string
+    {
+        $values = ["Dépense", "Revenu", "Economie"];
+
+        return $values[$value];
+    }
 }

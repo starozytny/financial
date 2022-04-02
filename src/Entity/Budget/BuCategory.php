@@ -2,6 +2,7 @@
 
 namespace App\Entity\Budget;
 
+use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Budget\BuCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=BuCategoryRepository::class)
  */
-class BuCategory
+class BuCategory extends DataEntity
 {
     const CATEGORY_READ = ["category:read"];
 
@@ -174,5 +175,14 @@ class BuCategory
         $this->isNatif = $isNatif;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"category:read"})
+     */
+    public function getTypeString(): string
+    {
+        return $this->getBudgetTypeString($this->type);
     }
 }

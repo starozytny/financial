@@ -66,14 +66,17 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
-  .toolbar{
-    margin-top: 24px;
+  #planning{
+    .toolbar{
+      margin-top: 24px;
 
-    .filter-search{
-      margin-left: 0;
-      width: 100%;
+      .filter-search{
+        margin-left: 0;
+        width: 100%;
+      }
     }
   }
+
   .cards{
     @include flex(row, flex-start, flex-start);
     width: calc(100% + 12px);

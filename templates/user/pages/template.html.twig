@@ -9,3 +9,8 @@
     {{ parent() }}
     {{ encore_entry_link_tags('user_homepage') }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_homepage') }}
+{% endblock %}

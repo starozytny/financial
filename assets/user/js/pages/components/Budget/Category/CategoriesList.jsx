@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
+import { Button }                   from "@dashboardComponents/Tools/Button";
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
 import { Search }                   from "@dashboardComponents/Layout/Search";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
 
-import { ItemsItem }   from "./ItemsItem";
+import { CategoriesItem }   from "@userPages/components/Budget/Category/CategoriesItem";
 
-export class ItemsList extends Component {
+export class CategoriesList extends Component {
     constructor(props) {
         super(props);
 
@@ -36,9 +37,12 @@ export class ItemsList extends Component {
         return <>
             <div>
                 <div className="toolbar">
+                    <div className="item create">
+                        <Button onClick={() => onChangeContext("create")}>Ajouter une catégorie</Button>
+                    </div>
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Search onSearch={onSearch} placeholder="Recherche par description.."/>
+                        <Search onSearch={onSearch} placeholder="Recherche par intitulé.."/>
                         <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
                     </div>
                 </div>
@@ -47,21 +51,20 @@ export class ItemsList extends Component {
                                      currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
-                    <div className="items items-default items-budget">
+                    <div className="items items-default">
                         <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Date</div>
-                                        <div className="col-2">Description</div>
-                                        <div className="col-3">Total</div>
-                                        <div className="col-4 actions">Actions</div>
+                                    <div className="infos infos-col-3">
+                                        <div className="col-1">Catégorie</div>
+                                        <div className="col-2">Type</div>
+                                        <div className="col-3 actions">Actions</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {data && data.length !== 0 ? data.map(elem => {
-                            return <ItemsItem {...this.props} elem={elem} key={elem.id}/>
+                            return <CategoriesItem {...this.props} elem={elem} key={elem.id}/>
                         }) : <Alert>Aucun résultat</Alert>}
                     </div>
                 </div>

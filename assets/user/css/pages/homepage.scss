@@ -2,6 +2,10 @@
 
 @import "./split/homepage/budget";
 
+#categories{
+  @include toolbarCreateFilterSearch(204)
+}
+
 .dash-card-changelogs{
   max-width: 1024px;
 
