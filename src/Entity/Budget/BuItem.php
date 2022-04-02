@@ -68,6 +68,11 @@ class BuItem extends DataEntity
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=BuCategory::class, inversedBy="items")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -176,5 +181,17 @@ class BuItem extends DataEntity
     public function getCreatedAtString(): ?string
     {
         return $this->getFullDateString($this->createdAt);
+    }
+
+    public function getCategory(): ?BuCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?BuCategory $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

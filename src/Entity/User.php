@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -125,6 +126,11 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $buItems;
 
     /**
+     * @ORM\OneToMany(targetEntity=BuCategory::class, mappedBy="user")
+     */
+    private $buCategories;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -133,6 +139,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->token = $this->initToken();
         $this->notifications = new ArrayCollection();
         $this->buItems = new ArrayCollection();
+        $this->buCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -478,6 +485,36 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
             // set the owning side to null (unless already changed)
             if ($buItem->getUser() === $this) {
                 $buItem->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BuCategory>
+     */
+    public function getBuCategories(): Collection
+    {
+        return $this->buCategories;
+    }
+
+    public function addBuCategory(BuCategory $buCategory): self
+    {
+        if (!$this->buCategories->contains($buCategory)) {
+            $this->buCategories[] = $buCategory;
+            $buCategory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuCategory(BuCategory $buCategory): self
+    {
+        if ($this->buCategories->removeElement($buCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($buCategory->getUser() === $this) {
+                $buCategory->setUser(null);
             }
         }
 
