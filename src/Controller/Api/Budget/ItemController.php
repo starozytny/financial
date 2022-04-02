@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Budget\BudgetService;
 use App\Service\Data\Budget\DataItem;
-use App\Service\Data\DataService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -99,6 +98,7 @@ class ItemController extends AbstractController
             $total = new BuTotal();
         }
 
+        /** @var BuItem $obj */
         [$obj, $total] = $dataEntity->setData($obj, $data, $user, $total);
 
         $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
@@ -111,6 +111,8 @@ class ItemController extends AbstractController
         if($data->category != ""){
             if($category = $em->getRepository(BuCategory::class)->find($data->category)){
                 $obj->setCategory($category);
+
+                $category->setTotal($category->getTotal() + $obj->getPrice());
             }
         }
 
@@ -217,6 +219,10 @@ class ItemController extends AbstractController
             if($tot->getYear() >= $obj->getYear()){
                 $dataEntity->setTotal($tot, $user, $obj->getType() == BuItem::TYPE_INCOME ? BuItem::TYPE_EXPENSE : BuItem::TYPE_INCOME, $tot->getYear(), $obj->getPrice());
             }
+        }
+
+        if($category = $obj->getCategory()){
+            $category->setTotal($category->getTotal() - $obj->getPrice());
         }
 
         $em->persist($total);
