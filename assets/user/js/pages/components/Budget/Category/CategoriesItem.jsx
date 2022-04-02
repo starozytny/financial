@@ -19,8 +19,10 @@ export class CategoriesItem extends Component {
                             <div className="sub">{elem.typeString}</div>
                         </div>
                         <div className="col-3 actions">
-                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            {elem.isNatif ? <div className="badge badge-default">Natif</div> : <>
+                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            </>}
                         </div>
                     </div>
                 </div>
