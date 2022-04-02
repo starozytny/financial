@@ -18,7 +18,7 @@ export class CategoriesItem extends Component {
                             </div>
                         </div>
                         <div className="col-2">
-                            <div className="sub">{elem.typeString}</div>
+                            <div className={"badge badge-" + elem.type}>{elem.typeString}</div>
                         </div>
                         <div className="col-3">
                             {elem.type === 2 && <div className="sub">{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>}
