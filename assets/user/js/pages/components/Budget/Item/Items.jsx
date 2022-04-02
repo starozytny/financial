@@ -63,8 +63,13 @@ export class Items extends Component {
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
 
     handleUpdateList = (element, newContext=null) => {
-        let dataImmuable = this.layout.current.handleUpdateList(element, newContext);
-        this.props.onUpdateData(dataImmuable);
+        const { dataPlanning } = this.props;
+        const { perPage } = this.state;
+
+        this.layout.current.handleUpdateList(element, newContext);
+
+        let newDataPlanning = Formulaire.updateDataPagination(SORTER, newContext, newContext, dataPlanning, element, perPage);
+        this.props.onUpdateData(newDataPlanning);
     }
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }

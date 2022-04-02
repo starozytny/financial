@@ -104,8 +104,6 @@ export class Layout extends Component {
             currentData: newCurrentData,
             element: element
         })
-
-        return newDataImmuable;
     }
 
     handleUpdatePerPage = (perPage, sorter = null) => {

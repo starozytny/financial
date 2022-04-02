@@ -66,8 +66,13 @@ export class Planning extends Component {
         let totalExpenses = 0;
         let totalIncomes = 0;
         let totalSavings = 0;
+
+        let items = [];
         data.forEach(el => {
             if(el.month === monthActive){
+
+                items.push(el);
+
                 switch (el.type){
                     case TYPE_EXPENSE:
                         totalExpenses += el.price;
@@ -114,8 +119,8 @@ export class Planning extends Component {
                 </div>
 
                 <div className="items">
-                    <Items ref={this.items} onUpdateData={this.handleUpdateData} categories={JSON.parse(categories)}
-                           donnees={JSON.stringify(data)} year={parseInt(yearActive)} month={parseInt(monthActive)} />
+                    <Items ref={this.items} onUpdateData={this.handleUpdateData} categories={JSON.parse(categories)} dataPlanning={data}
+                           donnees={JSON.stringify(items)} year={parseInt(yearActive)} month={parseInt(monthActive)} key={yearActive + "-" + monthActive}/>
                 </div>
             </div>
         </div>
