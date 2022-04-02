@@ -68,7 +68,6 @@ export class Planning extends Component {
         let totalSavings = 0;
 
         let totaux = [0,0,0,0,0,0,0,0,0,0,0,0,0];
-        let totauxMonths = [0,0,0,0,0,0,0,0,0,0,0,0,0];
 
         let items = [];
         data.forEach(el => {
@@ -92,13 +91,9 @@ export class Planning extends Component {
             }
 
             if(el.type === TYPE_INCOME){
-                let val = totaux[el.month] + el.price;
-                totaux[el.month] = val;
-                totauxMonths[el.month] = val;
+                totaux[el.month] = totaux[el.month] + el.price;
             }else{
-                let val = totaux[el.month] - el.price;
-                totaux[el.month] = val;
-                totauxMonths[el.month] = val;
+                totaux[el.month] = totaux[el.month] - el.price;
             }
         })
 
@@ -110,21 +105,19 @@ export class Planning extends Component {
 
         for(let j = 1; j <= 12 ; j++){
             if(j > 1){
-                totauxMonths[j] = totauxMonths[j - 1] + totauxMonths[j];
+                totaux[j] = totaux[j - 1] + totaux[j];
             }
         }
-
-        let totalBudget = totalIncomes - (totalExpenses + totalSavings);
 
         return <div className="main-content">
             <div className="plannings-items">
                 <Years year={yearActive} onSelect={this.handleSelectYear} />
-                <Months totaux={totauxMonths} active={monthActive} onSelect={this.handleSelectMonth}/>
+                <Months totaux={totaux} active={monthActive} onSelect={this.handleSelectMonth}/>
             </div>
 
             <div className="budget">
                 <div className="cards cards-review">
-                    <div className={"card card-default " + (totalBudget > 1)}>
+                    <div className={"card card-default " + (totaux[monthActive] > 1)}>
                         <div className="card-header">
                             <div className="icon">
                                 <span className="icon-home" />
@@ -132,7 +125,7 @@ export class Planning extends Component {
                             <div className="title">
                                 <div className="name">Budget</div>
                                 <div className="total">
-                                    <span>{Sanitaze.toFormatCurrency(totalBudget)}</span>
+                                    <span>{Sanitaze.toFormatCurrency(totaux[monthActive])}</span>
                                 </div>
                                 <div>
                                     <span>
