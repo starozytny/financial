@@ -89,4 +89,22 @@ class UserController extends AbstractController
             'donnees' => $data
         ]);
     }
+
+    /**
+     * @Route("/economies", name="saving")
+     */
+    public function saving(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user], "type" => BuItem::TYPE_SAVING]);
+
+        $data = $serializer->serialize($data, 'json', ['groups' => BuCategory::CATEGORY_READ]);
+
+        return $this->render('user/pages/category/saving.html.twig', [
+            'donnees' => $data
+        ]);
+    }
 }

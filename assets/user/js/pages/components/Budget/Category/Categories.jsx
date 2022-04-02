@@ -28,7 +28,8 @@ export class Categories extends Component {
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
-            sessionName: "categories.pagination"
+            sessionName: "categories.pagination",
+            isSaving: props.isSaving === "true"
         }
 
         this.layout = React.createRef();
@@ -85,11 +86,11 @@ export class Categories extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        return <CategoryFormulaire type="create" onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        return <CategoryFormulaire type="create" isSaving={this.state.isSaving} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        return <CategoryFormulaire type="update" element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        return <CategoryFormulaire type="update" isSaving={this.state.isSaving} element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
     render () {
         return <>

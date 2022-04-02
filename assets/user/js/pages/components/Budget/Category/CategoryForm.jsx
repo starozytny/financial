@@ -17,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_budget_categories_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, element })
+export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, element, isSaving })
 {
     let title = "Ajouter une catégorie";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -33,11 +33,12 @@ export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, eleme
         context={type}
         url={url}
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
-        type={element ? Formulaire.setValueEmptyIfNull(element.type, 0) : 0}
+        type={element ? Formulaire.setValueEmptyIfNull(element.type, isSaving ? 2 : 0) : isSaving ? 2 : 0}
         goal={element ? Formulaire.setValueEmptyIfNull(element.goal, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
+        isSaving={isSaving}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -132,7 +133,7 @@ class Form extends Component {
     }
 
     render () {
-        const { context } = this.props;
+        const { context, isSaving } = this.props;
         const { errors, success, name, type, goal } = this.state;
 
         let typeItems = [
@@ -148,7 +149,9 @@ class Form extends Component {
 
                 <div className="line line-2">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
-                    <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
+                    {isSaving ? <div className="form-group"/> : <>
+                        <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
+                    </>}
                 </div>
 
                 {parseInt(type) === 2 && <div className="line line-2">
