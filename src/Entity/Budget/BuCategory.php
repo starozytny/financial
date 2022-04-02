@@ -70,6 +70,11 @@ class BuCategory extends DataEntity
      */
     private $icon = "stop";
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived = false;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -199,6 +204,18 @@ class BuCategory extends DataEntity
     public function setIcon(string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
 
         return $this;
     }

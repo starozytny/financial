@@ -131,11 +131,27 @@ class CategoryController extends AbstractController
      * @OA\Tag(name="BudgetCategory")
      *
      * @param BuCategory $obj
-     * @param DataService $dataService
+     * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function delete(BuCategory $obj, DataService $dataService): JsonResponse
+    public function delete(BuCategory $obj, ApiResponse $apiResponse): JsonResponse
     {
-        return $dataService->delete($obj);
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $items = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'category' => $obj]);
+
+        foreach ($items as $item) {
+            $item = ($item)
+                ->setCategory(null)
+                ->setType(BuItem::TYPE_EXPENSE)
+            ;
+        }
+
+        $em->remove($obj);
+        $em->flush();
+        return $apiResponse->apiJsonResponseSuccessful("Supression réussie !");
     }
 }
