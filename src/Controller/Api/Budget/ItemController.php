@@ -89,6 +89,13 @@ class ItemController extends AbstractController
 
         [$obj, $total] = $dataEntity->setData($obj, $data, $user, $total);
 
+        $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
+        foreach($totaux as $tot){
+            if($tot->getYear() > $obj->getYear()){
+                $dataEntity->setTotal($tot, $user, $obj->getType(), $tot->getYear(), $obj->getPrice());
+            }
+        }
+
         if($data->category != ""){
             if($category = $em->getRepository(BuCategory::class)->find($data->category)){
                 $obj->setCategory($category);
@@ -192,7 +199,13 @@ class ItemController extends AbstractController
         if(!$total){
             $total = new BuTotal();
         }
-        $total = $dataEntity->setTotal($total, $user, $obj->getType() == BuItem::TYPE_INCOME ? BuItem::TYPE_EXPENSE : BuItem::TYPE_INCOME, $obj->getYear(), $obj->getPrice());
+
+        $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
+        foreach($totaux as $tot){
+            if($tot->getYear() >= $obj->getYear()){
+                $dataEntity->setTotal($tot, $user, $obj->getType() == BuItem::TYPE_INCOME ? BuItem::TYPE_EXPENSE : BuItem::TYPE_INCOME, $tot->getYear(), $obj->getPrice());
+            }
+        }
 
         $em->persist($total);
         $em->remove($obj);
