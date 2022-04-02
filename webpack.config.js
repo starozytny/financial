@@ -69,6 +69,7 @@ Encore
     .addEntry('dashboard_notifications', './assets/dashboard/js/pages/notifications.js')
     .addEntry('dashboard_changelog', './assets/dashboard/js/pages/changelog.js')
 
+    .addEntry('user', './assets/user/js/app.js')
     .addEntry('user_homepage', './assets/user/js/pages/homepage.js')
     .addEntry('user_profil', './assets/user/js/pages/profil.js')
 

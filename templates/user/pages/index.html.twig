@@ -4,54 +4,11 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('dashboard_homepage') }}
     {{ encore_entry_link_tags('user_homepage') }}
 {% endblock %}
 
 {% block main_content %}
     <div class="main-content">
-        <div class="dash-line-1">
-            <div class="welcome-back">
-                <div class="avatar">
-                    <img src="https://robohash.org/{{ app.user.userIdentifier }}?size=126x126" alt="Avatar de {{ app.user.userIdentifier }}"/>
-                </div>
-                <div class="me">
-                    <p>Bon retour,</p>
-                    <p class="username">{{ app.user.userIdentifier | capitalize }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="dash-line-2">
-            <div class="dash-card-1 dash-card-changelogs">
-                <div class="card-header">
-                    <div class="icon">
-                        <span class="icon-follow"></span>
-                    </div>
-                    <div class="title">Changelog</div>
-                </div>
-                <div>
-                    <div class="changelogs">
-                        {% for changelog in changelogs %}
-                            <div class="changelog">
-                                <div class="changelog-date">{{ changelog.createdAtString }}</div>
-                                <div class="changelog-content">
-                                    <div class="name">
-                                        <div class="badge badge-{{ changelog.type }}">
-                                            <span class="icon-{{ changelog.typeIcon }}"></span>
-                                        </div>
-                                        <span>{{ changelog.name }}</span>
-                                    </div>
-                                    <div class="content">{{ changelog.content | raw }}</div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="changelog">
-                                <div>Aucune nouvelle modification.</div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 {% endblock %}

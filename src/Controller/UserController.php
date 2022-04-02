@@ -27,13 +27,7 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
-        $em = $this->doctrine->getManager();
-
-        $changelogs = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
-
-        return $this->render('user/pages/index.html.twig', [
-            'changelogs' => $changelogs
-        ]);
+        return $this->render('user/pages/index.html.twig');
     }
 
     /**

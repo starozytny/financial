@@ -5,7 +5,10 @@
 @import "../../common/css/color";
 
 :root{
-
+    --color0: #2a7bae;
+    --color1: #fec61f;
+    --color2: #c80008;
+    --color3: #07080d;
 }
 
 @import "vars/fonts";
@@ -92,6 +95,10 @@ main{
 .maj-settings{
     color: var(--danger);
     text-decoration: underline;
+}
+
+.txt-color0{
+    color: var(--color0)
 }
 
 //                      __   _  ___ ____  _  _     __
