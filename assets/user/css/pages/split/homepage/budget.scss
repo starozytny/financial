@@ -59,6 +59,27 @@
   }
 }
 
+.card.card-default{
+  color: var(--alpha);
+  border-color: transparent;
+
+  &.true{
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  &.false{
+    background-color: var(--danger);
+    border-color: var(--danger);
+  }
+
+  .card-header{
+    .icon{
+      color: var(--alpha);
+    }
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -81,10 +102,20 @@
     @include flex(row, flex-start, flex-start);
     width: calc(100% + 12px);
 
+    &:not(:last-child){
+      margin-bottom: 12px;
+    }
+
     & > .card{
       width: 33%;
       margin-bottom: 0;
       margin-right: 12px;
+    }
+  }
+
+  .cards-review{
+    & > .card{
+      width: 33%;
     }
   }
 }

@@ -95,6 +95,8 @@ export class Planning extends Component {
             { value: 2, name: "Economies", total: totalSavings,  icon: "time" },
         ]
 
+        let totalBudget = totalIncomes - (totalExpenses + totalSavings);
+
         return <div className="main-content">
             <div className="plannings-items">
                 <Years year={yearActive} onSelect={this.handleSelectYear} />
@@ -102,6 +104,21 @@ export class Planning extends Component {
             </div>
 
             <div className="budget">
+                <div className="cards cards-review">
+                    <div className={"card card-default " + (totalBudget > 1)}>
+                        <div className="card-header">
+                            <div className="icon">
+                                <span className="icon-home" />
+                            </div>
+                            <div className="title">
+                                <div className="name">Budget</div>
+                                <div className="total">
+                                    <span>{Sanitaze.toFormatCurrency(totalBudget)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="cards">
                     {cards.map((card, index) => {
                         return <div className="card" key={index} onClick={() => this.handleChangeContext("create", card.value)}>
