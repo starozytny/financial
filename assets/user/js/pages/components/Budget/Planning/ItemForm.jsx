@@ -101,17 +101,9 @@ class Form extends Component {
             axios({ method: method, url: url, data: this.state })
                 .then(function (response) {
                     let data = response.data;
-                    Helper.toTop();
                     if(self.props.onUpdateList){
                         self.props.onUpdateList(data);
-                    }
-                    self.setState({ success: messageSuccess, errors: [] });
-                    if(context === "create"){
-                        self.setState( {
-                            name: '',
-                            type: 0,
-                            price: '',
-                        })
+                        self.props.onChangeContext("list");
                     }
                 })
                 .catch(function (error) {

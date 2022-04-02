@@ -7,6 +7,7 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { ItemsList }       from "./ItemsList";
 import { ItemFormulaire }  from "@userPages/components/Budget/Planning/ItemForm";
+import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
@@ -54,7 +55,10 @@ export class Items extends Component {
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
 
-    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
+    handleUpdateList = (element, newContext=null) => {
+        let dataImmuable = this.layout.current.handleUpdateList(element, newContext);
+        this.props.onUpdateData(dataImmuable);
+    }
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
 
