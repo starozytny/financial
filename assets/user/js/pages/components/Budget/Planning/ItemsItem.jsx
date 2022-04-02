@@ -6,7 +6,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class ItemsItem extends Component {
     render () {
-        const { elem, onDelete} = this.props;
+        const { elem, onChangeContext, onDelete} = this.props;
 
         let icon = "add";
         if(elem.type === 0){
@@ -33,6 +33,7 @@ export class ItemsItem extends Component {
                             </div>
                         </div>
                         <div className="col-4 actions">
+                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
                     </div>

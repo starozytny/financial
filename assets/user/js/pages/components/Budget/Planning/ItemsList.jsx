@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { Button, ButtonIcon }       from "@dashboardComponents/Tools/Button";
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
 import { Search }                   from "@dashboardComponents/Layout/Search";
@@ -37,9 +36,6 @@ export class ItemsList extends Component {
         return <>
             <div>
                 <div className="toolbar">
-                    {/*<div className="item create">*/}
-                    {/*    <Button onClick={() => onChangeContext("create")}>Ajouter un changelog</Button>*/}
-                    {/*</div>*/}
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
                         <Search onSearch={onSearch} placeholder="Recherche par description.."/>

@@ -29,6 +29,7 @@ class BuItem extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"item:read"})
      */
     private $year;
 
