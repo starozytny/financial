@@ -3,11 +3,11 @@ import React, { Component } from "react";
 import axios    from "axios";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import Helper       from "@commonComponents/functions/helper";
 import Sanitaze     from "@commonComponents/functions/sanitaze";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 import { Months } from "@dashboardComponents/Tools/Days";
+import { Items }  from "@userPages/components/Budget/Planning/Items";
 
 const TYPE_EXPENSE = 0;
 const TYPE_INCOME = 1;
@@ -103,7 +103,7 @@ export class Planning extends Component {
                 </div>
 
                 <div className="items">
-
+                    <Items donnees={JSON.stringify(data)} />
                 </div>
             </div>
         </div>

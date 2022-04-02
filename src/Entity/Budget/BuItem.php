@@ -160,4 +160,13 @@ class BuItem extends DataEntity
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     * @Groups({"item:read"})
+     */
+    public function getCreatedAtString(): ?string
+    {
+        return $this->getFullDateString($this->createdAt);
+    }
 }

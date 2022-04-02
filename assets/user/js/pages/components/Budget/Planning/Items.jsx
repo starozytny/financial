@@ -1,0 +1,93 @@
+import React, { Component } from 'react';
+
+import { Layout }        from "@dashboardComponents/Layout/Page";
+import Sort              from "@commonComponents/functions/sort";
+import Filter            from "@commonComponents/functions/filter";
+import TopToolbar        from "@commonComponents/functions/topToolbar";
+
+import { ItemsList }       from "./ItemsList";
+
+const URL_DELETE_ELEMENT    = 'api_changelogs_delete';
+const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
+let SORTER = Sort.compareCreatedAtInverse;
+
+let sorters = [
+    { value: 0, label: 'Création',  identifiant: 'sorter-created' },
+    { value: 1, label: 'Nom',       identifiant: 'sorter-nom' },
+]
+
+let sortersFunction = [Sort.compareCreatedAtInverse, Sort.compareName];
+
+export class Items extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            perPage: 10,
+            currentPage: 0,
+            sorter: SORTER,
+            pathDeleteElement: URL_DELETE_ELEMENT,
+            msgDeleteElement: MSG_DELETE_ELEMENT,
+            sessionName: "budget.items.pagination",
+            classes: ""
+        }
+
+        this.layout = React.createRef();
+
+        this.handleGetData = this.handleGetData.bind(this);
+        this.handleUpdateList = this.handleUpdateList.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
+        this.handleSorter = this.handleSorter.bind(this);
+
+        this.handleContentList = this.handleContentList.bind(this);
+    }
+
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
+
+    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
+
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
+
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "changelog", true, Filter.filterType); }
+
+    handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
+
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
+
+    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+        const { perPage, currentPage } = this.state;
+
+        return <ItemsList onChangeContext={changeContext}
+                               onDelete={this.layout.current.handleDelete}
+                               onDeleteAll={this.layout.current.handleDeleteGroup}
+                         //filter-search
+                               onSearch={this.handleSearch}
+                               filters={filters}
+                               onGetFilters={this.handleGetFilters}
+                         //changeNumberPerPage
+                               perPage={perPage}
+                               onPerPage={this.handlePerPage}
+                         //twice pagination
+                               currentPage={currentPage}
+                               onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
+                               taille={data.length}
+                         //sorter
+                               sorters={sorters}
+                               onSorter={this.handleSorter}
+                         //data
+                               data={currentData} />
+    }
+
+    render () {
+        return <>
+            <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
+                    onContentList={this.handleContentList}
+                    onChangeCurrentPage={this.handleChangeCurrentPage}/>
+        </>
+    }
+}
