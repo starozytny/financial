@@ -64,7 +64,16 @@ class Form extends Component {
         Helper.toTop();
     }
 
-    handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
+    handleChange = (e) => {
+        let name = e.currentTarget.name;
+        let value = e.currentTarget.value;
+
+        if(name === "type" && value !== "" && parseInt(value) === 2){
+            this.setState({ goal: "" })
+        }
+
+        this.setState({[name]: value })
+    }
     handleChangeCleave = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.rawValue}) }
 
     handleSubmit = (e) => {
@@ -142,10 +151,10 @@ class Form extends Component {
                     <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
                 </div>
 
-                <div className="line line-2">
+                {parseInt(type) === 2 && <div className="line line-2">
                     <Input type="cleave" valeur={goal} identifiant="goal" errors={errors} onChange={this.handleChangeCleave}>Objectif</Input>
                     <div className="form-group" />
-                </div>
+                </div>}
 
                 <div className="line">
                     <div className="form-button">

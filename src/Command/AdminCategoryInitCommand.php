@@ -68,7 +68,6 @@ class AdminCategoryInitCommand extends Command
                 "name" => $item["name"],
                 "type" => $item["type"],
                 "goal" => null,
-                "total" => null
             ];
 
             $data = json_decode(json_encode($data));

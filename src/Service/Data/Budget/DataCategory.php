@@ -22,7 +22,6 @@ class DataCategory
             ->setName($this->sanitizeData->trimData($data->name))
             ->setType($this->sanitizeData->setToInteger($data->type, 0))
             ->setGoal($this->sanitizeData->setToFloat($data->goal))
-            ->setTotal($this->sanitizeData->setToFloat($data->total))
         ;
     }
 }
