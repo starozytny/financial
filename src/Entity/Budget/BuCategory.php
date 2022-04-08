@@ -33,7 +33,7 @@ class BuCategory extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"category:read"})
+     * @Groups({"category:read", "item:read"})
      */
     private $type;
 
