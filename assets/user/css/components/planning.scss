@@ -1,3 +1,10 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/planning";
+
+.days{
+  .day{
+    min-width: 64px;
+    text-align: center;
+  }
+}

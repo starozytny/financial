@@ -4,6 +4,10 @@
   .total-0{ color: var(--danger); }
   .total-1{ color: var(--primary); }
   .total-2{ color: var(--warning); }
+
+  .total-0, .total-1, .total-2{
+    flex-direction: row;
+  }
 }
 
 .card{
@@ -127,11 +131,30 @@
 //                     | |  |_|_____\___/ \___/   | |
 //                     |__|                      |__|
 @media (min-width:1280px) {
+  #planning{
+    .toolbar {
+      margin-top: 0;
+    }
+  }
   .cards{
     width: calc(100% + 24px);
 
     & > .card{
       margin-right: 24px;
+    }
+  }
+
+  .page-col-2{
+    @include flex(row-reverse, flex-start, flex-start);
+    margin-top: 24px;
+
+    .col-1{
+      width: calc(60% - 24px);
+      margin-right: 24px;
+    }
+
+    .col-2{
+      width: 40%;
     }
   }
 }

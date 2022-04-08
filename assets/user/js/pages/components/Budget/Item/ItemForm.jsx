@@ -14,7 +14,7 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_budget_items_create";
 const URL_UPDATE_GROUP       = "api_budget_items_update";
-const TXT_CREATE_BUTTON_FORM = "Enregistrer";
+const TXT_CREATE_BUTTON_FORM = "Ajouter";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, year, month, typeItem = 0, categories, total = 0 })
@@ -155,17 +155,23 @@ class Form extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line line-2">
+                <div className="line">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Description</Input>
-                    <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
                 </div>
 
-                <div className="line line-2">
+                <div className="line">
                     <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChangeCleave}>Total</Input>
+                </div>
+
+                <div className="line">
                     <SelectReactSelectize items={categoryItems} identifiant="category" placeholder={"Sélectionner une catégorie"}
                                           valeur={category} errors={errors} onChange={(e) => this.handleChangeSelect('category', e)}>
                         Catégorie
                     </SelectReactSelectize>
+                </div>
+
+                <div className="line">
+                    <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
                 </div>
 
                 <div className="line">
