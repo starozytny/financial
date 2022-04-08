@@ -9,8 +9,8 @@ import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
-import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import Sanitaze                from "@commonComponents/functions/sanitaze";
 
 const URL_CREATE_ELEMENT     = "api_budget_items_create";
 const URL_UPDATE_GROUP       = "api_budget_items_update";
@@ -71,11 +71,17 @@ class Form extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        Helper.toTop();
+    handleChange = (e) => {
+        const { category } = this.state;
+        let name = e.currentTarget.name;
+
+        if(name === "type" && category !== ""){
+            this.setState({ category: "" })
+        }
+
+        this.setState({[name]: e.currentTarget.value})
     }
 
-    handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
     handleChangeCleave = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.rawValue}) }
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
@@ -141,11 +147,15 @@ class Form extends Component {
             { value: 2,  label: 'Economie',  identifiant: 'it-economie' },
         ]
 
-        let categoryItems = [];
+        let categoryItems = [], categorySelected = null;
         if(categories){
             categories.forEach(el => {
                 if(el.type === parseInt(type)){
                     categoryItems.push({ value: el.id, label: el.name, identifiant: "cat-f-" + el.id })
+                }
+
+                if(category && category === el.id){
+                    categorySelected = el;
                 }
             })
         }
@@ -169,6 +179,15 @@ class Form extends Component {
                         Catégorie
                     </SelectReactSelectize>
                 </div>
+
+                {categorySelected && categorySelected.type === 2 && <>
+                    <div className="line">
+                        <div className="form-group">
+                            <label>Objectif</label>
+                            <div>{Sanitaze.toFormatCurrency(categorySelected.total)} / {Sanitaze.toFormatCurrency(categorySelected.goal)}</div>
+                        </div>
+                    </div>
+                </>}
 
                 <div className="line">
                     <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
