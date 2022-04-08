@@ -46,7 +46,7 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         total={total}
     />
 
-    return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+    return onChangeContext ? <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout> : <div className="form">{form}</div>
 }
 
 class Form extends Component {
@@ -108,6 +108,8 @@ class Form extends Component {
                     let data = response.data;
                     if(self.props.onUpdateList){
                         self.props.onUpdateList(data);
+                    }
+                    if(self.props.onChangeContext){
                         self.props.onChangeContext("list");
                     }
                 })
@@ -132,11 +134,13 @@ class Form extends Component {
         ]
 
         let categoryItems = [];
-        categories.forEach(el => {
-            if(el.type === parseInt(type)){
-                categoryItems.push({ value: el.id, label: el.name, identifiant: "cat-f-" + el.id })
-            }
-        })
+        if(categories){
+            categories.forEach(el => {
+                if(el.type === parseInt(type)){
+                    categoryItems.push({ value: el.id, label: el.name, identifiant: "cat-f-" + el.id })
+                }
+            })
+        }
 
         return <>
             <form onSubmit={this.handleSubmit}>

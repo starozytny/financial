@@ -5,7 +5,10 @@ import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination
 import { Search }                   from "@dashboardComponents/Layout/Search";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
 
-import { ItemsItem }   from "./ItemsItem";
+import { ItemsItem }      from "./ItemsItem";
+import { ItemFormulaire } from "@userPages/components/Budget/Item/ItemForm";
+
+let i = 0;
 
 export class ItemsList extends Component {
     constructor(props) {
@@ -21,8 +24,8 @@ export class ItemsList extends Component {
     }
 
     render () {
-        const { taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onPerPage,
-            onPaginationClick, currentPage, sorters, onSorter } = this.props;
+        const { year, month, categories, total, taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter, onUpdateList, typeItem } = this.props;
 
         let filtersLabel = ["Dépenses", "Revenus", "Economies"];
         let filtersId    = ["f-expenses", "f-revenus", "f-economies"];
@@ -34,35 +37,43 @@ export class ItemsList extends Component {
         ];
 
         return <>
-            <div>
-                <div className="toolbar">
-                    <div className="item filter-search">
-                        <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Search onSearch={onSearch} placeholder="Recherche par description.."/>
-                        <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
+            <div className="default-page">
+                <div className="page-col-2">
+                    <div className="col-1">
+                        <ItemFormulaire type="create" year={year} month={month} categories={categories} total={total} typeItem={typeItem}
+                                        onUpdateList={onUpdateList} key={i++} />
                     </div>
-                </div>
-
-                <TopSorterPagination sorters={sorters} onSorter={onSorter}
-                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
-
-                <div className="items-table">
-                    <div className="items items-default items-budget">
-                        <div className="item item-header">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Date</div>
-                                        <div className="col-2">Description</div>
-                                        <div className="col-3">Total</div>
-                                        <div className="col-4 actions">Actions</div>
-                                    </div>
-                                </div>
+                    <div className="col-2">
+                        <div className="toolbar">
+                            <div className="item filter-search">
+                                <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
+                                <Search onSearch={onSearch} placeholder="Recherche par description.."/>
+                                <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
                             </div>
                         </div>
-                        {data && data.length !== 0 ? data.map(elem => {
-                            return <ItemsItem {...this.props} elem={elem} key={elem.id}/>
-                        }) : <Alert>Aucun résultat</Alert>}
+
+                        <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                             currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
+
+                        <div className="items-table">
+                            <div className="items items-default items-budget">
+                                <div className="item item-header">
+                                    <div className="item-content">
+                                        <div className="item-body">
+                                            <div className="infos infos-col-4">
+                                                <div className="col-1">Date</div>
+                                                <div className="col-2">Description</div>
+                                                <div className="col-3">Total</div>
+                                                <div className="col-4 actions">Actions</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {data && data.length !== 0 ? data.map(elem => {
+                                    return <ItemsItem {...this.props} elem={elem} key={elem.id}/>
+                                }) : <Alert>Aucun résultat</Alert>}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

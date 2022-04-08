@@ -110,25 +110,29 @@ export class Items extends Component {
     }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage } = this.state;
+        const { year, month, categories, total } = this.props;
+        const { perPage, currentPage, typeItem } = this.state;
 
         return <ItemsList onChangeContext={changeContext}
                                onDelete={this.handleDelete}
-                         //filter-search
+                               //filter-search
                                onSearch={this.handleSearch}
                                filters={filters}
                                onGetFilters={this.handleGetFilters}
-                         //changeNumberPerPage
+                               //changeNumberPerPage
                                perPage={perPage}
 
-                         //twice pagination
+                               //twice pagination
                                currentPage={currentPage}
                                onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
                                taille={data.length}
-                         //sorter
+                               //sorter
                                sorters={sorters}
                                onSorter={this.handleSorter}
-                         //data
+                               //data
+                               typeItem={typeItem}
+                               year={year} month={month} categories={categories} total={total}
+                               onUpdateList={this.handleUpdateList}
                                data={currentData} />
     }
 
