@@ -7,7 +7,7 @@ import { Alert }                    from "@dashboardComponents/Tools/Alert";
 
 import { ItemsItem }      from "./ItemsItem";
 import { ItemFormulaire } from "@userPages/components/Budget/Item/ItemForm";
-import {ChartDay} from "@userPages/components/Stats/Charts";
+import { ChartDay }       from "@userPages/components/Stats/Charts";
 
 let i = 0;
 

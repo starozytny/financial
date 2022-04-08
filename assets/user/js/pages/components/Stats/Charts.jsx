@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Chart from 'react-apexcharts';
+import Sanitaze from "@commonComponents/functions/sanitaze";
 
 export class ChartDay extends Component {
     constructor(props) {
@@ -17,7 +18,14 @@ export class ChartDay extends Component {
             series: data,
             options: {
                 labels: ['Dépenses', 'Revenus', 'Economies'],
-                colors: ['#f7685b', '#1e87f0', '#fdad2d']
+                colors: ['#f7685b', '#1e87f0', '#fdad2d'],
+                tooltip: {
+                    y: {
+                        formatter: (val) => {
+                            return Sanitaze.toFormatCurrency(val)
+                        }
+                    }
+                }
             },
         };
     }
