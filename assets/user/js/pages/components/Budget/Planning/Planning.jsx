@@ -41,7 +41,7 @@ export class Planning extends Component {
         axios({ method: "GET", url: Routing.generate(URL_GET_DATA, {'year': year}), data: {} })
             .then(function (response) {
                 let data = response.data;
-                self.setState({ yearActive: year, data: JSON.parse(data.items), totalInit: parseFloat(data.totalInit) })
+                self.setState({ yearActive: year, monthActive: 1, data: JSON.parse(data.items), totalInit: parseFloat(data.totalInit) })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error);
