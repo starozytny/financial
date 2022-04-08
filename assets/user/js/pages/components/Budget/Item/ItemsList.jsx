@@ -7,6 +7,7 @@ import { Alert }                    from "@dashboardComponents/Tools/Alert";
 
 import { ItemsItem }      from "./ItemsItem";
 import { ItemFormulaire } from "@userPages/components/Budget/Item/ItemForm";
+import {ChartDay} from "@userPages/components/Stats/Charts";
 
 let i = 0;
 
@@ -24,7 +25,7 @@ export class ItemsList extends Component {
     }
 
     render () {
-        const { subContext, taille, data, perPage, onGetFilters, filters, onSearch, onPerPage,
+        const { subContext, taille, data, dataImmuable, perPage, onGetFilters, filters, onSearch, onPerPage,
             onPaginationClick, currentPage, sorters, onSorter,
             onUpdateList, typeItem, year, month, categories, total, element } = this.props;
 
@@ -43,6 +44,10 @@ export class ItemsList extends Component {
                     <ItemFormulaire type={subContext} element={element}
                                     year={year} month={month} categories={categories} total={total} typeItem={typeItem}
                                     onUpdateList={onUpdateList} key={i++} />
+
+                    <div className="charts">
+                        <ChartDay data={dataImmuable} />
+                    </div>
                 </div>
                 <div className="col-1">
                     <div className="toolbar">

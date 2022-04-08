@@ -217,7 +217,7 @@ export class Layout extends Component {
     render () {
         const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo,
             onChangeCurrentPage, classes } = this.props;
-        const { perPage, loadPageError, context, loadData, data, currentData, element, sessionName, filters } = this.state;
+        const { perPage, loadPageError, context, loadData, data, dataImmuable, currentData, element, sessionName, filters } = this.state;
 
         let content, havePagination = false;
         switch (context){
@@ -238,7 +238,7 @@ export class Layout extends Component {
                 break;
             default:
                 havePagination = true;
-                content = loadData ? <LoaderElement /> : onContentList(currentData, this.handleChangeContext, this.handleGetFilters, filters, data)
+                content = loadData ? <LoaderElement /> : onContentList(currentData, this.handleChangeContext, this.handleGetFilters, filters, data, dataImmuable)
                 break;
         }
 

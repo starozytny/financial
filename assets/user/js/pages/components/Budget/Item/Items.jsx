@@ -116,7 +116,7 @@ export class Items extends Component {
         ;
     }
 
-    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+    handleContentList = (currentData, changeContext, getFilters, filters, data, dataImmuable) => {
         const { year, month, categories, total } = this.props;
         const { subContext, perPage, currentPage, typeItem, element } = this.state;
 
@@ -128,6 +128,7 @@ export class Items extends Component {
                                onGetFilters={this.handleGetFilters}
                                //changeNumberPerPage
                                perPage={perPage}
+                               onPerPage={this.handlePerPage}
                                //twice pagination
                                currentPage={currentPage}
                                onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
@@ -142,6 +143,7 @@ export class Items extends Component {
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}
+                               dataImmuable={dataImmuable}
                                data={currentData} />
     }
 

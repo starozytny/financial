@@ -1,5 +1,15 @@
 @import "../../../vars/vars";
 
+.page-col-2{
+  & + .pagination{
+    display: none;
+
+    & + .input-page{
+      display: none;
+    }
+  }
+}
+
 .items-budget{
   .total-0{ color: var(--danger); }
   .total-1{ color: var(--primary); }
