@@ -9,6 +9,7 @@
          data-categories="{{ categories }}"
          data-year="{{ year }}"
          data-total-init="{{ totalInit }}"
+         data-have-cashback="{{ app.user.userIdentifier == "shanbo" }}"
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>

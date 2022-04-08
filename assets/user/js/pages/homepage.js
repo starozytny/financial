@@ -12,7 +12,7 @@ Routing.setRoutingData(routes);
 
 const planning = document.getElementById("planning");
 if(planning){
-    render(<Planning {...planning.dataset} />, planning)
+    render(<Planning {...planning.dataset} haveCashback={planning.dataset.haveCashback === "1"}/>, planning)
 }
 
 const cat = document.getElementById("categories");

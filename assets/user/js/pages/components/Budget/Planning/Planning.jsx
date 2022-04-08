@@ -61,8 +61,10 @@ export class Planning extends Component {
     }
 
     render () {
-        const { categories } = this.props;
+        const { categories, haveCashback } = this.props;
         const { data, totalInit, yearMin, yearActive, monthActive } = this.state;
+
+        console.log(haveCashback)
 
         let totalExpenses = 0;
         let totalIncomes = 0;
@@ -146,7 +148,10 @@ export class Planning extends Component {
                                 </div>
                                 <div className="title">
                                     <div className="name">{card.name}</div>
-                                    <div className="total">{Sanitaze.toFormatCurrency(card.total)}</div>
+                                    <div className="total">
+                                        <span>{Sanitaze.toFormatCurrency(card.total)}</span>
+                                        {card.value === 0 && haveCashback && <span className="cashback">Cashback 2% : {Sanitaze.toFormatCurrency(card.total * (2/100))}</span>}
+                                    </div>
                                 </div>
                             </div>
                         </div>

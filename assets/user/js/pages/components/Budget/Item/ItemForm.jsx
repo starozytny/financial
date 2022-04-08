@@ -14,7 +14,7 @@ import Sanitaze                from "@commonComponents/functions/sanitaze";
 
 const URL_CREATE_ELEMENT     = "api_budget_items_create";
 const URL_UPDATE_GROUP       = "api_budget_items_update";
-const TXT_CREATE_BUTTON_FORM = "Ajouter";
+const TXT_CREATE_BUTTON_FORM = "Ajouter un nouveau élément";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, onChangeSubContext,
