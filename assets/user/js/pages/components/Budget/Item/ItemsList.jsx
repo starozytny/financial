@@ -24,8 +24,9 @@ export class ItemsList extends Component {
     }
 
     render () {
-        const { year, month, categories, total, taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onPerPage,
-            onPaginationClick, currentPage, sorters, onSorter, onUpdateList, typeItem } = this.props;
+        const { subContext, taille, data, perPage, onGetFilters, filters, onSearch, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter,
+            onUpdateList, typeItem, year, month, categories, total, element } = this.props;
 
         let filtersLabel = ["Dépenses", "Revenus", "Economies"];
         let filtersId    = ["f-expenses", "f-revenus", "f-economies"];
@@ -40,7 +41,8 @@ export class ItemsList extends Component {
             <div className="default-page">
                 <div className="page-col-2">
                     <div className="col-1">
-                        <ItemFormulaire type="create" year={year} month={month} categories={categories} total={total} typeItem={typeItem}
+                        <ItemFormulaire type={subContext} element={element}
+                                        year={year} month={month} categories={categories} total={total} typeItem={typeItem}
                                         onUpdateList={onUpdateList} key={i++} />
                     </div>
                     <div className="col-2">

@@ -33,6 +33,7 @@ export class Items extends Component {
         super(props);
 
         this.state = {
+            subContext: "create",
             perPage: 10,
             currentPage: 0,
             sorter: SORTER,
@@ -40,6 +41,7 @@ export class Items extends Component {
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "budget.items.pagination",
             classes: "",
+            element: null,
             typeItem: props.type ? props.type : 0,
         }
 
@@ -54,6 +56,8 @@ export class Items extends Component {
         this.handleSorter = this.handleSorter.bind(this);
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+
+        this.handleChangeSubContext = this.handleChangeSubContext.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
@@ -87,6 +91,8 @@ export class Items extends Component {
         this.layout.current.handleChangeContext(context, elem);
     }
 
+    handleChangeSubContext = (subContext, element = null) => { this.setState({ subContext, element }) }
+
     handleDelete = (element, text='Cette action est irréversible.') => {
         const self = this;
         Swal.fire(SwalOptions.options(MSG_DELETE_ELEMENT, text))
@@ -111,7 +117,7 @@ export class Items extends Component {
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { year, month, categories, total } = this.props;
-        const { perPage, currentPage, typeItem } = this.state;
+        const { subContext, perPage, currentPage, typeItem, element } = this.state;
 
         return <ItemsList onChangeContext={changeContext}
                                onDelete={this.handleDelete}
@@ -121,7 +127,6 @@ export class Items extends Component {
                                onGetFilters={this.handleGetFilters}
                                //changeNumberPerPage
                                perPage={perPage}
-
                                //twice pagination
                                currentPage={currentPage}
                                onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
@@ -130,6 +135,9 @@ export class Items extends Component {
                                sorters={sorters}
                                onSorter={this.handleSorter}
                                //data
+                               subContext={subContext}
+                               element={element}
+                               onChangeSubContext={this.handleChangeSubContext}
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}

@@ -6,7 +6,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class ItemsItem extends Component {
     render () {
-        const { elem, onChangeContext, onDelete} = this.props;
+        const { elem, onChangeSubContext, onDelete} = this.props;
 
         let icon = "add";
         if(elem.type === 0){
@@ -35,7 +35,7 @@ export class ItemsItem extends Component {
                             {elem.category ? <div className="sub">{Sanitaze.toFormatCurrency(elem.category.total)} / {Sanitaze.toFormatCurrency(elem.category.goal)}</div> : null}
                         </div>
                         <div className="col-4 actions">
-                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                            <ButtonIcon icon="pencil" onClick={() => onChangeSubContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
                     </div>

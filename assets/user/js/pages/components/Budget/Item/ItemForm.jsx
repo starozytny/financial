@@ -107,7 +107,7 @@ class Form extends Component {
                 .then(function (response) {
                     let data = response.data;
                     if(self.props.onUpdateList){
-                        self.props.onUpdateList(data);
+                        self.props.onUpdateList(data, context, type);
                     }
                     if(self.props.onChangeContext){
                         self.props.onChangeContext("list");
