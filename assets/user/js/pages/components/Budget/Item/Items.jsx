@@ -142,7 +142,7 @@ export class Items extends Component {
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}
-                               data={currentData} key={i++} />
+                               data={currentData} />
     }
 
     handleContentCreate = (changeContext) => {

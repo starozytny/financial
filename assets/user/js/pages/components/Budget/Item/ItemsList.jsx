@@ -33,7 +33,7 @@ export class ItemsList extends Component {
 
         let itemsFilter = [
             { value: 0, id: filtersId[0], label: filtersLabel[0]},
-            { value: 1, id: filtersId[1], label: filtersLabel[1] },
+            { value: 1, id: filtersId[1], label: filtersLabel[1]},
             { value: 2, id: filtersId[2], label: filtersLabel[2]}
         ];
 
@@ -47,7 +47,7 @@ export class ItemsList extends Component {
                 <div className="col-1">
                     <div className="toolbar">
                         <div className="item filter-search">
-                            <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
+                            <Filter ref={this.filter} items={itemsFilter} filters={filters} onGetFilters={onGetFilters} />
                             <Search onSearch={onSearch} placeholder="Recherche par description.."/>
                             <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
                         </div>
