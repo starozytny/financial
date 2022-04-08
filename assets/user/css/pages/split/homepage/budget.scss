@@ -8,6 +8,10 @@
       display: none;
     }
   }
+
+  .charts{
+    display: none;
+  }
 }
 
 .items-budget{
@@ -109,6 +113,16 @@
         margin-left: 0;
         width: 100%;
       }
+    }
+  }
+
+  .page-col-2{
+    .charts{
+      margin-top: 24px;
+      display: block;
+      background-color: var(--alpha);
+      border-radius: 8px;
+      padding: 12px;
     }
   }
 

@@ -45,9 +45,12 @@ export class ItemsList extends Component {
                                     year={year} month={month} categories={categories} total={total} typeItem={typeItem}
                                     onUpdateList={onUpdateList} key={i++} />
 
-                    <div className="charts">
-                        <ChartDay data={dataImmuable} key={i++} />
-                    </div>
+                    {(dataImmuable && dataImmuable.length !== 0) && <>
+                        <div className="charts">
+                            <ChartDay data={dataImmuable} key={i++} />
+                        </div>
+                    </>}
+
                 </div>
                 <div className="col-1">
                     <div className="toolbar">

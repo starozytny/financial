@@ -6,7 +6,6 @@ export class ChartDay extends Component {
     constructor(props) {
         super(props);
 
-        console.log(props.data);
         let data = [0, 0, 0];
         if(props.data){
             props.data.forEach(el => {
@@ -26,7 +25,7 @@ export class ChartDay extends Component {
     render () {
         const { options, series } = this.state;
 
-        return <Chart options={options} series={series} type="donut" height={320} />
+        return <Chart options={options} series={series} type="donut" height={280} />
 
     }
 }
