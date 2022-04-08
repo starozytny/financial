@@ -74,6 +74,7 @@ export class Items extends Component {
 
         let newDataPlanning = Formulaire.updateDataPagination(SORTER, newContext, newContext, dataPlanning, element, perPage);
         this.props.onUpdateData(newDataPlanning);
+        this.setState({ subContext: "create", element: null })
     }
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
@@ -141,7 +142,7 @@ export class Items extends Component {
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}
-                               data={currentData} />
+                               data={currentData} key={i++} />
     }
 
     handleContentCreate = (changeContext) => {
