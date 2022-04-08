@@ -76,6 +76,34 @@ function addZeroToNumber (data) {
     return data > 9 ? data : "0" + data;
 }
 
+function capitalize(elem) {
+    if(elem.length !== 0){
+        let first = elem.substring(0, 1);
+        elem = elem.substring(1);
+        elem = first.toUpperCase() + elem;
+    }
+
+    return elem;
+}
+
+function removeAccents (str) {
+    const accentsMap = {
+        a: 'á|à|ã|â|À|Á|Ã|Â',
+        e: 'é|è|ê|É|È|Ê',
+        i: 'í|ì|î|Í|Ì|Î',
+        o: 'ó|ò|ô|õ|Ó|Ò|Ô|Õ',
+        u: 'ú|ù|û|ü|Ú|Ù|Û|Ü',
+        c: 'ç|Ç',
+        n: 'ñ|Ñ',
+    };
+
+    for (let pattern in accentsMap) {
+        str = str.replace(new RegExp(accentsMap[pattern], 'g'), pattern);
+    }
+
+    return str;
+}
+
 module.exports = {
     sanitizeString,
     toFormatTime,
@@ -84,5 +112,7 @@ module.exports = {
     toFormatPhone,
     toFormatCurrency,
     toFormatBytesToSize,
-    addZeroToNumber
+    addZeroToNumber,
+    capitalize,
+    removeAccents
 }

@@ -96,6 +96,28 @@ function validateAtLeastOne($value, $valueCheck) {
     return {'code': true};
 }
 
+function validateLength($value, min, max) {
+    if($value.length < min || $value.length > max){
+        return {
+            'code': false,
+            'message': 'Ce champ doit contenir entre ' + (min + 1) + " et " + max + " caractères."
+        };
+    }
+
+    return {'code': true}
+}
+
+function validateUniqueLength($value, size) {
+    if ($value.length !== size) {
+        return {
+            'code': false,
+            'message': 'Ce champ doit contenir ' + size + " caractères."
+        };
+    }
+
+    return {'code': true}
+}
+
 function validateMinMax($value, $valueCheck) {
     if(parseFloat($value) > parseFloat($valueCheck)){
         return {
@@ -179,6 +201,12 @@ function switchCase(element){
             break;
         case 'atLeastOne':
             validate = validateAtLeastOne(element.value, element.valueCheck);
+            break;
+        case 'length':
+            validate = validateLength(element.value, element.min, element.max);
+            break;
+        case 'uniqueLength':
+            validate = validateUniqueLength(element.value, element.size);
             break;
         case 'minMax':
             validate = validateMinMax(element.value, element.valueCheck);

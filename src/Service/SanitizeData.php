@@ -95,11 +95,17 @@ class SanitizeData
 
     public function setToFloat($value, $return = null): ?float
     {
+        if($value == 0 || $value == "0"){
+            return (float) $value;
+        }
         return ($value == "" || $value == null) ? $return : (float) $value;
     }
 
     public function setToInteger($value, $return = null): ?int
     {
+        if($value == 0 || $value == "0"){
+            return (float) $value;
+        }
         return ($value == "" || $value == null) ? $return : (int) $value;
     }
 

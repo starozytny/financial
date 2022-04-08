@@ -140,7 +140,7 @@ export class FilterSelected extends Component {
                 }
 
                 return <div className="item" key={el}>
-                    <div className="role">
+                    <div className="badge badge-selected">
                         <input type="checkbox" name="filters-checked" id={`fcheck-${el}`} data-id={id} value={el} onChange={onChange}/>
                         <label htmlFor={`fcheck-${el}`}>
                             {label}

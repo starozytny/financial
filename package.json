@@ -43,7 +43,8 @@
         "react-transition-group": "1.x",
         "react-trumbowyg": "^1.1.0",
         "sweetalert2": "^10.12.4",
-        "toastr": "^2.1.4"
+        "toastr": "^2.1.4",
+        "uid": "^2.0.0"
     },
     "browserslist": [
         "last 4 version",

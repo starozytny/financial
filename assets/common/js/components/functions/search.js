@@ -1,6 +1,9 @@
+const Sanitaze = require('@commonComponents/functions/sanitaze')
+
 function search(type, dataImmuable, search) {
     let newData = [];
     search = search.toLowerCase();
+    search = Sanitaze.removeAccents(search);
     newData = dataImmuable.filter(function(v) {
         return switchFunction(type, search, v);
     })
@@ -8,13 +11,18 @@ function search(type, dataImmuable, search) {
     return newData;
 }
 
+function searchStartWith (value, search){
+    let val = Sanitaze.removeAccents(value);
+    return val.startsWith(search)
+}
+
 function switchFunction(type, search, v) {
     switch (type) {
         case "user":
-            if(v.username.toLowerCase().startsWith(search)
-                || v.email.toLowerCase().startsWith(search)
-                || v.firstname.toLowerCase().startsWith(search)
-                || v.lastname.toLowerCase().startsWith(search)
+            if(searchStartWith(v.username.toLowerCase(), search)
+                || searchStartWith(v.email.toLowerCase(), search)
+                || searchStartWith(v.firstname.toLowerCase(), search)
+                || searchStartWith(v.lastname.toLowerCase(), search)
             ){
                 return v;
             }
@@ -22,7 +30,7 @@ function switchFunction(type, search, v) {
         case "budget-item":
         case "budget-category":
         case "changelog":
-            if(v.name.toLowerCase().startsWith(search)){
+            if(searchStartWith(v.name.toLowerCase(), search)){
                 return v;
             }
             break;

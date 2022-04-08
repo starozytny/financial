@@ -25,6 +25,7 @@
           "warning" var(--warning),
           "primary" var(--primary),
           "success" var(--success),
+          "selected" var(--grey3),
 ;
 
   @each $number, $bg in $status {
