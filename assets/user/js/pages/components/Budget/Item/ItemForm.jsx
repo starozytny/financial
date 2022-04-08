@@ -118,14 +118,6 @@ class Form extends Component {
                     if(self.props.onChangeContext){
                         self.props.onChangeContext("list");
                     }
-
-                    self.setState({
-                        name: "",
-                        type: "",
-                        price: "",
-                        category: "",
-                        total: "",
-                    })
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);

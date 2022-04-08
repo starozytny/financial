@@ -32,7 +32,9 @@ export class ItemsItem extends Component {
                                 <span className={"icon-" + icon} />
                                 <span>{Sanitaze.toFormatCurrency(elem.price)}</span>
                             </div>
-                            {elem.category ? <div className="sub">{Sanitaze.toFormatCurrency(elem.category.total)} / {Sanitaze.toFormatCurrency(elem.category.goal)}</div> : null}
+                            {elem.category && elem.category.type === 2 ? <>
+                                <div className="sub">{Sanitaze.toFormatCurrency(elem.category.total)} / {Sanitaze.toFormatCurrency(elem.category.goal)}</div>
+                            </> : null}
                         </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeSubContext("update", elem)}>Modifier</ButtonIcon>

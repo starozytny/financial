@@ -46,7 +46,7 @@ export class ItemsList extends Component {
                                     onUpdateList={onUpdateList} key={i++} />
 
                     <div className="charts">
-                        <ChartDay data={dataImmuable} />
+                        <ChartDay data={dataImmuable} key={i++} />
                     </div>
                 </div>
                 <div className="col-1">
