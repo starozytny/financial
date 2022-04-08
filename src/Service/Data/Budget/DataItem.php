@@ -35,6 +35,7 @@ class DataItem
             ->setName($this->sanitizeData->trimData($data->name))
             ->setType($type)
             ->setPrice($price)
+            ->setHaveCashback($data->haveCashback)
         ;
 
         return [$obj, $total];

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import {Checkbox, Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
@@ -38,6 +38,7 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, typeItem) : typeItem}
         price={element ? Formulaire.setToFloat(element.price, "") : ""}
+        cashback={element ? (element.haveCashback ? [1] : [0]) : [1]}
         category={element && element.category ? Formulaire.setValueEmptyIfNull(element.category.id, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -68,6 +69,8 @@ class Form extends Component {
             price: props.price,
             category: props.category,
             total: props.total,
+            cashback: props.cashback,
+            haveCashback: props.cashback[0] === 1,
             errors: [],
             success: false
         }
@@ -80,13 +83,20 @@ class Form extends Component {
 
     handleChange = (e) => {
         const { category } = this.state;
+
         let name = e.currentTarget.name;
+        let value = e.currentTarget.value;
 
         if(name === "type" && category !== ""){
             this.setState({ category: "" })
         }
 
-        this.setState({[name]: e.currentTarget.value})
+        if(name === "cashback"){
+            value = (e.currentTarget.checked) ? [1] : [0] // parseInt because work with int this time
+            this.setState({ haveCashback: !!(e.currentTarget.checked) })
+        }
+
+        this.setState({[name]: value})
     }
 
     handleChangeCleave = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.rawValue}) }
@@ -138,7 +148,7 @@ class Form extends Component {
 
     render () {
         const { context, categories, onChangeSubContext } = this.props;
-        const { errors, success, name, type, price, category } = this.state;
+        const { errors, success, name, type, price, category, cashback } = this.state;
 
         let typeItems = [
             { value: 0,  label: 'Dépense',   identifiant: 'it-depense' },
@@ -158,6 +168,8 @@ class Form extends Component {
                 }
             })
         }
+
+        let switcherItems = [ { value: 1, label: 'Oui', identifiant: 'oui' } ]
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -188,11 +200,12 @@ class Form extends Component {
                     </div>
                 </>}
 
-                <div className="line">
+                <div className="line line-2 line-cashback">
                     <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
+                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="cashback" valeur={cashback} errors={errors} onChange={this.handleChange}>Cashback 2% ?</Checkbox>
                 </div>
 
-                <div className="line">
+                <div className="line line-buttons">
                     <div className="form-button">
                         <Button isSubmit={true}>{context === "create" ? TXT_CREATE_BUTTON_FORM : TXT_UPDATE_BUTTON_FORM}</Button>
                         {context === "update" && <Button isSubmit={false} type="default" outline={true} onClick={() => onChangeSubContext("create")}>Annuler</Button>}

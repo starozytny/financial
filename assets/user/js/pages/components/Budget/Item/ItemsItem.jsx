@@ -31,6 +31,10 @@ export class ItemsItem extends Component {
                             <div className={"name total-" + elem.type}>
                                 <span className={"icon-" + icon} />
                                 <span>{Sanitaze.toFormatCurrency(elem.price)}</span>
+                                {elem.haveCashback && <span className="haveCashback" /> }
+                                {(elem.type === 0 && elem.haveCashback) && <>
+                                    <span className="tooltip">Cashback 2% : {Sanitaze.toFormatCurrency(elem.price * (2/100))}</span>
+                                </>}
                             </div>
                             {elem.category && elem.category.type === 2 ? <>
                                 <div className="sub">{Sanitaze.toFormatCurrency(elem.category.total)} / {Sanitaze.toFormatCurrency(elem.category.goal)}</div>

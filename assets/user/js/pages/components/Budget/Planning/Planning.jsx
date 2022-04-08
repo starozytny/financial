@@ -64,11 +64,10 @@ export class Planning extends Component {
         const { categories, haveCashback } = this.props;
         const { data, totalInit, yearMin, yearActive, monthActive } = this.state;
 
-        console.log(haveCashback)
-
         let totalExpenses = 0;
         let totalIncomes = 0;
         let totalSavings = 0;
+        let totalCashback = 0;
 
         let totaux = [totalInit,0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -81,6 +80,9 @@ export class Planning extends Component {
                 switch (el.type){
                     case TYPE_EXPENSE:
                         totalExpenses += el.price;
+                        if(el.haveCashback){
+                            totalCashback += el.price;
+                        }
                         break;
                     case TYPE_INCOME:
                         totalIncomes += el.price;
@@ -150,7 +152,7 @@ export class Planning extends Component {
                                     <div className="name">{card.name}</div>
                                     <div className="total">
                                         <span>{Sanitaze.toFormatCurrency(card.total)}</span>
-                                        {card.value === 0 && haveCashback && <span className="cashback">Cashback 2% : {Sanitaze.toFormatCurrency(card.total * (2/100))}</span>}
+                                        {card.value === 0 && haveCashback && <span className="cashback">Cashback 2% : {Sanitaze.toFormatCurrency(totalCashback * (2/100))}</span>}
                                     </div>
                                 </div>
                             </div>

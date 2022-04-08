@@ -75,6 +75,12 @@ class BuItem extends DataEntity
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"item:read"})
+     */
+    private $haveCashback = false;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -186,6 +192,18 @@ class BuItem extends DataEntity
     public function setCategory(?BuCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getHaveCashback(): ?bool
+    {
+        return $this->haveCashback;
+    }
+
+    public function setHaveCashback(bool $haveCashback): self
+    {
+        $this->haveCashback = $haveCashback;
 
         return $this;
     }
