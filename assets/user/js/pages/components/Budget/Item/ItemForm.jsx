@@ -17,7 +17,8 @@ const URL_UPDATE_GROUP       = "api_budget_items_update";
 const TXT_CREATE_BUTTON_FORM = "Ajouter";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, year, month, typeItem = 0, categories, total = 0 })
+export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, onChangeSubContext,
+                                    year, month, typeItem = 0, categories, total = 0 })
 {
     let title = "Ajouter un élément";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -40,13 +41,19 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         category={element && element.category ? Formulaire.setValueEmptyIfNull(element.category.id, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
+        onChangeSubContext={onChangeSubContext}
         messageSuccess={msg}
 
         categories={categories}
         total={total}
     />
 
-    return onChangeContext ? <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout> : <div className="form">{form}</div>
+    return onChangeContext ? <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout> : <>
+        <div className="form">
+            <h2>{title}</h2>
+            {form}
+        </div>
+    </>
 }
 
 class Form extends Component {
@@ -130,7 +137,7 @@ class Form extends Component {
     }
 
     render () {
-        const { context, categories } = this.props;
+        const { context, categories, onChangeSubContext } = this.props;
         const { errors, success, name, type, price, category } = this.state;
 
         let typeItems = [
@@ -188,6 +195,7 @@ class Form extends Component {
                 <div className="line">
                     <div className="form-button">
                         <Button isSubmit={true}>{context === "create" ? TXT_CREATE_BUTTON_FORM : TXT_UPDATE_BUTTON_FORM}</Button>
+                        {context === "update" && <Button isSubmit={false} type="default" outline={true} onClick={() => onChangeSubContext("create")}>Annuler</Button>}
                     </div>
                 </div>
             </form>

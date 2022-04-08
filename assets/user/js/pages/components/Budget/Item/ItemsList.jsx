@@ -27,7 +27,7 @@ export class ItemsList extends Component {
     render () {
         const { subContext, taille, data, dataImmuable, perPage, onGetFilters, filters, onSearch, onPerPage,
             onPaginationClick, currentPage, sorters, onSorter,
-            onUpdateList, typeItem, year, month, categories, total, element } = this.props;
+            onUpdateList, typeItem, year, month, categories, total, element, onChangeSubContext } = this.props;
 
         let filtersLabel = ["Dépenses", "Revenus", "Economies"];
         let filtersId    = ["f-expenses", "f-revenus", "f-economies"];
@@ -41,12 +41,15 @@ export class ItemsList extends Component {
         return <>
             <div className="page-col-2">
                 <div className="col-2">
-                    <ItemFormulaire type={subContext} element={element}
-                                    year={year} month={month} categories={categories} total={total} typeItem={typeItem}
-                                    onUpdateList={onUpdateList} key={i++} />
+                    <div>
+                        <ItemFormulaire type={subContext} element={element} onChangeSubContext={onChangeSubContext}
+                                        year={year} month={month} categories={categories} total={total} typeItem={typeItem}
+                                        onUpdateList={onUpdateList} key={i++} />
+                    </div>
 
                     {(dataImmuable && dataImmuable.length !== 0) && <>
                         <div className="charts">
+                            <h2>Statistiques</h2>
                             <ChartDay data={dataImmuable} key={i++} />
                         </div>
                     </>}
