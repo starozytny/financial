@@ -17,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_budget_categories_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, element, isSaving })
+export function CategoryFormulaire ({ type, onChangeContext, onUpdateList, element, isSaving = false })
 {
     let title = "Ajouter une " + (isSaving ? "économie" : "catégorie");
     let url = Routing.generate(URL_CREATE_ELEMENT);

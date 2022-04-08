@@ -91,7 +91,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/economies", name="saving")
+     * @Route("/categories/economies", name="saving")
      */
     public function saving(SerializerInterface $serializer): Response
     {
