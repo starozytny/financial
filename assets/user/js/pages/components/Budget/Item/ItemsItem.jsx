@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import Sanitaze     from "@commonComponents/functions/sanitaze";
+import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 export class ItemsItem extends Component {
     render () {
-        const { elem, onChangeSubContext, onDelete} = this.props;
+        const { elem, onChangeSubContext, onDelete, onActivate, onDuplicate } = this.props;
 
         let icon = "add";
         if(elem.type === 0){
@@ -16,11 +16,11 @@ export class ItemsItem extends Component {
         }
 
         let dropdownItems = [
-            {data: <div>Copier au mois suivant</div>},
+            {data: <div onClick={() => onDuplicate(elem)}>Copier au mois suivant</div>},
         ]
 
         if(!elem.isActive){
-            dropdownItems = [...dropdownItems, ...[{data: <div>Activer</div>}]]
+            dropdownItems = [...dropdownItems, ...[{data: <div onClick={() => onActivate(elem)}>Activer</div>}]]
         }
 
         return <div className={"item " + elem.isActive}>

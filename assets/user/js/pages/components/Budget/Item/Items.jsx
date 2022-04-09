@@ -15,6 +15,8 @@ import { Layout }        from "@dashboardComponents/Layout/Page";
 import { ItemsList }       from "@userPages/components/Budget/Item/ItemsList";
 import { ItemFormulaire }  from "@userPages/components/Budget/Item/ItemForm";
 
+const URL_ACTIVATE_ELEMENT  = 'api_budget_items_activate';
+const URL_DUPLICATE_ELEMENT = 'api_budget_items_activate';
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
 let SORTER = Sort.compareCreatedAtInverse;
@@ -56,6 +58,8 @@ export class Items extends Component {
         this.handleSorter = this.handleSorter.bind(this);
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleActivate = this.handleActivate.bind(this);
+        this.handleDuplicate = this.handleDuplicate.bind(this);
 
         this.handleChangeSubContext = this.handleChangeSubContext.bind(this);
 
@@ -99,22 +103,15 @@ export class Items extends Component {
         Swal.fire(SwalOptions.options(MSG_DELETE_ELEMENT, text))
             .then((result) => {
                 if (result.isConfirmed) {
-                    Formulaire.loader(true);
-                    axios.delete(Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), {})
-                        .then(function (response) {
-                            self.handleUpdateList(element, "delete");
-                        })
-                        .catch(function (error) {
-                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
-                        })
-                        .then(() => {
-                            Formulaire.loader(false);
-                        })
-                    ;
+                    callApi(self, "DELETE", Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), element, "delete");
                 }
             })
         ;
     }
+
+    handleActivate = (element) => { callApi(this, "PUT", Routing.generate(URL_ACTIVATE_ELEMENT, {'id': element.id}), null, "update"); }
+
+    handleDuplicate = (element) => { callApi(this, "PUT", Routing.generate(URL_DUPLICATE_ELEMENT, {'id': element.id}), null, "update"); }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data, dataImmuable) => {
         const { year, month, categories, total } = this.props;
@@ -143,6 +140,8 @@ export class Items extends Component {
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}
+                               onActivate={this.handleActivate}
+                               onDuplicate={this.handleDuplicate}
                                dataImmuable={dataImmuable}
                                data={currentData} />
     }
@@ -167,4 +166,23 @@ export class Items extends Component {
                     onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
     }
+}
+
+function callApi (self, method, url, element, context) {
+    Formulaire.loader(true);
+    axios({ method: method, url: url, data: {} })
+        .then(function (response) {
+            if(element === null){
+                self.handleUpdateList(response.data, context);
+            }else{
+                self.handleUpdateList(element, context);
+            }
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+    ;
 }
