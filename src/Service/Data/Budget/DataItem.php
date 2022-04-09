@@ -18,14 +18,14 @@ class DataItem
         $this->sanitizeData = $sanitizeData;
     }
 
-    public function setData(BuItem $obj, $data, User $user, ?BuTotal $total = null): array
+    public function setData(BuItem $obj, $data, User $user, ?BuTotal $total = null, $oldPrice = 0): array
     {
         $year = $this->sanitizeData->setToInteger($data->year, 0);
         $type = $this->sanitizeData->setToInteger($data->type, 0);
         $price = $this->sanitizeData->setToFloat($data->price, 0);
 
         if($total){
-            $total = $this->setTotal($total, $user, $type, $year, $price);
+            $total = $this->setTotal($total, $user, $type, $year, $price, $oldPrice);
         }
 
         $obj = ($obj)
@@ -41,12 +41,14 @@ class DataItem
         return [$obj, $total];
     }
 
-    public function setTotal(BuTotal $total, User $user, $type, $year, $price): BuTotal
+    public function setTotal(BuTotal $total, User $user, $type, $year, $price, $oldPrice): BuTotal
     {
         $nTotal = $total->getTotal() ?: 0;
         if($type == BuItem::TYPE_INCOME){
+            $nTotal -= $oldPrice;
             $nTotal += $price;
         }else{
+            $nTotal += $oldPrice;
             $nTotal -= $price;
         }
 

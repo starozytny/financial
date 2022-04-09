@@ -86,6 +86,8 @@ class ItemController extends AbstractController
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
 
+        $oldPrice = $type == "update" ? $obj->getPrice() : 0;
+
         /** @var User $user */
         $user = $this->getUser();
 
@@ -99,12 +101,12 @@ class ItemController extends AbstractController
         }
 
         /** @var BuItem $obj */
-        [$obj, $total] = $dataEntity->setData($obj, $data, $user, $total);
+        [$obj, $total] = $dataEntity->setData($obj, $data, $user, $total, $oldPrice);
 
         $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
         foreach($totaux as $tot){
             if($tot->getYear() > $obj->getYear()){
-                $dataEntity->setTotal($tot, $user, $obj->getType(), $tot->getYear(), $obj->getPrice());
+                $dataEntity->setTotal($tot, $user, $obj->getType(), $tot->getYear(), $obj->getPrice(), $oldPrice);
             }
         }
 
@@ -217,7 +219,7 @@ class ItemController extends AbstractController
         $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
         foreach($totaux as $tot){
             if($tot->getYear() >= $obj->getYear()){
-                $dataEntity->setTotal($tot, $user, $obj->getType() == BuItem::TYPE_INCOME ? BuItem::TYPE_EXPENSE : BuItem::TYPE_INCOME, $tot->getYear(), $obj->getPrice());
+                $dataEntity->setTotal($tot, $user, $obj->getType() == BuItem::TYPE_INCOME ? BuItem::TYPE_EXPENSE : BuItem::TYPE_INCOME, $tot->getYear(), $obj->getPrice(), 0);
             }
         }
 

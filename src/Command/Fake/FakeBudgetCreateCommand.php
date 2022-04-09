@@ -3,6 +3,7 @@
 namespace App\Command\Fake;
 
 use App\Entity\Budget\BuItem;
+use App\Entity\Budget\BuTotal;
 use App\Entity\User;
 use App\Service\Data\Budget\DataItem;
 use App\Service\DatabaseService;
@@ -34,7 +35,7 @@ class FakeBudgetCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [BuItem::class]);
+        $this->databaseService->resetTable($io, [BuTotal::class, BuItem::class]);
 
         $user = $this->em->getRepository(User::class)->findOneBy(['username' => "shanbo"]);
 
@@ -48,7 +49,8 @@ class FakeBudgetCreateCommand extends Command
                 "type" => $fake->numberBetween(0, 2),
                 "price" => $fake->randomFloat(1),
                 "name" => $fake->name,
-                "category" => null
+                "category" => null,
+                "haveCashback" => false
             ];
 
             $data = json_decode(json_encode($data));
