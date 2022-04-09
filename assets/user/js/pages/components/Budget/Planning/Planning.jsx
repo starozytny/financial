@@ -22,9 +22,10 @@ export class Planning extends Component {
         this.state = {
             data: JSON.parse(props.donnees),
             yearActive: props.year,
-            monthActive: 1,
+            monthActive: (new Date()).getMonth() + 1,
             totalInit: parseFloat(props.totalInit),
-            yearMin: (new Date()).getFullYear()
+            yearInit: (new Date()).getFullYear(),
+            monthInit: (new Date()).getMonth() + 1,
         }
 
         this.items = React.createRef();
@@ -36,12 +37,14 @@ export class Planning extends Component {
     }
 
     handleSelectYear = (year) => {
+        const { yearInit, monthInit } = this.state;
+
         let self = this;
         Formulaire.loader(true);
         axios({ method: "GET", url: Routing.generate(URL_GET_DATA, {'year': year}), data: {} })
             .then(function (response) {
                 let data = response.data;
-                self.setState({ yearActive: year, monthActive: 1, data: JSON.parse(data.items), totalInit: parseFloat(data.totalInit) })
+                self.setState({ yearActive: year, monthActive: year === yearInit ? monthInit : 1, data: JSON.parse(data.items), totalInit: parseFloat(data.totalInit) })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error);
@@ -62,7 +65,7 @@ export class Planning extends Component {
 
     render () {
         const { categories, haveCashback } = this.props;
-        const { data, totalInit, yearMin, yearActive, monthActive } = this.state;
+        const { data, totalInit, yearActive, monthActive } = this.state;
 
         let totalExpenses = 0;
         let totalIncomes = 0;
