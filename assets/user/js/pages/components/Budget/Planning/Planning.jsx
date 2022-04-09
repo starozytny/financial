@@ -127,7 +127,7 @@ export class Planning extends Component {
                     <div className={"card card-default " + (totaux[monthActive] > 1)}>
                         <div className="card-header">
                             <div className="icon">
-                                <span className="icon-home" />
+                                <span className="icon-cart" />
                             </div>
                             <div className="title">
                                 <div className="name">Budget</div>
