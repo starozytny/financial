@@ -1,3 +1,15 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/footer";
+
+footer{
+  background-color: var(--fondContent);
+  border-top: 4px solid var(--color0);
+}
+
+.footer-logo{
+  a{
+    @include fontBold();
+    font-size: 20px;
+  }
+}

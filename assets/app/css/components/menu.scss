@@ -121,6 +121,7 @@ nav.fixed{
   .nav-container{
     @include flex(row, center, space-between);
     padding: 0 12px;
+    min-height: 88px;
   }
   .nav-header-logo{
     padding: 0;
