@@ -43,6 +43,10 @@
 
 .page-login{
 
+  .form{
+    padding: 0;
+  }
+
   .content-title {
     @include flex(column, center, center);
     margin-bottom: 24px;
@@ -77,6 +81,10 @@
     min-height: 80vh;
     max-width: 414px;
     margin: 0 auto;
+
+    .login-content{
+      width: 100%;
+    }
 
     .line-buttons{
       margin-top: 12px;
@@ -117,6 +125,7 @@
     .login-content-container{
       position: relative;
       z-index: 5;
+      padding: 48px 24px;
     }
   }
 }
@@ -131,7 +140,8 @@
 @media (min-width:1280px) {
   .page-login{
     .login-content-container{
-      padding: 0 96px;
+      padding: 48px 96px;
+      max-width: 500px;
 
       .login-content{
         max-width: 414px;

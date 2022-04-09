@@ -24,7 +24,6 @@ if(el){
 el = document.getElementById("user-registration");
 if(el){
     render(<>
-        <h1>Créer son compte</h1>
         <UserFormulaire type="create" roles={["ROLE_USER"]} isRegistration={true} />
     </>, el)
 }

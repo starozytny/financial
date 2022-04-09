@@ -1,9 +1,21 @@
 {% extends 'app/pages/security/template.html.twig' %}
 
-{% block title %}Création de compte{% endblock %}
+{% block title %}Créer son espace{% endblock %}
 
 {% block main_content %}
-    <div class="main-content" id="user-registration">
-        {% include "dashboard/layout/components/spinner.html.twig" %}
+    <div class="page-login">
+        <div class="login-image"></div>
+        <div class="login-content-container">
+            <div class="login-content">
+                <div class="content-title">
+                    <h1>Créer son espace</h1>
+                    <p>Ton espace te permettra de facilement gérer ton budget.</p>
+                </div>
+
+                <div id="user-registration">
+                    {% include "dashboard/layout/components/spinner-alone.html.twig" %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
