@@ -5,6 +5,10 @@
   margin: 0 auto;
   @include flex(column, center, center);
 
+  .line:first-child{
+    margin-bottom: 12px;
+  }
+
   .btn-forget, .btn-registration{
     display: block;
     opacity: 0.7;
@@ -33,6 +37,105 @@
 
     &:hover, .active{
       color: var(--txt);
+    }
+  }
+}
+
+.page-login{
+
+  .content-title {
+    @include flex(column, center, center);
+    margin-bottom: 24px;
+
+    h1{
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    p{
+      text-align: center;
+    }
+
+    &:after {
+      content: "";
+      background-color: var(--color0);
+      display: block;
+      width: 48px;
+      height: 4px;
+      margin: 24px 0;
+    }
+  }
+
+  .login-image{
+    display: none;
+  }
+
+  .login-content-container{
+    @include flex(row, center, center);
+    background-color: var(--alpha);
+    padding: 48px 12px;
+    min-height: 80vh;
+    max-width: 414px;
+    margin: 0 auto;
+
+    .line-buttons{
+      margin-top: 12px;
+    }
+  }
+}
+
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .page-login{
+    position: relative;
+
+    .login-image{
+      position: absolute;
+      top: 0; left: 0;
+      display: block;
+      width: 100%; height: 100%;
+      background: url("../../images/budget.jpg") no-repeat center fixed;
+      background-size: cover;
+      z-index: 0;
+
+      &:before{
+        content: "";
+        display: block;
+        width: 100%; height: 100%;
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        background-color: var(--color3Shadow);
+      }
+    }
+
+    .login-content-container{
+      position: relative;
+      z-index: 5;
+    }
+  }
+}
+
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .page-login{
+    .login-content-container{
+      padding: 0 96px;
+
+      .login-content{
+        max-width: 414px;
+      }
     }
   }
 }

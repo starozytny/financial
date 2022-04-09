@@ -5,12 +5,14 @@
 @import "../../common/css/color";
 
 :root{
+    --primary: #2a7bae;
     --color0: #2a7bae;
     --color1: #fec61f;
     --color2: #c80008;
     --color3: #07080d;
 
-    --color0Shadow: rgba(169, 170, 201, 0.4);
+    --color0Shadow: rgba(42, 123, 174, 0.4);
+    --color3Shadow: rgba(7, 8, 13, 0.4);
 }
 
 @import "vars/fonts";

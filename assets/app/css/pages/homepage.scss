@@ -90,6 +90,19 @@
 .form-contact{
   background: linear-gradient(#185073, #07080d);
 
+  .home-contact-title {
+    @include flex(column, center, center);
+
+    &:after {
+      content: "";
+      background-color: var(--color0);
+      display: block;
+      width: 48px;
+      height: 4px;
+      margin: 24px 0;
+    }
+  }
+
   .form-contact-container{
     padding: 48px 12px;
   }

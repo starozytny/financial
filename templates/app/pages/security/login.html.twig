@@ -1,44 +1,56 @@
 {% extends 'app/pages/security/template.html.twig' %}
 
-{% block title %}Connexion à son espace{% endblock %}
+{% block title %}Accéder à son espace {{ parent() }}{% endblock %}
 
 {% block main_content %}
-    <div class="main-content">
-        <h1>Se connecter</h1>
-
-        <form method="post" class="form-login">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
-           <div class="line">
-               <label for="inputUsername">Nom utilisateur</label>
-               <input type="text" value="{{ last_username }}" name="username" id="inputUsername" required autofocus>
-           </div>
-            <div class="line">
-                <label for="inputPassword">Mot de passe</label>
-                <div class="see-password">
-                    <input type="password" name="password" id="inputPassword" required>
-                    <span class="icon-vision btn-see-password"></span>
+    <div class="page-login">
+        <div class="login-image"></div>
+        <div class="login-content-container">
+            <div class="login-content">
+                <div class="content-title">
+                    <h1>Accéder à son espace</h1>
+                    <p>
+                        Bon retour ! Entre tes informations pour entrer dans ton espace et gérer ton budget.
+                    </p>
                 </div>
-            </div>
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
+                <form method="post" class="form-login">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
 
-            <div class="line">
-                <div id="forget"></div>
-                <div>
-                    <a class="btn-registration" href="{{ path('app_user_registration') }}">Créer son compte</a>
-                </div>
-            </div>
+                    <div class="line">
+                        <label for="inputUsername">Nom utilisateur</label>
+                        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" required autofocus>
+                    </div>
+                    <div class="line">
+                        <label for="inputPassword">Mot de passe</label>
+                        <div class="see-password">
+                            <input type="password" name="password" id="inputPassword" required>
+                            <span class="icon-vision btn-see-password"></span>
+                        </div>
+                    </div>
 
-            <div class="form-button">
-                <button class="btn btn-primary" type="submit">
-                    Se connecter
-                </button>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+
+                    <div class="line">
+                        <div id="forget"></div>
+                        <div>
+                            <a class="btn-registration" href="{{ path('app_user_registration') }}">Créer son compte</a>
+                        </div>
+                    </div>
+
+                    <div class="line line-buttons">
+                        <div class="form-button">
+                            <button class="btn btn-primary" type="submit">
+                                Se connecter
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 {% endblock %}
