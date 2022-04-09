@@ -82,6 +82,12 @@ class BuItem extends DataEntity
     private $createdAt;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"item:read"})
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\ManyToOne(targetEntity=BuCategory::class, fetch="EAGER", inversedBy="items")
      * @Groups({"item:read"})
      */
@@ -222,6 +228,30 @@ class BuItem extends DataEntity
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"item:read"})
+     */
+    public function getUpdatedAtString(): ?string
+    {
+        return $this->getFullDateString($this->updatedAt);
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        if($updatedAt){
+            $updatedAt->setTimezone(new \DateTimeZone("Europe/Paris"));
+        }
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

@@ -46,6 +46,13 @@ function compareWithoutAccent(aVal, bVal) {
     return comparison(aName.toLowerCase(), bName.toLowerCase());
 }
 
+function compareCreatedAtOrUpdatedAtInverse(a, b){
+    let valA = a.updatedAt ? a.updatedAt : a.createdAt;
+    let valB = b.updatedAt ? b.updatedAt : b.createdAt;
+
+    return comparison(valB, valA);
+}
+
 function comparison (objA, objB){
     let comparison = 0;
     if (objA > objB) {
@@ -67,4 +74,5 @@ module.exports = {
     compareEmail,
     compareZipcode,
     compareCity,
+    compareCreatedAtOrUpdatedAtInverse,
 }

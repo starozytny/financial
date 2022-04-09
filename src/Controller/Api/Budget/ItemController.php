@@ -10,6 +10,7 @@ use App\Service\ApiResponse;
 use App\Service\Budget\BudgetService;
 use App\Service\Data\Budget\DataItem;
 use App\Service\ValidatorService;
+use DateTime;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -260,6 +261,7 @@ class ItemController extends AbstractController
         $em = $this->doctrine->getManager();
 
         $obj->setIsActive(true);
+        $obj->setUpdatedAt(new DateTime());
 
         $em->flush();
         return $apiResponse->apiJsonResponse($obj, BuItem::ITEM_READ);

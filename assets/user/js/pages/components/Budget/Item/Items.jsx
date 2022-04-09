@@ -19,14 +19,14 @@ const URL_ACTIVATE_ELEMENT  = 'api_budget_items_activate';
 const URL_DUPLICATE_ELEMENT = 'api_budget_items_activate';
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
-let SORTER = Sort.compareCreatedAtInverse;
+let SORTER = Sort.compareCreatedAtOrUpdatedAtInverse;
 
 let sorters = [
     { value: 0, label: 'Création',  identifiant: 'sorter-created' },
     { value: 1, label: 'Nom',       identifiant: 'sorter-nom' },
 ]
 
-let sortersFunction = [Sort.compareCreatedAtInverse, Sort.compareName];
+let sortersFunction = [Sort.compareCreatedAtOrUpdatedAtInverse, Sort.compareName];
 
 let i = 0;
 
