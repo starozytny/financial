@@ -67,6 +67,12 @@
     }
   }
 
+  .item.false{
+    .col-2, .col-3{
+      opacity: 0.5;
+    }
+  }
+
   .activate{
     position: relative;
     cursor: pointer;
