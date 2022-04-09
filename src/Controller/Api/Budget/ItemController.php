@@ -232,4 +232,36 @@ class ItemController extends AbstractController
         $em->flush();
         return $apiResponse->apiJsonResponseSuccessful("Supression réussie !");
     }
+
+    /**
+     * @Route("/{id}/activate", name="activate", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns an object"
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     * @OA\Response(
+     *     response=400,
+     *     description="Validation failed",
+     * )
+     *
+     * @OA\Tag(name="BudgetItem")
+     *
+     * @param ApiResponse $apiResponse
+     * @param BuItem $obj
+     * @return JsonResponse
+     */
+    public function activate(ApiResponse $apiResponse, BuItem $obj): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setIsActive(true);
+
+        $em->flush();
+        return $apiResponse->apiJsonResponse($obj, BuItem::ITEM_READ);
+    }
 }

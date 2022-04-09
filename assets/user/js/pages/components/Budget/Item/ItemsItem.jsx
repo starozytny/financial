@@ -16,15 +16,19 @@ export class ItemsItem extends Component {
         }
 
         let dropdownItems = [
-            {data: <div>Dupliquer au mois suivant</div>},
+            {data: <div>Copier au mois suivant</div>},
         ]
 
-        return <div className="item">
+        if(!elem.isActive){
+            dropdownItems = [...dropdownItems, ...[{data: <div>Activer</div>}]]
+        }
+
+        return <div className={"item " + elem.isActive}>
             <div className="item-content">
                 <div className="item-body">
                     <div className="infos infos-col-4">
                         <div className="col-1">
-                            <div className="sub">{elem.createdAtString}</div>
+                            <div className="sub">{elem.isActive ? elem.createdAtString : <span className="badge badge-5">Prévisionnel</span>}</div>
                         </div>
                         <div className="col-2">
                             <div className="name">{elem.name}</div>
