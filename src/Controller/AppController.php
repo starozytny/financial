@@ -49,10 +49,10 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/nous-contacter", name="app_contact")
+     * @Route("/restons-en-contact", name="app_contact")
      */
     public function contact(): Response
     {
-        return $this->render('app/pages/contact/index.html.twig');
+        return $this->redirectToRoute('app_homepage', ['_fragment' => "restons-en-contact"]);
     }
 }

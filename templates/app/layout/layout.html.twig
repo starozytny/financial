@@ -12,22 +12,6 @@
             'path': path('app_homepage'),
             'label': 'Accueil',
             'name': 'accueil'
-        },
-        {
-            'dropdown': true,
-            'label': 'Dropdown',
-            'items': [
-                {
-                    'path': path('app_homepage'),
-                    'label': 'Item 1',
-                    'name': 'item-2'
-                },
-                {
-                    'path': path('app_homepage'),
-                    'label': 'Item 2',
-                    'name': 'item-2'
-                }
-            ]
         }
     ] %}
 
@@ -49,7 +33,12 @@
         {% set menuLogged = [
             {
                 'path': path('app_login'),
-                'label': 'Mon espace',
+                'label': 'M\'inscrire',
+                'name': 'inscription'
+            },
+            {
+                'path': path('app_login'),
+                'label': 'Me connecter',
                 'name': 'login'
             }
         ] %}
