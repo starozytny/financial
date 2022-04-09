@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
     }
     
     /**
-     * @Route("/login", options={"expose"=true}, name="app_login")
+     * @Route("/se-connecter", options={"expose"=true}, name="app_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */

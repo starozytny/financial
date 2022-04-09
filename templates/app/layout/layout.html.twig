@@ -20,7 +20,7 @@
             {
                 'path': path('app_login'),
                 'label': 'Mon espace',
-                'name': 'login'
+                'name': 'se-connecter'
             },
             {
                 'path': path('app_logout'),
@@ -32,13 +32,13 @@
     {% else %}
         {% set menuLogged = [
             {
-                'path': path('app_login'),
-                'label': 'M\'inscrire',
+                'path': path('app_user_registration'),
+                'label': 'S\'inscrire',
                 'name': 'inscription'
             },
             {
                 'path': path('app_login'),
-                'label': 'Me connecter',
+                'label': 'Se connecter',
                 'name': 'login'
             }
         ] %}

@@ -57,7 +57,7 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/creation-compte", name="app_user_registration")
+     * @Route("/inscription", name="app_user_registration")
      */
     public function userRegistration(): Response
     {
