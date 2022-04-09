@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Sanitaze     from "@commonComponents/functions/sanitaze";
 
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 export class ItemsItem extends Component {
     render () {
@@ -14,6 +14,10 @@ export class ItemsItem extends Component {
         }else if(elem.type === 2){
             icon = "time"
         }
+
+        let dropdownItems = [
+            {data: <div>Dupliquer au mois suivant</div>},
+        ]
 
         return <div className="item">
             <div className="item-content">
@@ -43,6 +47,7 @@ export class ItemsItem extends Component {
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeSubContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            <ButtonIconDropdown icon="more" text="" items={dropdownItems} />
                         </div>
                     </div>
                 </div>

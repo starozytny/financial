@@ -36,6 +36,7 @@ class DataItem
             ->setType($type)
             ->setPrice($price)
             ->setHaveCashback($data->haveCashback)
+            ->setIsActive($data->isActive)
         ;
 
         return [$obj, $total];

@@ -58,6 +58,18 @@ class BuItem extends DataEntity
     private $name;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"item:read"})
+     */
+    private $haveCashback = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"item:read"})
+     */
+    private $isActive = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buItems")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -74,12 +86,6 @@ class BuItem extends DataEntity
      * @Groups({"item:read"})
      */
     private $category;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"item:read"})
-     */
-    private $haveCashback = false;
 
     public function __construct()
     {
@@ -204,6 +210,18 @@ class BuItem extends DataEntity
     public function setHaveCashback(bool $haveCashback): self
     {
         $this->haveCashback = $haveCashback;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

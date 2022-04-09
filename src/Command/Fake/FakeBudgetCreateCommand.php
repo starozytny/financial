@@ -50,7 +50,8 @@ class FakeBudgetCreateCommand extends Command
                 "price" => $fake->randomFloat(1),
                 "name" => $fake->name,
                 "category" => null,
-                "haveCashback" => false
+                "haveCashback" => false,
+                "isActive" => false,
             ];
 
             $data = json_decode(json_encode($data));
