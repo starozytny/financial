@@ -87,8 +87,16 @@ class Form extends Component {
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
 
-        if(name === "type" && category !== ""){
-            this.setState({ category: "" })
+        if(name === "type"){
+            if(category !== ""){
+                this.setState({ category: "" })
+            }
+
+            if(parseInt(value) !== 0){
+                this.setState({ cashback: [0], haveCashback: false })
+            }else{
+                this.setState({ cashback: [1], haveCashback: true })
+            }
         }
 
         if(name === "cashback"){
@@ -202,7 +210,12 @@ class Form extends Component {
 
                 <div className="line line-2 line-cashback">
                     <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
-                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="cashback" valeur={cashback} errors={errors} onChange={this.handleChange}>Cashback 2% ?</Checkbox>
+                    {parseInt(type) === 0 ? <>
+                        <Checkbox isSwitcher={true} items={switcherItems} identifiant="cashback" valeur={cashback} errors={errors} onChange={this.handleChange}>
+                            Cashback 2% ?
+                        </Checkbox>
+                    </> : <div className="form-group" />}
+
                 </div>
 
                 <div className="line line-buttons">
