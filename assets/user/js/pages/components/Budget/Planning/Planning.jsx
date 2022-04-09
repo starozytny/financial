@@ -130,7 +130,7 @@ export class Planning extends Component {
                                 <span className="icon-cart" />
                             </div>
                             <div className="title">
-                                <div className="name">Budget</div>
+                                <div className="name">Budget disponible</div>
                                 <div className="total">
                                     <span>{Sanitaze.toFormatCurrency(totaux[monthActive])}</span>
                                 </div>
