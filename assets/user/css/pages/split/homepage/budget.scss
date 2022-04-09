@@ -66,6 +66,18 @@
       }
     }
   }
+
+  .activate{
+    position: relative;
+    cursor: pointer;
+
+    &:hover{
+      .tooltip{
+        opacity: 1;
+        z-index: 1;
+      }
+    }
+  }
 }
 
 .card{

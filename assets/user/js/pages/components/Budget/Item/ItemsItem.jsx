@@ -28,7 +28,13 @@ export class ItemsItem extends Component {
                 <div className="item-body">
                     <div className="infos infos-col-4">
                         <div className="col-1">
-                            <div className="sub">{elem.isActive ? elem.updatedAtString ? elem.updatedAtString : elem.createdAtString : <span className="badge badge-5">Prévisionnel</span>}</div>
+                            <div className="sub">{elem.isActive ? elem.updatedAtString ? elem.updatedAtString : elem.createdAtString : <>
+                                <span className="activate badge badge-5" onClick={() => onActivate(elem)}>
+                                    <span>Prévisionnel</span>
+                                    <span className="tooltip">Activer</span>
+                                </span>
+                            </>}
+                            </div>
                         </div>
                         <div className="col-2">
                             <div className="name">{elem.name}</div>
