@@ -3,20 +3,29 @@
 {% block title %}Réinitialisation de mot de passe{% endblock %}
 
 {% block main_content %}
-    <div class="main-content">
-        {% if error is defined %}
-            <h1>Lien expiré</h1>
-            <p>
-                Ce lien de réinitialisation de mot de passe a expiré. Veuillez recommencer la procédure. <br><br>
-            </p>
-            <div class="exceptions-actions">
-                <a href="{{ path('app_login') }}" class="btn btn-primary">Recommencer</a>
-                <a href="{{ path('app_homepage') }}" class="btn btn-default">Revenir à la page d'accueil</a>
+    <div class="page-login">
+        <div class="login-image"></div>
+        <div class="login-content-container">
+            <div class="login-content">
+                {% if error is defined %}
+                    <div class="content-title">
+                        <h1>Lien expiré</h1>
+                        <p>Ce lien de réinitialisation de mot de passe a expiré. Veuillez recommencer la procédure.</p>
+                    </div>
+                    <div class="exceptions-actions">
+                        <a href="{{ path('app_login') }}" class="btn btn-primary">Recommencer</a>
+                        <a href="{{ path('app_homepage') }}" class="btn btn-default">Revenir à la page d'accueil</a>
+                    </div>
+                {% else %}
+                    <div class="content-title">
+                        <h1>Réinitialisation du mot de passe</h1>
+                    </div>
+
+                    <div id="reinit" data-token={{ token }}>
+                        {% include "dashboard/layout/components/spinner-alone.html.twig" %}
+                    </div>
+                {% endif %}
             </div>
-        {% else %}
-            <div id="reinit" data-token={{ token }}>
-                {% include "dashboard/layout/components/spinner.html.twig" %}
-            </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}
