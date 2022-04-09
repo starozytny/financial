@@ -1,0 +1,20 @@
+{% extends 'app/email/template/template.html.twig' %}
+
+{% block preheader %}Bienvenue sur {{ settings.websiteName }}.{% endblock %}
+
+{% block title %}Bienvenue !{% endblock %}
+
+{% block body %}
+    <div>
+        <p>Bonjour, <br>
+            <br>
+            Bienvenue sur notre site ! <br>
+            Votre identifiant de connexion est : <b>{{ elem.username }}</b>
+            <br><br>
+        </p>
+        <br>
+        <p>
+            Nous vous souhaitons une agréable visite sur <a href="{{ settings.urlHomepage }}">notre site</a>.
+        </p>
+    </div>
+{% endblock %}

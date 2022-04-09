@@ -65,9 +65,11 @@ class UserController extends AbstractController
     public function submitForm($type, User $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataUser $dataEntity,
                                UserPasswordHasherInterface $passwordHasher, FileUploader $fileUploader,
-                               NotificationService $notificationService): JsonResponse
+                               NotificationService $notificationService, MailerService $mailerService,
+                               SettingsService $settingsService): JsonResponse
     {
         $em = $this->doctrine->getManager();
+        $isRegistration = $request->query->get('n');
         $data = json_decode($request->get('data'));
 
         if ($data === null) {
@@ -112,6 +114,22 @@ class UserController extends AbstractController
 
         if($type === "create"){
             $notificationService->createNotification("Création d'un utilisateur", self::ICON, $this->getUser());
+
+            if($isRegistration !== null){
+                //send mail
+                if($mailerService->sendMail(
+                        "chanbora.chhun@outlook.fr",
+                        "[" . $settingsService->getWebsiteName() ."] Bienvenue",
+                        "Bienvenue sur " . $settingsService->getWebsiteName(),
+                        "app/email/security/registration.html.twig",
+                        ["elem" => $obj, "settings" => $settingsService->getSettings()]
+                    ) != true) {
+                    return $apiResponse->apiJsonResponseValidationFailed([[
+                        'name' => 'message',
+                        'message' => "L'email de bienvenu n\'a pas pu être délivré mais votre compte a bien été créé."
+                    ]]);
+                }
+            }
         }else{
             $notificationService->createNotification("Mise à jour d'un utilisateur", self::ICON, $this->getUser(),
                 $this->generateUrl('admin_users_index', ['search' => $obj->getUsername()])
@@ -122,9 +140,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Admin - Create a user
-     *
-     * @Security("is_granted('ROLE_ADMIN')")
+     * Create a user
      *
      * @Route("/", name="create", options={"expose"=true}, methods={"POST"})
      *
@@ -147,12 +163,16 @@ class UserController extends AbstractController
      * @param FileUploader $fileUploader
      * @param NotificationService $notificationService
      * @param DataUser $dataEntity
+     * @param SettingsService $settingsService
+     * @param MailerService $mailerService
      * @return JsonResponse
      */
     public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse, UserPasswordHasherInterface $passwordHasher,
-                           FileUploader $fileUploader, NotificationService $notificationService, DataUser $dataEntity): JsonResponse
+                           FileUploader $fileUploader, NotificationService $notificationService, DataUser $dataEntity,
+                           MailerService $mailerService, SettingsService $settingsService): JsonResponse
     {
-        return $this->submitForm("create", new User(), $request, $apiResponse, $validator, $dataEntity, $passwordHasher, $fileUploader, $notificationService);
+        return $this->submitForm("create", new User(), $request, $apiResponse, $validator, $dataEntity,
+            $passwordHasher, $fileUploader, $notificationService, $mailerService, $settingsService);
     }
 
     /**
@@ -183,17 +203,21 @@ class UserController extends AbstractController
      * @param User $obj
      * @param FileUploader $fileUploader
      * @param DataUser $dataEntity
+     * @param MailerService $mailerService
+     * @param SettingsService $settingsService
      * @return JsonResponse
      */
     public function update(Request $request, ValidatorService $validator, NotificationService $notificationService,
                            UserPasswordHasherInterface $passwordHasher, ApiResponse $apiResponse, User $obj,
-                           FileUploader $fileUploader, DataUser $dataEntity): JsonResponse
+                           FileUploader $fileUploader, DataUser $dataEntity,
+                           MailerService $mailerService, SettingsService $settingsService): JsonResponse
     {
         if ($this->getUser() !== $obj && !$this->isGranted("ROLE_ADMIN")) {
             return $apiResponse->apiJsonResponseForbidden();
         }
 
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $passwordHasher, $fileUploader, $notificationService);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity,
+            $passwordHasher, $fileUploader, $notificationService, $mailerService, $settingsService);
     }
 
     /**
