@@ -63,9 +63,11 @@ export class Planning extends Component {
     handleUpdateData = (data) => { this.setState({ data: data }) }
 
     handUpdateDuplicate = (elem) => {
-        const { data } = this.state;
+        const { yearActive, data } = this.state;
 
-        this.setState({ data: [...data, ...[elem]] })
+        if(elem.year === yearActive){
+            this.setState({ data: [...data, ...[elem]] })
+        }
     }
 
     handUpdateCategories = (category) => {
