@@ -65,7 +65,7 @@ export class Planning extends Component {
     handUpdateDuplicate = (elem) => {
         const { yearActive, data } = this.state;
 
-        if(elem.year === yearActive){
+        if(elem.year === parseInt(yearActive)){
             this.setState({ data: [...data, ...[elem]] })
         }
     }
