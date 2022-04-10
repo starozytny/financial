@@ -26,6 +26,7 @@ export class Planning extends Component {
             totalInit: parseFloat(props.totalInit),
             yearInit: (new Date()).getFullYear(),
             monthInit: (new Date()).getMonth() + 1,
+            categories: props.categories ? JSON.parse(props.categories) : [],
         }
 
         this.items = React.createRef();
@@ -33,6 +34,8 @@ export class Planning extends Component {
         this.handleSelectYear = this.handleSelectYear.bind(this);
         this.handleSelectMonth = this.handleSelectMonth.bind(this);
         this.handleUpdateData = this.handleUpdateData.bind(this);
+        this.handUpdateDuplicate = this.handUpdateDuplicate.bind(this);
+        this.handUpdateCategories = this.handUpdateCategories.bind(this);
         this.handleChangeContext = this.handleChangeContext.bind(this);
     }
 
@@ -59,24 +62,34 @@ export class Planning extends Component {
 
     handleUpdateData = (data) => { this.setState({ data: data }) }
 
+    handUpdateDuplicate = (elem) => {
+        const { data } = this.state;
+
+        this.setState({ data: [...data, ...[elem]] })
+    }
+
+    handUpdateCategories = (category) => {
+        const { categories } = this.state;
+
+        let nCategories = [];
+        categories.forEach(cat => {
+            if(cat.id === category.id){
+                cat = category;
+            }
+
+            nCategories.push(cat);
+        })
+
+        this.setState({ categories: nCategories })
+    }
+
     handleChangeContext = (context, typeItem) => {
         this.items.current.handleChangeContext(context, null, typeItem);
     }
 
-    handUpdateDuplicate = (elem) => {
-        const { data } = this.state;
-
-        let nData = [...data, ...[elem]];
-
-        console.log(elem)
-        console.log(nData)
-
-        this.setState({ data: nData })
-    }
-
     render () {
-        const { categories, haveCashback } = this.props;
-        const { data, totalInit, yearActive, monthActive } = this.state;
+        const { haveCashback } = this.props;
+        const { data, categories, totalInit, yearActive, monthActive } = this.state;
 
         let totalExpenses = 0;
         let totalIncomes = 0;
@@ -175,9 +188,9 @@ export class Planning extends Component {
                 </div>
 
                 <div className="items">
-                    <Items ref={this.items} onUpdateData={this.handleUpdateData} categories={JSON.parse(categories)} dataPlanning={data} total={totaux[12]}
+                    <Items ref={this.items} onUpdateData={this.handleUpdateData} categories={categories} dataPlanning={data} total={totaux[12]}
                            donnees={JSON.stringify(items)} year={parseInt(yearActive)} month={parseInt(monthActive)} key={yearActive + "-" + monthActive}
-                           onUpdateDuplicate={this.handUpdateDuplicate} />
+                           onUpdateDuplicate={this.handUpdateDuplicate} onUpdateCategories={this.handUpdateCategories}/>
                 </div>
             </div>
         </div>

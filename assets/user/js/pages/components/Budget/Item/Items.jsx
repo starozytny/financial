@@ -76,6 +76,10 @@ export class Items extends Component {
 
         this.layout.current.handleUpdateList(element, newContext);
 
+        if(element && element.category){
+            this.props.onUpdateCategories(element.category);
+        }
+
         let newDataPlanning = Formulaire.updateDataPagination(SORTER, newContext, newContext, dataPlanning, element, perPage);
         this.props.onUpdateData(newDataPlanning);
         this.setState({ subContext: "create", element: null })
