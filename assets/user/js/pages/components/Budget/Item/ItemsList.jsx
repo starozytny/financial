@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 
+import axios   from "axios";
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
+import { Button, ButtonIcon }       from "@dashboardComponents/Tools/Button";
 import { Search }                   from "@dashboardComponents/Layout/Search";
+import { Input }                    from "@dashboardComponents/Tools/Fields";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
+import { Aside }                    from "@dashboardComponents/Tools/Aside";
 
-import Sanitaze from "@commonComponents/functions/sanitaze";
+import Validateur   from "@commonComponents/functions/validateur";
+import Formulaire   from "@dashboardComponents/functions/Formulaire";
+import Sanitaze     from "@commonComponents/functions/sanitaze";
 
 import { ItemsItem }      from "@userPages/components/Budget/Item/ItemsItem";
 import { ItemFormulaire } from "@userPages/components/Budget/Item/ItemForm";
 import { ChartDay }       from "@userPages/components/Stats/Charts";
-
 
 let i = 0;
 
@@ -19,19 +25,83 @@ export class ItemsList extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            useSaving: "",
+            asideElement: null,
+            errors: []
+        }
+
         this.filter = React.createRef();
+        this.aside = React.createRef();
 
         this.handleFilter = this.handleFilter.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleOpenAside = this.handleOpenAside.bind(this);
+        this.handleUseSaving = this.handleUseSaving.bind(this);
     }
 
     handleFilter = (e) => {
         this.filter.current.handleChange(e, true);
     }
 
+    handleOpenAside = (asideElement) => {
+        this.setState({ asideElement: asideElement, useSaving: asideElement.total })
+        this.aside.current.handleOpen()
+    }
+
+    handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
+
+    handleUseSaving = (e) => {
+        const { year, month } = this.props;
+        const { asideElement, useSaving } = this.state;
+
+        e.preventDefault();
+
+        this.setState({ errors: [] })
+
+        let paramsToValidate = [
+            {type: "text", id: 'useSaving',  value: useSaving}
+        ];
+
+        console.log(useSaving)
+
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate)
+
+        if(useSaving !== "" && parseFloat(useSaving) > asideElement.total){
+            validate.code = false;
+            validate.errors.push({
+                name: "useSaving",
+                message: "La valeur ne peut pas être supérieure à " + Sanitaze.toFormatCurrency(asideElement.total) + "."
+            })
+        }
+
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            // Formulaire.loader(true);
+            // let self = this;
+            // axios({ method: "POST", url: Routing.generate('app_homepage'), data: this.state })
+            //     .then(function (response) {
+            //         let data = response.data;
+            //
+            //         self.aside.current.handleClose();
+            //     })
+            //     .catch(function (error) {
+            //         Formulaire.displayErrors(self, error);
+            //     })
+            //     .then(() => {
+            //         Formulaire.loader(false);
+            //     })
+            // ;
+        }
+    }
+
     render () {
         const { subContext, taille, data, dataImmuable, perPage, onGetFilters, filters, onSearch, onPerPage,
             onPaginationClick, currentPage, sorters, onSorter,
             onUpdateList, typeItem, year, month, categories, total, element, onChangeSubContext } = this.props;
+        const { asideElement, errors, useSaving } = this.state;
 
         let filtersLabel = ["Dépenses", "Revenus", "Economies"];
         let filtersId    = ["f-expenses", "f-revenus", "f-economies"];
@@ -51,6 +121,21 @@ export class ItemsList extends Component {
             })
         }
 
+        let contentAside = asideElement ? <form>
+            <div className="line">
+                <Input type="number" step="any" min={0} max={asideElement.total} valeur={useSaving} identifiant="useSaving"
+                       errors={errors} onChange={this.handleChange}>
+                    Utilisation ({Sanitaze.toFormatCurrency(asideElement.total)} max.)
+                </Input>
+            </div>
+
+            <div className="line line-buttons">
+                <div className="form-button">
+                    <Button onClick={this.handleUseSaving}>Valider</Button>
+                </div>
+            </div>
+        </form> : <div />
+
         return <>
             <div className="page-col-2">
                 <div className="col-2">
@@ -64,7 +149,7 @@ export class ItemsList extends Component {
                         <div className="use-saving">
                             <h2>Utilisation des économies</h2>
                             <div>
-                                <Saving data={savings} />
+                                <Saving data={savings} onOpen={this.handleOpenAside}/>
                             </div>
                         </div>
                     </>}
@@ -110,11 +195,13 @@ export class ItemsList extends Component {
                     </div>
                 </div>
             </div>
+
+            <Aside ref={this.aside} content={contentAside}>Utilisation</Aside>
         </>
     }
 }
 
-function Saving ({ data }) {
+function Saving ({ data, onOpen }) {
     return <div className="items-table">
         <div className="items items-default">
             <div className="item item-header">
@@ -135,7 +222,7 @@ function Saving ({ data }) {
                             <div className="col-1">{elem.name}</div>
                             <div className="col-2">{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>
                             <div className="col-3 actions">
-                                {elem.total > 0 && <ButtonIcon icon="cart" >Utiliser</ButtonIcon>}
+                                {elem.total > 0 && <ButtonIcon icon="cart" onClick={() => onOpen(elem)}>Utiliser</ButtonIcon>}
                             </div>
                         </div>
                     </div>
