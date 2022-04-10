@@ -4,10 +4,14 @@ import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
 import { Search }                   from "@dashboardComponents/Layout/Search";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
+import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
 
-import { ItemsItem }      from "./ItemsItem";
+import Sanitaze from "@commonComponents/functions/sanitaze";
+
+import { ItemsItem }      from "@userPages/components/Budget/Item/ItemsItem";
 import { ItemFormulaire } from "@userPages/components/Budget/Item/ItemForm";
 import { ChartDay }       from "@userPages/components/Stats/Charts";
+
 
 let i = 0;
 
@@ -38,6 +42,15 @@ export class ItemsList extends Component {
             { value: 2, id: filtersId[2], label: filtersLabel[2]}
         ];
 
+        let savings = [];
+        if(categories){
+            categories.forEach(cat => {
+                if(cat.type === 2){
+                    savings.push(cat);
+                }
+            })
+        }
+
         return <>
             <div className="page-col-2">
                 <div className="col-2">
@@ -47,12 +60,14 @@ export class ItemsList extends Component {
                                         onUpdateList={onUpdateList} key={i++} />
                     </div>
 
-                    <div className="use-saving">
-                        <h2>Utilisation des économies</h2>
-                        <div>
-                            Liste TODO
+                    {savings.length !== 0 && <>
+                        <div className="use-saving">
+                            <h2>Utilisation des économies</h2>
+                            <div>
+                                <Saving data={savings} />
+                            </div>
                         </div>
-                    </div>
+                    </>}
 
                     {(dataImmuable && dataImmuable.length !== 0) && <>
                         <div className="charts">
@@ -97,4 +112,35 @@ export class ItemsList extends Component {
             </div>
         </>
     }
+}
+
+function Saving ({ data }) {
+    return <div className="items-table">
+        <div className="items items-default">
+            <div className="item item-header">
+                <div className="item-content">
+                    <div className="item-body">
+                        <div className="infos infos-col-3">
+                            <div className="col-1">Catégorie</div>
+                            <div className="col-2">Objectif</div>
+                            <div className="col-3 actions">Actions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {data.map(elem => {
+                return <div className="item" key={elem.id}>
+                    <div className="item-body">
+                        <div className="infos infos-col-3">
+                            <div className="col-1">{elem.name}</div>
+                            <div className="col-2">{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>
+                            <div className="col-3 actions">
+                                {elem.total > 0 && <ButtonIcon icon="cart" >Utiliser</ButtonIcon>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            })}
+        </div>
+    </div>
 }
