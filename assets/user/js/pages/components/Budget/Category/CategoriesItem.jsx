@@ -44,11 +44,10 @@ export class CategoriesItem extends Component {
                 </div>
 
                 {nItems.map(el => {
-                    console.log(el)
                     return <div className="item-body" key={el.id}>
                         <div className="infos infos-col-4">
                             <div className="col-1">
-                                <div className="sub"><span>{el.createdAtString}</span></div>
+                                <div className="sub"><span>{el.year} - {el.month <= 9 ? "0" : ""}{el.month}</span></div>
                             </div>
                             <div className="col-2">
                                 <div className="sub"><span>{el.name}</span></div>
