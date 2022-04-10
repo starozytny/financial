@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\Budget\DataCategory;
 use App\Service\Data\Budget\DataItem;
-use App\Service\Data\DataService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/budget/categories", name="api_budget_categories_")
@@ -219,11 +217,10 @@ class CategoryController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
      * @param DataItem $dataEntity
-     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
     public function useSaving(Request $request, BuCategory $obj, $year, $month, ApiResponse $apiResponse,
-                              ValidatorService $validator, DataItem $dataEntity, SerializerInterface $serializer): JsonResponse
+                              ValidatorService $validator, DataItem $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -277,12 +274,6 @@ class CategoryController extends AbstractController
         $em->persist($item);
         $em->flush();
 
-        $item = $serializer->serialize($item, "json", ['groups' => BuItem::ITEM_READ]);
-        $obj = $serializer->serialize($obj, "json", ['groups' => BuCategory::CATEGORY_READ]);
-
-        return $apiResponse->apiJsonResponseCustom([
-            'item' => $item,
-            'category' => $obj
-        ]);
+        return $apiResponse->apiJsonResponse($item, BuItem::ITEM_READ);
     }
 }

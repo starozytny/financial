@@ -144,8 +144,6 @@ export class Items extends Component {
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}
-                               onUpdateDuplicate={this.props.onUpdateDuplicate}
-                               onUpdateCategories={this.props.onUpdateCategories}
                                onActivate={this.handleActivate}
                                onDuplicate={this.handleDuplicate}
                                dataImmuable={dataImmuable}
