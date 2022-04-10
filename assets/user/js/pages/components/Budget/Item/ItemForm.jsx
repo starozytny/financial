@@ -39,7 +39,7 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         type={element ? Formulaire.setValueEmptyIfNull(element.type, typeItem) : typeItem}
         price={element ? Formulaire.setToFloat(element.price, "") : ""}
         cashback={element ? (element.haveCashback ? [1] : [0]) : [1]}
-        active={element ? (element.isActive ? [1] : [0]) : [0]}
+        active={element ? (element.isActive ? [1] : [0]) : [1]}
         category={element && element.category ? Formulaire.setValueEmptyIfNull(element.category.id, "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -229,7 +229,7 @@ class Form extends Component {
                 <div className="line line-2 line-cashback">
                     <div className="form-group form-group-radiobox" />
                     <Checkbox isSwitcher={true} items={activeItems} identifiant="active" valeur={active} errors={errors} onChange={this.handleChange}>
-                        Prévisionnel ?
+                        Réel ?
                     </Checkbox>
                 </div>
 
