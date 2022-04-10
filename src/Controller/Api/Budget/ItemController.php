@@ -312,10 +312,23 @@ class ItemController extends AbstractController
             ->setMonth($month)
         ;
 
+
+        $superiorOrEqual = true;
+        $total = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => $year]);
+        if(!$total){
+            $total = new BuTotal();
+            $total = $dataEntity->setTotal($total, $user, $obj->getType(), $year, $obj->getPrice(), 0);
+
+            $superiorOrEqual = false;
+
+            $em->persist($total);
+            $em->flush();
+        }
+
         $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
         foreach($totaux as $tot){
-            if($tot->getYear() > $obj->getYear()){
-                $dataEntity->setTotal($tot, $user, $obj->getType(), $year, $obj->getPrice(), 0);
+            if(($superiorOrEqual && $tot->getYear() >= $year) || (!$superiorOrEqual && $tot->getYear() > $year)){
+                $dataEntity->setTotal($tot, $user, $obj->getType(), $tot->getYear(), $obj->getPrice(), 0);
             }
         }
 
