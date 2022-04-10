@@ -47,6 +47,13 @@ export class ItemsList extends Component {
                                         onUpdateList={onUpdateList} key={i++} />
                     </div>
 
+                    <div className="use-saving">
+                        <h2>Utilisation des économies</h2>
+                        <div>
+                            Liste TODO
+                        </div>
+                    </div>
+
                     {(dataImmuable && dataImmuable.length !== 0) && <>
                         <div className="charts">
                             <h2>Statistiques</h2>
