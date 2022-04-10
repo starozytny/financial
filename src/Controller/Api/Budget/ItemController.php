@@ -115,7 +115,9 @@ class ItemController extends AbstractController
             if($category = $em->getRepository(BuCategory::class)->find($data->category)){
                 $obj->setCategory($category);
 
-                $category->setTotal($category->getTotal() + $obj->getPrice());
+                if($category->getType() == BuItem::TYPE_SAVING){
+                    $category->setTotal($category->getTotal() + $obj->getPrice());
+                }
             }
         }
 
@@ -225,7 +227,9 @@ class ItemController extends AbstractController
         }
 
         if($category = $obj->getCategory()){
-            $category->setTotal($category->getTotal() - $obj->getPrice());
+            if($category->getType() == BuItem::TYPE_SAVING){
+                $category->setTotal($category->getTotal() - $obj->getPrice());
+            }
         }
 
         $em->persist($total);
@@ -332,8 +336,9 @@ class ItemController extends AbstractController
             }
         }
 
-        if($obj->getCategory()){
-            $obj->getCategory()->setTotal($obj->getCategory()->getTotal() + $obj->getPrice());
+        $category = $obj->getCategory();
+        if($category && $category->getType() == BuItem::TYPE_SAVING){
+            $category->setTotal($category->getTotal() + $obj->getPrice());
         }
 
         $em->persist($duplicate);
