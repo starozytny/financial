@@ -45,7 +45,7 @@ export class ItemsList extends Component {
     }
 
     handleOpenAside = (asideElement) => {
-        this.setState({ asideElement: asideElement, useSaving: asideElement.total })
+        this.setState({ asideElement: asideElement, useSaving: asideElement.total - asideElement.used })
         this.aside.current.handleOpen()
     }
 
@@ -224,7 +224,10 @@ function Saving ({ data, onOpen }) {
                     <div className="item-body">
                         <div className="infos infos-col-3">
                             <div className="col-1">{elem.name}</div>
-                            <div className="col-2">{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>
+                            <div className="col-2">
+                                <div>{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>
+                                {(elem.used && elem.used !== 0) && <div className="sub">({Sanitaze.toFormatCurrency(elem.used)} utilisés)</div>}
+                            </div>
                             <div className="col-3 actions">
                                 {elem.total > 0 && <ButtonIcon icon="cart" onClick={() => onOpen(elem)}>Utiliser</ButtonIcon>}
                             </div>

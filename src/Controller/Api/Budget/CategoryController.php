@@ -37,6 +37,14 @@ class CategoryController extends AbstractController
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
 
+
+        $oldTotal = $obj->getTotal();
+        $oldUsed = $obj->getUsed();
+        $oldType = null;
+        if($type == "update"){
+            $oldType = $obj->getType() != BuItem::TYPE_SAVING ? $obj->getType() : null;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
 
@@ -47,8 +55,14 @@ class CategoryController extends AbstractController
         $obj = $dataEntity->setData($obj, $data);
         $obj->setUser($user);
 
-        if($type == "create" && $data->type == 2){
+        if($type == "create" && $data->type == BuItem::TYPE_SAVING){
             $obj->setTotal(0);
+            $obj->setUsed(0);
+        }
+
+        if($type == "update" && $oldType && $oldType !== $data->type && $data->type == BuItem::TYPE_SAVING){
+            $obj->setTotal($oldTotal ?: 0);
+            $obj->setUsed($oldUsed ?: 0);
         }
 
         $noErrors = $validator->validate($obj);
@@ -243,6 +257,7 @@ class CategoryController extends AbstractController
         /** @var BuItem $item */
         [$item, $total] = $dataEntity->setData(new BuItem(), $data, $user, $total, 0);
         $item->setUseSaving(true);
+        $item->setCategory($obj);
 
         $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
         foreach($totaux as $tot){

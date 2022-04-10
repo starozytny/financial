@@ -51,8 +51,26 @@ class BuCategory extends DataEntity
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"category:read", "item:read"})
      */
     private $used;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"category:read"})
+     */
+    private $isNatif = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"category:read"})
+     */
+    private $isArchived = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $icon = "stop";
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buCategories")
@@ -63,23 +81,6 @@ class BuCategory extends DataEntity
      * @ORM\OneToMany(targetEntity=BuItem::class, mappedBy="category")
      */
     private $items;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"category:read"})
-     */
-    private $isNatif = false;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $icon = "stop";
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"category:read"})
-     */
-    private $isArchived = false;
 
     public function __construct()
     {
