@@ -271,7 +271,7 @@ class CategoryController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
-        $obj->setUsed($price);
+        $obj->setUsed($obj->getUsed() + $price);
 
         $em->persist($total);
         $em->persist($item);
