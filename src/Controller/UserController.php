@@ -35,7 +35,7 @@ class UserController extends AbstractController
 
         $year = (new \DateTime())->format("Y");
         $items      = $em->getRepository(BuItem::class)->findBy(['user' => $user, 'year' => $year]);
-        $categories = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user]]);
+        $categories = $em->getRepository(BuCategory::class)->findBy(['user' => [null, $user], 'isArchived' => false]);
 
         $items       = $serializer->serialize($items, 'json', ['groups' => BuItem::ITEM_READ]);
         $categories  = $serializer->serialize($categories, 'json', ['groups' => BuCategory::CATEGORY_READ]);

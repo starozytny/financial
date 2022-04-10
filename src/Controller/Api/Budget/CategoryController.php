@@ -4,10 +4,11 @@ namespace App\Controller\Api\Budget;
 
 use App\Entity\Budget\BuCategory;
 use App\Entity\Budget\BuItem;
+use App\Entity\Budget\BuTotal;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\Budget\DataCategory;
-use App\Service\Data\DataService;
+use App\Service\Data\Budget\DataItem;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,6 +35,14 @@ class CategoryController extends AbstractController
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
 
+
+        $oldTotal = $obj->getTotal();
+        $oldUsed = $obj->getUsed();
+        $oldType = null;
+        if($type == "update"){
+            $oldType = $obj->getType() != BuItem::TYPE_SAVING ? $obj->getType() : null;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
 
@@ -44,8 +53,14 @@ class CategoryController extends AbstractController
         $obj = $dataEntity->setData($obj, $data);
         $obj->setUser($user);
 
-        if($type == "create" && $data->type == 2){
+        if($type == "create" && $data->type == BuItem::TYPE_SAVING){
             $obj->setTotal(0);
+            $obj->setUsed(0);
+        }
+
+        if($type == "update" && $oldType && $oldType !== $data->type && $data->type == BuItem::TYPE_SAVING){
+            $obj->setTotal($oldTotal ?: 0);
+            $obj->setUsed($oldUsed ?: 0);
         }
 
         $noErrors = $validator->validate($obj);
@@ -175,5 +190,90 @@ class CategoryController extends AbstractController
         $em->remove($obj);
         $em->flush();
         return $apiResponse->apiJsonResponseSuccessful("Supression réussie !");
+    }
+
+    /**
+     * @Route("/use-saving/{id}/{year}/{month}", name="use_saving", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns an object"
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     * @OA\Response(
+     *     response=400,
+     *     description="Validation failed",
+     * )
+     *
+     * @OA\Tag(name="BudgetItem")
+     *
+     * @param Request $request
+     * @param BuCategory $obj
+     * @param $year
+     * @param $month
+     * @param ApiResponse $apiResponse
+     * @param ValidatorService $validator
+     * @param DataItem $dataEntity
+     * @return JsonResponse
+     */
+    public function useSaving(Request $request, BuCategory $obj, $year, $month, ApiResponse $apiResponse,
+                              ValidatorService $validator, DataItem $dataEntity): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($data === null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $total = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => $year]);
+        if(!$total){
+            $total = new BuTotal();
+        }
+
+        $price = (float) $data->useSaving;
+
+        $dataTab = [
+            "year" => $year,
+            "month" => $month,
+            "name" => "Economies utilisées " . $price . " €",
+            "type" => BuItem::TYPE_EXPENSE,
+            "price" => $price,
+            "haveCashback" => true,
+            "isActive" => true
+        ];
+
+        $data = json_decode(json_encode($dataTab));
+
+        /** @var BuItem $item */
+        [$item, $total] = $dataEntity->setData(new BuItem(), $data, $user, $total, 0);
+        $item->setUseSaving(true);
+        $item->setCategory($obj);
+
+        $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
+        foreach($totaux as $tot){
+            if($tot->getYear() > $item->getYear()){
+                $dataEntity->setTotal($tot, $user, BuItem::TYPE_EXPENSE, $tot->getYear(), $price, 0);
+            }
+        }
+
+        $noErrors = $validator->validate($item);
+        if ($noErrors !== true) {
+            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        $obj->setUsed($obj->getUsed() + $price);
+
+        $em->persist($total);
+        $em->persist($item);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponse($item, BuItem::ITEM_READ);
     }
 }

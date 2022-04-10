@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 
+import axios   from "axios";
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
+import { Button, ButtonIcon }       from "@dashboardComponents/Tools/Button";
 import { Search }                   from "@dashboardComponents/Layout/Search";
+import { Input }                    from "@dashboardComponents/Tools/Fields";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
+import { Aside }                    from "@dashboardComponents/Tools/Aside";
 
-import { ItemsItem }      from "./ItemsItem";
+import Validateur   from "@commonComponents/functions/validateur";
+import Formulaire   from "@dashboardComponents/functions/Formulaire";
+import Sanitaze     from "@commonComponents/functions/sanitaze";
+
+import { ItemsItem }      from "@userPages/components/Budget/Item/ItemsItem";
 import { ItemFormulaire } from "@userPages/components/Budget/Item/ItemForm";
 import { ChartDay }       from "@userPages/components/Stats/Charts";
 
@@ -15,19 +25,80 @@ export class ItemsList extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            useSaving: "",
+            asideElement: null,
+            errors: []
+        }
+
         this.filter = React.createRef();
+        this.aside = React.createRef();
 
         this.handleFilter = this.handleFilter.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleOpenAside = this.handleOpenAside.bind(this);
+        this.handleUseSaving = this.handleUseSaving.bind(this);
     }
 
     handleFilter = (e) => {
         this.filter.current.handleChange(e, true);
     }
 
+    handleOpenAside = (asideElement) => {
+        this.setState({ asideElement: asideElement, useSaving: asideElement.total - asideElement.used })
+        this.aside.current.handleOpen()
+    }
+
+    handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
+
+    handleUseSaving = (e) => {
+        const { year, month } = this.props;
+        const { asideElement, useSaving } = this.state;
+
+        e.preventDefault();
+
+        this.setState({ errors: [] })
+
+        let paramsToValidate = [
+            {type: "text", id: 'useSaving',  value: useSaving}
+        ];
+
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate)
+
+        if(useSaving !== "" && parseFloat(useSaving) > (asideElement.total - asideElement.used)){
+            validate.code = false;
+            validate.errors.push({
+                name: "useSaving",
+                message: "La valeur ne peut pas être supérieure à " + Sanitaze.toFormatCurrency((asideElement.total - asideElement.used)) + "."
+            })
+        }
+
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            Formulaire.loader(true);
+            let self = this;
+            axios({ method: "POST", url: Routing.generate('api_budget_categories_use_saving', {'id': asideElement.id, 'year': year, 'month': month}), data: this.state })
+                .then(function (response) {
+                    self.props.onUpdateList(response.data, "create")
+                    self.aside.current.handleClose();
+                })
+                .catch(function (error) {
+                    Formulaire.displayErrors(self, error);
+                })
+                .then(() => {
+                    Formulaire.loader(false);
+                })
+            ;
+        }
+    }
+
     render () {
         const { subContext, taille, data, dataImmuable, perPage, onGetFilters, filters, onSearch, onPerPage,
             onPaginationClick, currentPage, sorters, onSorter,
             onUpdateList, typeItem, year, month, categories, total, element, onChangeSubContext } = this.props;
+        const { asideElement, errors, useSaving } = this.state;
 
         let filtersLabel = ["Dépenses", "Revenus", "Economies"];
         let filtersId    = ["f-expenses", "f-revenus", "f-economies"];
@@ -38,6 +109,30 @@ export class ItemsList extends Component {
             { value: 2, id: filtersId[2], label: filtersLabel[2]}
         ];
 
+        let savings = [];
+        if(categories){
+            categories.forEach(cat => {
+                if(cat.type === 2){
+                    savings.push(cat);
+                }
+            })
+        }
+
+        let contentAside = asideElement ? <form>
+            <div className="line">
+                <Input type="number" step="any" min={0} max={asideElement.total} valeur={useSaving} identifiant="useSaving"
+                       errors={errors} onChange={this.handleChange}>
+                    Utilisation ({Sanitaze.toFormatCurrency(asideElement.total)} max.)
+                </Input>
+            </div>
+
+            <div className="line line-buttons">
+                <div className="form-button">
+                    <Button onClick={this.handleUseSaving}>Valider</Button>
+                </div>
+            </div>
+        </form> : <div />
+
         return <>
             <div className="page-col-2">
                 <div className="col-2">
@@ -46,6 +141,15 @@ export class ItemsList extends Component {
                                         year={year} month={month} categories={categories} total={total} typeItem={typeItem}
                                         onUpdateList={onUpdateList} key={i++} />
                     </div>
+
+                    {savings.length !== 0 && <>
+                        <div className="use-saving">
+                            <h2>Utilisation des économies</h2>
+                            <div>
+                                <Saving data={savings} onOpen={this.handleOpenAside}/>
+                            </div>
+                        </div>
+                    </>}
 
                     {(dataImmuable && dataImmuable.length !== 0) && <>
                         <div className="charts">
@@ -88,6 +192,42 @@ export class ItemsList extends Component {
                     </div>
                 </div>
             </div>
+
+            <Aside ref={this.aside} content={contentAside}>Utilisation</Aside>
         </>
     }
+}
+
+function Saving ({ data, onOpen }) {
+    return <div className="items-table">
+        <div className="items items-default">
+            <div className="item item-header">
+                <div className="item-content">
+                    <div className="item-body">
+                        <div className="infos infos-col-3">
+                            <div className="col-1">Catégorie</div>
+                            <div className="col-2">Objectif</div>
+                            <div className="col-3 actions">Actions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {data.map(elem => {
+                return <div className="item" key={elem.id}>
+                    <div className="item-body">
+                        <div className="infos infos-col-3">
+                            <div className="col-1">{elem.name}</div>
+                            <div className="col-2">
+                                <div>{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>
+                                {(elem.used && elem.used !== 0) && <div className="sub">({Sanitaze.toFormatCurrency(elem.used)} utilisés)</div>}
+                            </div>
+                            <div className="col-3 actions">
+                                {elem.total - elem.used > 0 && <ButtonIcon icon="cart" onClick={() => onOpen(elem)}>Utiliser</ButtonIcon>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            })}
+        </div>
+    </div>
 }

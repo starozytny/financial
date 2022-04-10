@@ -80,7 +80,7 @@ class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { context, url, messageSuccess } = this.props;
+        const { context, url, messageSuccess, isSaving } = this.props;
         const { name, type, goal } = this.state;
 
         this.setState({ errors: [], success: false })
@@ -117,7 +117,7 @@ class Form extends Component {
                     if(context === "create"){
                         self.setState( {
                             name: '',
-                            type: 0,
+                            type: isSaving ? 2 : 0,
                             goal: '',
                         })
                     }

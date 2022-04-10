@@ -266,4 +266,78 @@ class ItemController extends AbstractController
         $em->flush();
         return $apiResponse->apiJsonResponse($obj, BuItem::ITEM_READ);
     }
+
+    /**
+     * @Route("/{id}/duplicate", name="duplicate", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns an object"
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     * @OA\Response(
+     *     response=400,
+     *     description="Validation failed",
+     * )
+     *
+     * @OA\Tag(name="BudgetItem")
+     *
+     * @param ApiResponse $apiResponse
+     * @param BuItem $obj
+     * @param DataItem $dataEntity
+     * @return JsonResponse
+     */
+    public function duplicate(ApiResponse $apiResponse, BuItem $obj, DataItem $dataEntity): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $duplicate = clone $obj;
+
+        $createdAt = new DateTime();
+        $createdAt->setTimezone(new \DateTimeZone("Europe/Paris"));
+
+        $year = $obj->getMonth() == 12 ? $obj->getYear() + 1: $obj->getYear();
+        $month = $obj->getMonth() == 12 ? 1 : $obj->getMonth() + 1;
+
+        $duplicate = ($duplicate)
+            ->setCreatedAt($createdAt)
+            ->setUpdatedAt(null)
+            ->setYear($year)
+            ->setMonth($month)
+        ;
+
+
+        $superiorOrEqual = true;
+        $total = $em->getRepository(BuTotal::class)->findOneBy(['user' => $user, 'year' => $year]);
+        if(!$total){
+            $total = new BuTotal();
+            $total = $dataEntity->setTotal($total, $user, $obj->getType(), $year, $obj->getPrice(), 0);
+
+            $superiorOrEqual = false;
+
+            $em->persist($total);
+            $em->flush();
+        }
+
+        $totaux = $em->getRepository(BuTotal::class)->findBy(['user' => $user], ['year' => "ASC"]);
+        foreach($totaux as $tot){
+            if(($superiorOrEqual && $tot->getYear() >= $year) || (!$superiorOrEqual && $tot->getYear() > $year)){
+                $dataEntity->setTotal($tot, $user, $obj->getType(), $tot->getYear(), $obj->getPrice(), 0);
+            }
+        }
+
+        if($obj->getCategory()){
+            $obj->getCategory()->setTotal($obj->getCategory()->getTotal() + $obj->getPrice());
+        }
+
+        $em->persist($duplicate);
+        $em->flush();
+        return $apiResponse->apiJsonResponse($duplicate, BuItem::ITEM_READ);
+    }
 }

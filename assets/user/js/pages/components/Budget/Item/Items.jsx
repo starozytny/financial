@@ -16,7 +16,7 @@ import { ItemsList }       from "@userPages/components/Budget/Item/ItemsList";
 import { ItemFormulaire }  from "@userPages/components/Budget/Item/ItemForm";
 
 const URL_ACTIVATE_ELEMENT  = 'api_budget_items_activate';
-const URL_DUPLICATE_ELEMENT = 'api_budget_items_activate';
+const URL_DUPLICATE_ELEMENT = 'api_budget_items_duplicate';
 const URL_DELETE_ELEMENT    = 'api_budget_items_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet élément ?';
 let SORTER = Sort.compareCreatedAtOrUpdatedAtInverse;
@@ -70,11 +70,15 @@ export class Items extends Component {
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
 
-    handleUpdateList = (element, newContext=null) => {
+    handleUpdateList = (element, newContext= null, category = null) => {
         const { dataPlanning } = this.props;
         const { perPage } = this.state;
 
         this.layout.current.handleUpdateList(element, newContext);
+
+        if(element && element.category){
+            this.props.onUpdateCategories(element.category);
+        }
 
         let newDataPlanning = Formulaire.updateDataPagination(SORTER, newContext, newContext, dataPlanning, element, perPage);
         this.props.onUpdateData(newDataPlanning);
@@ -111,7 +115,7 @@ export class Items extends Component {
 
     handleActivate = (element) => { callApi(this, "PUT", Routing.generate(URL_ACTIVATE_ELEMENT, {'id': element.id}), null, "update"); }
 
-    handleDuplicate = (element) => { callApi(this, "PUT", Routing.generate(URL_DUPLICATE_ELEMENT, {'id': element.id}), null, "update"); }
+    handleDuplicate = (element) => { callApi(this, "POST", Routing.generate(URL_DUPLICATE_ELEMENT, {'id': element.id}), null, "duplicate"); }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data, dataImmuable) => {
         const { year, month, categories, total } = this.props;
@@ -173,7 +177,11 @@ function callApi (self, method, url, element, context) {
     axios({ method: method, url: url, data: {} })
         .then(function (response) {
             if(element === null){
-                self.handleUpdateList(response.data, context);
+                if(context === "duplicate"){
+                    self.props.onUpdateDuplicate(response.data)
+                }else{
+                    self.handleUpdateList(response.data, context);
+                }
             }else{
                 self.handleUpdateList(element, context);
             }

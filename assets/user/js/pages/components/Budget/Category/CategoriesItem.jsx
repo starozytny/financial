@@ -31,6 +31,7 @@ export class CategoriesItem extends Component {
                         </div>
                         <div className="col-3">
                             {elem.type === 2 && <div className="sub">{Sanitaze.toFormatCurrency(elem.total)} / {Sanitaze.toFormatCurrency(elem.goal)}</div>}
+                            {elem.type === 2 && elem.used > 0 ? <div className="sub">({Sanitaze.toFormatCurrency(elem.used)} utilisés)</div> : null}
                         </div>
                         <div className="col-4 actions">
                             {elem.isNatif ? <div className="badge badge-default">Natif</div> : <>
@@ -43,17 +44,16 @@ export class CategoriesItem extends Component {
                 </div>
 
                 {nItems.map(el => {
-                    console.log(el)
                     return <div className="item-body" key={el.id}>
                         <div className="infos infos-col-4">
                             <div className="col-1">
-                                <div className="sub"><span>{el.createdAtString}</span></div>
+                                <div className="sub"><span>{el.year} - {el.month <= 9 ? "0" : ""}{el.month}</span></div>
                             </div>
                             <div className="col-2">
                                 <div className="sub"><span>{el.name}</span></div>
                             </div>
                             <div className="col-3">
-                                <div className="sub">{Sanitaze.toFormatCurrency(el.price)}</div>
+                                <div className="sub">{el.useSaving ? "-" : "+"}{Sanitaze.toFormatCurrency(el.price)}</div>
                             </div>
                             <div className="col-4 actions" />
                         </div>

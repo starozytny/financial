@@ -50,14 +50,10 @@ class BuCategory extends DataEntity
     private $total;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buCategories")
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"category:read", "item:read"})
      */
-    private $user;
-
-    /**
-     * @ORM\OneToMany(targetEntity=BuItem::class, mappedBy="category")
-     */
-    private $items;
+    private $used;
 
     /**
      * @ORM\Column(type="boolean")
@@ -66,15 +62,25 @@ class BuCategory extends DataEntity
     private $isNatif = false;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"category:read"})
+     */
+    private $isArchived = false;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $icon = "stop";
 
     /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"category:read"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buCategories")
      */
-    private $isArchived = false;
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BuItem::class, mappedBy="category")
+     */
+    private $items;
 
     public function __construct()
     {
@@ -217,6 +223,18 @@ class BuCategory extends DataEntity
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getUsed(): ?float
+    {
+        return $this->used;
+    }
+
+    public function setUsed(?float $used): self
+    {
+        $this->used = $used;
 
         return $this;
     }
