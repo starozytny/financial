@@ -66,11 +66,11 @@ export class ItemsList extends Component {
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
 
-        if(useSaving !== "" && parseFloat(useSaving) > asideElement.total){
+        if(useSaving !== "" && parseFloat(useSaving) > (asideElement.total - asideElement.used)){
             validate.code = false;
             validate.errors.push({
                 name: "useSaving",
-                message: "La valeur ne peut pas être supérieure à " + Sanitaze.toFormatCurrency(asideElement.total) + "."
+                message: "La valeur ne peut pas être supérieure à " + Sanitaze.toFormatCurrency((asideElement.total - asideElement.used)) + "."
             })
         }
 
@@ -229,7 +229,7 @@ function Saving ({ data, onOpen }) {
                                 {(elem.used && elem.used !== 0) && <div className="sub">({Sanitaze.toFormatCurrency(elem.used)} utilisés)</div>}
                             </div>
                             <div className="col-3 actions">
-                                {elem.total > 0 && <ButtonIcon icon="cart" onClick={() => onOpen(elem)}>Utiliser</ButtonIcon>}
+                                {elem.total - elem.used > 0 && <ButtonIcon icon="cart" onClick={() => onOpen(elem)}>Utiliser</ButtonIcon>}
                             </div>
                         </div>
                     </div>

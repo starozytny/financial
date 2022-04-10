@@ -71,6 +71,7 @@ class BuItem extends DataEntity
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"item:read"})
      */
     private $useSaving = false;
 
