@@ -63,6 +63,17 @@ export class Planning extends Component {
         this.items.current.handleChangeContext(context, null, typeItem);
     }
 
+    handUpdateDuplicate = (elem) => {
+        const { data } = this.state;
+
+        let nData = [...data, ...[elem]];
+
+        console.log(elem)
+        console.log(nData)
+
+        this.setState({ data: nData })
+    }
+
     render () {
         const { categories, haveCashback } = this.props;
         const { data, totalInit, yearActive, monthActive } = this.state;
@@ -165,7 +176,8 @@ export class Planning extends Component {
 
                 <div className="items">
                     <Items ref={this.items} onUpdateData={this.handleUpdateData} categories={JSON.parse(categories)} dataPlanning={data} total={totaux[12]}
-                           donnees={JSON.stringify(items)} year={parseInt(yearActive)} month={parseInt(monthActive)} key={yearActive + "-" + monthActive}/>
+                           donnees={JSON.stringify(items)} year={parseInt(yearActive)} month={parseInt(monthActive)} key={yearActive + "-" + monthActive}
+                           onUpdateDuplicate={this.handUpdateDuplicate} />
                 </div>
             </div>
         </div>
