@@ -50,6 +50,11 @@ class BuCategory extends DataEntity
     private $total;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $used;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buCategories")
      */
     private $user;
@@ -217,6 +222,18 @@ class BuCategory extends DataEntity
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getUsed(): ?float
+    {
+        return $this->used;
+    }
+
+    public function setUsed(?float $used): self
+    {
+        $this->used = $used;
 
         return $this;
     }

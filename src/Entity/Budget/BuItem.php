@@ -70,6 +70,11 @@ class BuItem extends DataEntity
     private $isActive = false;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $useSaving = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buItems")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -252,6 +257,18 @@ class BuItem extends DataEntity
             $updatedAt->setTimezone(new \DateTimeZone("Europe/Paris"));
         }
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUseSaving(): ?bool
+    {
+        return $this->useSaving;
+    }
+
+    public function setUseSaving(bool $useSaving): self
+    {
+        $this->useSaving = $useSaving;
 
         return $this;
     }

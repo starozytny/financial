@@ -63,8 +63,6 @@ export class ItemsList extends Component {
             {type: "text", id: 'useSaving',  value: useSaving}
         ];
 
-        console.log(useSaving)
-
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
 
@@ -79,21 +77,27 @@ export class ItemsList extends Component {
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
-            // Formulaire.loader(true);
-            // let self = this;
-            // axios({ method: "POST", url: Routing.generate('app_homepage'), data: this.state })
-            //     .then(function (response) {
-            //         let data = response.data;
-            //
-            //         self.aside.current.handleClose();
-            //     })
-            //     .catch(function (error) {
-            //         Formulaire.displayErrors(self, error);
-            //     })
-            //     .then(() => {
-            //         Formulaire.loader(false);
-            //     })
-            // ;
+            Formulaire.loader(true);
+            let self = this;
+            axios({ method: "POST", url: Routing.generate('api_budget_categories_use_saving', {'id': asideElement.id, 'year': year, 'month': month}), data: this.state })
+                .then(function (response) {
+                    let data = response.data;
+
+                    let item = JSON.parse(data.item);
+                    let category = JSON.parse(data.category);
+
+                    self.props.onUpdateDuplicate(item)
+                    self.props.onUpdateCategories(category)
+
+                    self.aside.current.handleClose();
+                })
+                .catch(function (error) {
+                    Formulaire.displayErrors(self, error);
+                })
+                .then(() => {
+                    Formulaire.loader(false);
+                })
+            ;
         }
     }
 

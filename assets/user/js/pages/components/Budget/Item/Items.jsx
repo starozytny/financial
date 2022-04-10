@@ -70,7 +70,7 @@ export class Items extends Component {
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
 
-    handleUpdateList = (element, newContext=null) => {
+    handleUpdateList = (element, newContext= null, category = null) => {
         const { dataPlanning } = this.props;
         const { perPage } = this.state;
 
@@ -144,6 +144,8 @@ export class Items extends Component {
                                typeItem={typeItem}
                                year={year} month={month} categories={categories} total={total}
                                onUpdateList={this.handleUpdateList}
+                               onUpdateDuplicate={this.props.onUpdateDuplicate}
+                               onUpdateCategories={this.props.onUpdateCategories}
                                onActivate={this.handleActivate}
                                onDuplicate={this.handleDuplicate}
                                dataImmuable={dataImmuable}
