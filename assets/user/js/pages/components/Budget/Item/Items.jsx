@@ -70,13 +70,17 @@ export class Items extends Component {
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "name", this.state.filters, Filter.filterType); }
 
-    handleUpdateList = (element, newContext= null, category = null) => {
+    handleUpdateList = (element, newContext= null) => {
         const { dataPlanning } = this.props;
         const { perPage } = this.state;
 
         this.layout.current.handleUpdateList(element, newContext);
 
         if(element && element.category){
+            if(newContext === "delete"){
+                element.category.total = element.category.total - element.price;
+            }
+
             this.props.onUpdateCategories(element.category);
         }
 

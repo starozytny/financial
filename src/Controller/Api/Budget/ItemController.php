@@ -116,7 +116,8 @@ class ItemController extends AbstractController
                 $obj->setCategory($category);
 
                 if($category->getType() == BuItem::TYPE_SAVING){
-                    $category->setTotal($category->getTotal() + $obj->getPrice());
+                    $catTotal = $category->getTotal() - $oldPrice;
+                    $category->setTotal($catTotal + $obj->getPrice());
                 }
             }
         }

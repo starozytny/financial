@@ -38,7 +38,7 @@ export function ItemFormulaire ({ type, onChangeContext, onUpdateList, element, 
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, typeItem) : typeItem}
         price={element ? Formulaire.setToFloat(element.price, "") : ""}
-        cashback={element ? (element.haveCashback ? [1] : [0]) : [1]}
+        cashback={element ? (element.haveCashback ? [1] : [0]) : [0]}
         active={element ? (element.isActive ? [1] : [0]) : [1]}
         category={element && element.category ? Formulaire.setValueEmptyIfNull(element.category.id, "") : ""}
         onUpdateList={onUpdateList}
