@@ -224,6 +224,17 @@
       width: 33%;
     }
   }
+
+  .items-budget{
+    .infos-col-4{
+      .col-1{
+        width: 100px;
+      }
+      .col-2{
+        width: calc(100% - 25% - 100px - 72px - 120px);
+      }
+    }
+  }
 }
 
 //                      __   _ ____  ___   ___    __

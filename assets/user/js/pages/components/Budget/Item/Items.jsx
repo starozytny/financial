@@ -78,7 +78,11 @@ export class Items extends Component {
 
         if(element && element.category){
             if(newContext === "delete"){
-                element.category.total = element.category.total - element.price;
+                if(element.useSaving){
+                    element.category.used = element.category.used - element.price;
+                }else{
+                    element.category.total = element.category.total - element.price;
+                }
             }
 
             this.props.onUpdateCategories(element.category);

@@ -228,8 +228,12 @@ class ItemController extends AbstractController
         }
 
         if($category = $obj->getCategory()){
-            if($category->getType() == BuItem::TYPE_SAVING){
+            if($category->getType() == BuItem::TYPE_SAVING && $obj->getType() === BuItem::TYPE_SAVING){
                 $category->setTotal($category->getTotal() - $obj->getPrice());
+            }
+
+            if($obj->getUseSaving()){
+                $category->setUsed($category->getUsed() - $obj->getPrice());
             }
         }
 
